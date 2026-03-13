@@ -1,0 +1,1367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SHXFT — Creative XR & Innovation Studio</title>
+    <meta name="description" content="SHXFT — Creative XR & Innovation Studio. A Division of CNQR Media.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Onest:wght@300;400;500;600;700;800;900&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        /* =========================================
+           RESET & BASE
+           ========================================= */
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg-primary: #ffffff;
+            --text-primary: #000000;
+            --text-secondary: #333333;
+            --text-muted: #888888;
+            --highlight-bg: #000000;
+            --highlight-text: #ffffff;
+            --sketch-stroke: #333333;
+            --font-display: 'Onest', sans-serif;
+            --font-body: 'Onest', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+            --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+
+            /* FRXME slide dark mode vars */
+            --frxme-bg: #09090b;
+            --frxme-surface: #18181b;
+            --frxme-brand: #06b6d4;
+            --frxme-brand-glow: rgba(6, 182, 212, 0.25);
+            --frxme-text: #fafafa;
+            --frxme-text-muted: #71717a;
+        }
+
+        html {
+            scroll-snap-type: y mandatory;
+            overflow-y: scroll;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* =========================================
+           SLIDE BASE
+           ========================================= */
+        .slide {
+            scroll-snap-align: start;
+            width: 100vw;
+            height: 100vh;
+            height: 100dvh;
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: clamp(1.5rem, 4vw, 4rem);
+            background: var(--bg-primary);
+        }
+
+        .slide-content {
+            max-width: min(90vw, 1100px);
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: clamp(1rem, 2.5vw, 2rem);
+            position: relative;
+            z-index: 2;
+        }
+
+        /* =========================================
+           TYPOGRAPHY
+           ========================================= */
+        h1 {
+            font-family: var(--font-display);
+            font-size: clamp(2.5rem, 7vw, 5.5rem);
+            font-weight: 900;
+            text-transform: uppercase;
+            line-height: 0.95;
+            letter-spacing: -0.03em;
+        }
+
+        h2 {
+            font-family: var(--font-display);
+            font-size: clamp(1.8rem, 5vw, 3.5rem);
+            font-weight: 800;
+            text-transform: uppercase;
+            line-height: 1.05;
+            letter-spacing: -0.02em;
+        }
+
+        h3 {
+            font-family: var(--font-display);
+            font-size: clamp(1.1rem, 2.5vw, 1.6rem);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: -0.01em;
+        }
+
+        p, li {
+            font-family: var(--font-body);
+            font-size: clamp(0.85rem, 1.5vw, 1.1rem);
+            line-height: 1.6;
+            color: var(--text-secondary);
+        }
+
+        .subtitle {
+            font-family: var(--font-body);
+            font-size: clamp(0.95rem, 2vw, 1.25rem);
+            font-weight: 400;
+            line-height: 1.5;
+            color: var(--text-secondary);
+        }
+
+        .mono-label {
+            font-family: var(--font-mono);
+            font-size: clamp(0.6rem, 1vw, 0.75rem);
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+        }
+
+        /* =========================================
+           HIGHLIGHT (inverted text)
+           ========================================= */
+        .highlight {
+            background: var(--highlight-bg);
+            color: var(--highlight-text);
+            padding: 0.05em 0.25em;
+            display: inline;
+            box-decoration-break: clone;
+            -webkit-box-decoration-break: clone;
+        }
+
+        /* =========================================
+           SKETCH ELEMENTS
+           ========================================= */
+        .sketch-element {
+            position: absolute;
+            pointer-events: none;
+            opacity: 0;
+            z-index: 0;
+        }
+        .sketch-element.invert { filter: invert(1); }
+
+        .sketch-tl { top: 4%; left: 4%; width: clamp(50px, 7vw, 100px); }
+        .sketch-tr { top: 4%; right: 4%; width: clamp(50px, 7vw, 100px); transform: scaleX(-1); }
+        .sketch-bl { bottom: 4%; left: 4%; width: clamp(50px, 7vw, 100px); transform: scaleY(-1); }
+        .sketch-br { bottom: 4%; right: 4%; width: clamp(50px, 7vw, 100px); transform: scale(-1); }
+
+        .slide.visible .sketch-element {
+            animation: sketch-fade 0.8s ease forwards;
+        }
+        .slide.visible .sketch-element:nth-child(2) { animation-delay: 0.15s; }
+        .slide.visible .sketch-element:nth-child(3) { animation-delay: 0.3s; }
+
+        @keyframes sketch-fade {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 0.12; }
+        }
+        /* Preserve flip transforms after fade */
+        .slide.visible .sketch-tr { animation-name: sketch-fade-flipX; }
+        .slide.visible .sketch-bl { animation-name: sketch-fade-flipY; }
+        .slide.visible .sketch-br { animation-name: sketch-fade-flipXY; }
+        @keyframes sketch-fade-flipX {
+            from { opacity: 0; transform: scaleX(-1) translateY(8px); }
+            to { opacity: 0.12; transform: scaleX(-1) translateY(0); }
+        }
+        @keyframes sketch-fade-flipY {
+            from { opacity: 0; transform: scaleY(-1) translateY(-8px); }
+            to { opacity: 0.12; transform: scaleY(-1) translateY(0); }
+        }
+        @keyframes sketch-fade-flipXY {
+            from { opacity: 0; transform: scale(-1) translateY(-8px); }
+            to { opacity: 0.12; transform: scale(-1) translateY(0); }
+        }
+
+        /* =========================================
+           ANIMATIONS — REVEAL
+           ========================================= */
+        .reveal {
+            opacity: 0;
+            transform: translateY(25px);
+            transition: opacity 0.6s var(--ease-out-expo),
+                        transform 0.6s var(--ease-out-expo);
+        }
+        .reveal-scale {
+            opacity: 0;
+            transform: scale(0.92);
+            transition: opacity 0.6s var(--ease-out-expo),
+                        transform 0.6s var(--ease-out-expo);
+        }
+        .reveal-left {
+            opacity: 0;
+            transform: translateX(-40px);
+            transition: opacity 0.6s var(--ease-out-expo),
+                        transform 0.6s var(--ease-out-expo);
+        }
+        .visible .reveal,
+        .visible .reveal-scale,
+        .visible .reveal-left {
+            opacity: 1;
+            transform: translateY(0) scale(1) translateX(0);
+        }
+
+        /* Stagger children */
+        .visible .reveal:nth-child(1),
+        .visible .reveal-left:nth-child(1) { transition-delay: 0.1s; }
+        .visible .reveal:nth-child(2),
+        .visible .reveal-left:nth-child(2) { transition-delay: 0.2s; }
+        .visible .reveal:nth-child(3),
+        .visible .reveal-left:nth-child(3) { transition-delay: 0.3s; }
+        .visible .reveal:nth-child(4),
+        .visible .reveal-left:nth-child(4) { transition-delay: 0.4s; }
+        .visible .reveal:nth-child(5),
+        .visible .reveal-left:nth-child(5) { transition-delay: 0.5s; }
+        .visible .reveal:nth-child(6),
+        .visible .reveal-left:nth-child(6) { transition-delay: 0.6s; }
+
+        /* =========================================
+           BRACKET FRAME
+           ========================================= */
+        .bracket-frame {
+            border: 2px solid var(--sketch-stroke);
+            border-radius: 0;
+            transform: rotate(-0.5deg);
+            padding: clamp(1rem, 2.5vw, 2rem);
+            position: relative;
+        }
+
+        /* =========================================
+           PHOTO CARDS (tilted, sketch border)
+           ========================================= */
+        .photo-card {
+            transform: rotate(-2deg);
+            border: 3px solid #333;
+            box-shadow: 4px 4px 0 #333;
+            overflow: hidden;
+            border-radius: 0;
+        }
+        .photo-card:nth-child(even) { transform: rotate(1.5deg); }
+        .photo-card img, .photo-card video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* =========================================
+           CAPABILITY CARDS
+           ========================================= */
+        .capability-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: clamp(0.75rem, 1.5vw, 1.25rem);
+        }
+
+        .capability-card {
+            border: 2px solid #000;
+            padding: clamp(0.75rem, 1.5vw, 1.5rem);
+            position: relative;
+            transition: all 0.2s ease;
+        }
+
+        .capability-card .card-number {
+            font-family: var(--font-display);
+            font-size: clamp(2rem, 4vw, 3.5rem);
+            font-weight: 900;
+            color: #eee;
+            line-height: 1;
+            margin-bottom: 0.5rem;
+        }
+
+        .capability-card h3 {
+            font-size: clamp(0.85rem, 1.5vw, 1.1rem);
+            margin-bottom: 0.35rem;
+        }
+
+        .capability-card p {
+            font-size: clamp(0.7rem, 1.1vw, 0.85rem) !important;
+            line-height: 1.45;
+            color: var(--text-muted);
+        }
+
+        /* =========================================
+           SERVICES GRID
+           ========================================= */
+        .services-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: clamp(1rem, 2vw, 2rem);
+        }
+
+        .service-block {
+            padding: clamp(1rem, 2vw, 1.75rem);
+            border-left: 3px solid #000;
+        }
+
+        .service-block h3 {
+            margin-bottom: 0.5rem;
+        }
+
+        .service-block ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .service-block ul li {
+            font-size: clamp(0.72rem, 1.2vw, 0.9rem);
+            padding: 0.2rem 0;
+            color: var(--text-secondary);
+        }
+        .service-block ul li::before {
+            content: '→ ';
+            color: var(--text-muted);
+        }
+
+        /* =========================================
+           SECTION DIVIDER
+           ========================================= */
+        .slide-divider {
+            background: #000;
+            color: #fff;
+        }
+        .slide-divider h1 {
+            color: #fff;
+            font-size: clamp(3rem, 12vw, 9rem);
+            text-align: center;
+            line-height: 0.9;
+        }
+        .slide-divider .sketch-element { filter: none; opacity: 0; }
+        .slide-divider.visible .sketch-element {
+            animation: sketch-fade-white 0.8s ease forwards;
+        }
+        @keyframes sketch-fade-white {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 0.15; }
+        }
+
+        /* =========================================
+           DIFFERENTIATOR SLIDE
+           ========================================= */
+        .diff-points {
+            display: flex;
+            flex-direction: column;
+            gap: clamp(0.75rem, 1.5vw, 1.25rem);
+        }
+        .diff-point {
+            display: flex;
+            align-items: flex-start;
+            gap: clamp(0.75rem, 1.5vw, 1.25rem);
+            padding: clamp(0.75rem, 1.5vw, 1.25rem) 0;
+            border-bottom: 1px solid #eee;
+        }
+        .diff-number {
+            font-family: var(--font-display);
+            font-size: clamp(1.5rem, 3vw, 2.5rem);
+            font-weight: 900;
+            color: #ddd;
+            line-height: 1;
+            min-width: clamp(30px, 4vw, 50px);
+        }
+        .diff-text h3 {
+            font-size: clamp(0.9rem, 1.8vw, 1.2rem);
+            margin-bottom: 0.25rem;
+        }
+        .diff-text p {
+            font-size: clamp(0.75rem, 1.2vw, 0.9rem) !important;
+            color: var(--text-muted);
+        }
+
+        /* =========================================
+           FRXME PRODUCT SLIDE (dark mode island)
+           ========================================= */
+        .slide-frxme {
+            background: var(--frxme-bg);
+            color: var(--frxme-text);
+        }
+        .slide-frxme .mono-label { color: var(--frxme-text-muted); }
+        .slide-frxme p { color: #a1a1aa; }
+
+        .frxme-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: clamp(2rem, 4vw, 4rem);
+            align-items: center;
+        }
+
+        .frxme-info {
+            display: flex;
+            flex-direction: column;
+            gap: clamp(0.75rem, 1.5vw, 1.25rem);
+        }
+
+        .frxme-info h2 {
+            color: var(--frxme-text);
+            font-family: 'Inter', sans-serif;
+            font-weight: 800;
+        }
+
+        .frxme-info .frxme-logo-img {
+            width: clamp(120px, 20vw, 200px);
+        }
+
+        .frxme-specs {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+        }
+        .frxme-spec-row {
+            display: flex;
+            justify-content: space-between;
+            padding: clamp(0.4rem, 0.8vw, 0.6rem) 0;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            font-family: var(--font-mono);
+            font-size: clamp(0.6rem, 0.9vw, 0.75rem);
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+        .frxme-spec-label { color: var(--frxme-text-muted); }
+        .frxme-spec-value { color: var(--frxme-text); font-weight: 600; }
+
+        #frxme-canvas-container {
+            width: 100%;
+            aspect-ratio: 1;
+            max-height: clamp(300px, 45vh, 500px);
+            position: relative;
+        }
+        #frxme-canvas-container canvas {
+            width: 100% !important;
+            height: 100% !important;
+        }
+
+        /* Dot grid bg for FRXME slide */
+        .frxme-dot-grid {
+            position: absolute;
+            inset: 0;
+            background-image: radial-gradient(circle, rgba(6, 182, 212, 0.1) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Glow orb behind 3D model */
+        .frxme-glow-orb {
+            position: absolute;
+            top: 50%;
+            left: 75%;
+            transform: translate(-50%, -50%);
+            width: clamp(200px, 30vw, 450px);
+            height: clamp(200px, 30vw, 450px);
+            background: radial-gradient(circle, rgba(6,182,212,0.12) 0%, rgba(6,182,212,0.04) 40%, transparent 70%);
+            border-radius: 50%;
+            animation: frxmeGlowPulse 4s ease-in-out infinite;
+            pointer-events: none;
+            z-index: 0;
+        }
+        @keyframes frxmeGlowPulse {
+            0%, 100% { opacity: 0.6; transform: translate(-50%, -50%) scale(1); }
+            50% { opacity: 1; transform: translate(-50%, -50%) scale(1.1); }
+        }
+
+        /* =========================================
+           CASE STUDY SLIDE
+           ========================================= */
+        .case-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: clamp(1.5rem, 3vw, 3rem);
+            align-items: center;
+        }
+        .case-text { display: flex; flex-direction: column; gap: clamp(0.5rem, 1vw, 0.75rem); }
+        .case-text h2 { font-size: clamp(1.5rem, 4vw, 2.8rem); }
+        .case-images {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.75rem;
+        }
+
+        /* =========================================
+           CTA SLIDE
+           ========================================= */
+        .cta-button {
+            display: inline-block;
+            border: 2px solid #000;
+            padding: clamp(0.6rem, 1.5vw, 1rem) clamp(1.5rem, 3vw, 2.5rem);
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: clamp(0.85rem, 1.5vw, 1.1rem);
+            text-transform: uppercase;
+            text-decoration: none;
+            color: #000;
+            letter-spacing: 0.05em;
+            transition: all 0.2s ease;
+        }
+
+        @media (hover: hover) {
+            .cta-button:hover {
+                background: #000;
+                color: #fff;
+            }
+        }
+
+        .contact-info {
+            display: flex;
+            gap: clamp(1.5rem, 3vw, 3rem);
+            flex-wrap: wrap;
+        }
+        .contact-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.15rem;
+        }
+        .contact-item .label {
+            font-family: var(--font-mono);
+            font-size: clamp(0.55rem, 0.8vw, 0.65rem);
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+        }
+        .contact-item .value {
+            font-size: clamp(0.8rem, 1.3vw, 1rem);
+            font-weight: 600;
+        }
+
+        /* =========================================
+           WATERMARK LOGO
+           ========================================= */
+        .slide-logo {
+            position: absolute;
+            bottom: clamp(16px, 2.5vh, 28px);
+            left: clamp(16px, 2.5vw, 28px);
+            width: clamp(70px, 10vw, 120px);
+            opacity: 0.7;
+            z-index: 5;
+            pointer-events: none;
+        }
+
+        /* =========================================
+           PROGRESS BAR
+           ========================================= */
+        .progress-bar {
+            position: fixed;
+            top: 0; left: 0;
+            height: 3px;
+            background: #000;
+            width: 0;
+            transition: width 0.3s ease;
+            z-index: 9999;
+        }
+
+        /* =========================================
+           NAV DOTS
+           ========================================= */
+        .nav-dots {
+            position: fixed;
+            right: clamp(12px, 2vw, 24px);
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            z-index: 9998;
+        }
+        .nav-dot {
+            width: 10px; height: 10px;
+            border-radius: 50%;
+            border: 1.5px solid rgba(0,0,0,0.25);
+            background: transparent;
+            cursor: pointer;
+            padding: 0;
+            transition: all 0.3s ease;
+        }
+        .nav-dot.active {
+            background: #000;
+            border-color: #000;
+            transform: scale(1.3);
+        }
+        /* Dark slide nav dots */
+        .nav-dot.dark-dot {
+            border-color: rgba(255,255,255,0.3);
+        }
+        .nav-dot.dark-dot.active {
+            background: var(--frxme-brand);
+            border-color: var(--frxme-brand);
+        }
+
+        /* =========================================
+           RESPONSIVE
+           ========================================= */
+        @media (max-width: 768px) and (max-height: 900px) {
+            .slide { padding: clamp(0.75rem, 2.5vw, 1.5rem); }
+            .slide-content { gap: clamp(0.5rem, 1.5vw, 1rem); }
+            h2 { font-size: clamp(1.3rem, 5vw, 2rem); }
+            p { font-size: clamp(0.78rem, 2.2vw, 0.9rem) !important; line-height: 1.45 !important; }
+            .mono-label { font-size: clamp(0.55rem, 1.5vw, 0.7rem); }
+
+            .capability-grid { grid-template-columns: repeat(2, 1fr); }
+            .services-grid { grid-template-columns: 1fr; }
+            .frxme-layout { grid-template-columns: 1fr; }
+            .case-layout { grid-template-columns: 1fr; }
+            .case-images { grid-template-columns: 1fr 1fr; gap: 0.5rem; }
+
+            #frxme-canvas-container { max-height: clamp(200px, 35vh, 300px); }
+
+            .slide-divider h1 { font-size: clamp(2.5rem, 14vw, 5rem); }
+
+            .photo-card { transform: rotate(-1deg); }
+            .photo-card:nth-child(even) { transform: rotate(0.8deg); }
+
+            .slide-logo { width: clamp(55px, 12vw, 80px); }
+        }
+
+        @media (max-width: 400px) and (max-height: 750px) {
+            .slide-content { gap: clamp(0.35rem, 1.2vw, 0.75rem); }
+            h2 { font-size: clamp(1.1rem, 4.5vw, 1.6rem); }
+            .capability-grid { grid-template-columns: 1fr 1fr; gap: 0.5rem; }
+            .capability-card .card-number { font-size: clamp(1.5rem, 3.5vw, 2rem); }
+        }
+
+        @media (max-height: 500px) {
+            .slide { padding: 0.5rem 1.5rem; }
+            .slide-content { gap: 0.4rem; }
+            h2 { font-size: clamp(1rem, 3.5vw, 1.5rem); }
+            p { font-size: clamp(0.7rem, 1.8vw, 0.82rem) !important; }
+            .capability-grid { grid-template-columns: repeat(4, 1fr); gap: 0.5rem; }
+            .nav-dots { display: none; }
+            .slide-divider h1 { font-size: clamp(2rem, 8vw, 4rem); }
+        }
+
+        @media (max-width: 600px) {
+            .contact-info { flex-direction: column; gap: 0.75rem; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.2s !important;
+                scroll-behavior: auto !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Progress Bar -->
+    <div class="progress-bar" id="progress-bar"></div>
+
+    <!-- Nav Dots -->
+    <nav class="nav-dots" id="nav-dots"></nav>
+
+    <!-- =============================================
+         SLIDE 1 — TITLE
+         ============================================= -->
+    <section class="slide" id="slide-title">
+        <!-- Sketch decorations -->
+        <img src="corner-bracket.png" class="sketch-element sketch-tl" alt="">
+        <img src="corner-bracket.png" class="sketch-element sketch-br" alt="">
+        <img src="flowing-arrows.png" class="sketch-element invert" style="bottom: 12%; right: 8%; width: clamp(80px, 12vw, 180px); transform: rotate(-15deg);" alt="">
+
+        <div class="slide-content" style="align-items: center; text-align: center;">
+            <img src="shxft-wordmark-black.png" alt="SHXFT" class="reveal-scale" style="width: clamp(200px, 40vw, 450px); margin-bottom: clamp(0.5rem, 1.5vw, 1rem);">
+            <h2 class="reveal" style="font-weight: 600; text-transform: none; font-size: clamp(1rem, 2.5vw, 1.6rem); letter-spacing: 0.05em;">
+                CREATIVE <span class="highlight">XR</span> & INNOVATION STUDIO
+            </h2>
+            <p class="reveal" style="font-family: var(--font-mono); font-size: clamp(0.6rem, 1vw, 0.75rem) !important; color: var(--text-muted); letter-spacing: 0.2em; text-transform: uppercase;">
+                A Division of CNQR Media FZCO
+            </p>
+        </div>
+    </section>
+
+    <!-- =============================================
+         SLIDE 2 — WHAT WE DO
+         ============================================= -->
+    <section class="slide" id="slide-what-we-do">
+        <img src="sketch-arrow.png" class="sketch-element" style="top: 8%; right: 6%; width: clamp(40px, 6vw, 80px); transform: rotate(25deg);" alt="">
+        <img src="shapes-group.png" class="sketch-element invert" style="bottom: 8%; left: 5%; width: clamp(60px, 8vw, 120px);" alt="">
+
+        <div class="slide-content">
+            <span class="mono-label reveal">[ What We Do ]</span>
+            <h2 class="reveal">WE DON'T JUST CREATE <span class="highlight">CONTENT.</span><br>WE CREATE <span class="highlight">MOMENTS.</span></h2>
+            <p class="subtitle reveal" style="max-width: 600px;">We build experiences that blur the line between digital and physical — bridging audiences with brands through immersive technology.</p>
+
+            <div class="capability-grid" style="margin-top: clamp(0.5rem, 1.5vw, 1rem);">
+                <div class="capability-card reveal">
+                    <div class="card-number">01</div>
+                    <h3>Strategy</h3>
+                    <p>Creative direction, audience insights, campaign architecture</p>
+                </div>
+                <div class="capability-card reveal">
+                    <div class="card-number">02</div>
+                    <h3>Digital</h3>
+                    <p>AR lenses, WebAR, interactive filters for TikTok & Snapchat</p>
+                </div>
+                <div class="capability-card reveal">
+                    <div class="card-number">03</div>
+                    <h3>Creative</h3>
+                    <p>3D design, motion graphics, real-time generative content</p>
+                </div>
+                <div class="capability-card reveal">
+                    <div class="card-number">04</div>
+                    <h3>Production</h3>
+                    <p>End-to-end event production, installations, on-site tech</p>
+                </div>
+            </div>
+        </div>
+        <img src="shxft-wordmark-black.png" alt="" class="slide-logo">
+    </section>
+
+    <!-- =============================================
+         SLIDE 3 — WHAT MAKES US DIFFERENT
+         ============================================= -->
+    <section class="slide" id="slide-different">
+        <img src="corner-bracket.png" class="sketch-element sketch-tr" alt="">
+        <img src="pattern-tile.png" class="sketch-element invert" style="bottom: 10%; right: 5%; width: clamp(80px, 10vw, 150px); transform: rotate(5deg);" alt="">
+
+        <div class="slide-content">
+            <span class="mono-label reveal">[ What Makes Us Different ]</span>
+            <h2 class="reveal">WE THINK <span class="highlight">AUDIENCE</span> FIRST.</h2>
+
+            <div class="diff-points">
+                <div class="diff-point reveal">
+                    <div class="diff-number">01</div>
+                    <div class="diff-text">
+                        <h3>EXPERIENCE OVER EXPOSURE</h3>
+                        <p>We don't create ads that interrupt. We create experiences people seek out, share, and remember.</p>
+                    </div>
+                </div>
+                <div class="diff-point reveal">
+                    <div class="diff-number">02</div>
+                    <div class="diff-text">
+                        <h3>TECH THAT SERVES THE STORY</h3>
+                        <p>AR, mixed reality, and interactive tech are tools — not gimmicks. Every piece of technology serves the narrative.</p>
+                    </div>
+                </div>
+                <div class="diff-point reveal">
+                    <div class="diff-number">03</div>
+                    <div class="diff-text">
+                        <h3>END-TO-END OWNERSHIP</h3>
+                        <p>From concept to on-site deployment. One team, one vision, zero hand-off friction.</p>
+                    </div>
+                </div>
+                <div class="diff-point reveal">
+                    <div class="diff-number">04</div>
+                    <div class="diff-text">
+                        <h3>BUILT FOR THE REGION</h3>
+                        <p>Deep understanding of GCC audiences, cultural nuance, and the pace of transformation in the Middle East.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <img src="shxft-wordmark-black.png" alt="" class="slide-logo">
+    </section>
+
+    <!-- =============================================
+         SLIDE 4 — SERVICES BREAKDOWN
+         ============================================= -->
+    <section class="slide" id="slide-services">
+        <img src="flowing-arrows.png" class="sketch-element invert" style="top: 6%; left: 4%; width: clamp(70px, 10vw, 140px); transform: rotate(-10deg);" alt="">
+        <img src="sketch-arrow.png" class="sketch-element" style="bottom: 10%; right: 6%; width: clamp(35px, 5vw, 65px); transform: rotate(-45deg);" alt="">
+
+        <div class="slide-content">
+            <span class="mono-label reveal">[ Our Services ]</span>
+            <h2 class="reveal">HOW WE <span class="highlight">DELIVER.</span></h2>
+
+            <div class="services-grid" style="margin-top: clamp(0.5rem, 1vw, 0.75rem);">
+                <div class="service-block reveal">
+                    <h3>STRATEGY</h3>
+                    <ul>
+                        <li>Creative & Campaign Strategy</li>
+                        <li>Audience Research & Insights</li>
+                        <li>Experience Architecture</li>
+                        <li>Technology Consulting</li>
+                    </ul>
+                </div>
+                <div class="service-block reveal">
+                    <h3>DIGITAL</h3>
+                    <ul>
+                        <li>AR Lenses — TikTok, Snapchat, Instagram</li>
+                        <li>WebAR Experiences</li>
+                        <li>Interactive Filters & Games</li>
+                        <li>AI-Powered Generative Content</li>
+                    </ul>
+                </div>
+                <div class="service-block reveal">
+                    <h3>CREATIVE</h3>
+                    <ul>
+                        <li>3D Design & Animation</li>
+                        <li>Motion Graphics</li>
+                        <li>Real-Time Content</li>
+                        <li>Brand Identity & Visual Systems</li>
+                    </ul>
+                </div>
+                <div class="service-block reveal">
+                    <h3>PRODUCTION</h3>
+                    <ul>
+                        <li>Event Installations & Set Design</li>
+                        <li>On-Site Tech Operations</li>
+                        <li>Interactive Display Deployment</li>
+                        <li>Live Event Content Management</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <img src="shxft-wordmark-black.png" alt="" class="slide-logo">
+    </section>
+
+    <!-- =============================================
+         SLIDE 5 — FRXME PRODUCT (Dark Mode Island)
+         ============================================= -->
+    <section class="slide slide-frxme" id="slide-frxme">
+        <div class="frxme-dot-grid"></div>
+        <div class="frxme-glow-orb"></div>
+
+        <div class="slide-content" style="z-index: 2;">
+            <div class="frxme-layout">
+                <div class="frxme-info">
+                    <span class="mono-label reveal" style="color: var(--frxme-brand);">[ Product ]</span>
+                    <img src="frxme-logo-dark.png" alt="FRXME" class="frxme-logo-img reveal-scale">
+                    <p class="reveal" style="max-width: 400px;">Our proprietary mixed-reality interactive display. Built for events, retail activations, and brand experiences.</p>
+
+                    <div class="frxme-specs reveal">
+                        <div class="frxme-spec-row">
+                            <span class="frxme-spec-label">Display</span>
+                            <span class="frxme-spec-value">43" HD Touchscreen</span>
+                        </div>
+                        <div class="frxme-spec-row">
+                            <span class="frxme-spec-label">Camera</span>
+                            <span class="frxme-spec-value">4K Wide-Angle</span>
+                        </div>
+                        <div class="frxme-spec-row">
+                            <span class="frxme-spec-label">Tracking</span>
+                            <span class="frxme-spec-value">AR Body @ 60fps</span>
+                        </div>
+                        <div class="frxme-spec-row">
+                            <span class="frxme-spec-label">Lighting</span>
+                            <span class="frxme-spec-value">LED Ring Light</span>
+                        </div>
+                        <div class="frxme-spec-row">
+                            <span class="frxme-spec-label">Output</span>
+                            <span class="frxme-spec-value">QR Download + Analytics</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="frxme-canvas-container" class="reveal-scale">
+                    <!-- Three.js canvas injected here -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- =============================================
+         SLIDE 6 — OUR WORK (Section Divider)
+         ============================================= -->
+    <section class="slide slide-divider" id="slide-our-work">
+        <img src="flowing-arrows.png" class="sketch-element" style="top: 10%; left: 5%; width: clamp(80px, 12vw, 160px);" alt="">
+        <img src="shapes-group.png" class="sketch-element" style="bottom: 10%; right: 5%; width: clamp(60px, 8vw, 120px);" alt="">
+
+        <div class="slide-content" style="align-items: center; text-align: center;">
+            <h1 class="reveal-scale">OUR<br>WORK.</h1>
+            <p class="reveal" style="font-family: var(--font-mono); font-size: clamp(0.6rem, 1vw, 0.75rem) !important; color: rgba(255,255,255,0.4); letter-spacing: 0.2em; text-transform: uppercase;">
+                Selected projects & activations
+            </p>
+        </div>
+    </section>
+
+    <!-- =============================================
+         SLIDE 7 — CASE STUDY: DIRIYAH
+         ============================================= -->
+    <section class="slide" id="slide-case-diriyah">
+        <img src="corner-bracket.png" class="sketch-element sketch-tl" alt="">
+        <img src="sketch-arrow.png" class="sketch-element" style="top: 6%; right: 8%; width: clamp(35px, 5vw, 60px); transform: rotate(15deg);" alt="">
+
+        <div class="slide-content">
+            <div class="case-layout">
+                <div class="case-text">
+                    <span class="mono-label reveal">[ Case Study ]</span>
+                    <h2 class="reveal">DIRIYAH<br><span class="highlight">AT OUTERNET</span></h2>
+                    <p class="reveal">Interactive mixed-reality experience for Diriyah at Outernet London. Custom AR body-tracking, gesture-driven games, and photo booth activations — powered by FRXME.</p>
+                    <div class="reveal" style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                        <span class="mono-label" style="color: var(--text-secondary);">→ AR Games</span>
+                        <span class="mono-label" style="color: var(--text-secondary);">→ Photo Booth</span>
+                        <span class="mono-label" style="color: var(--text-secondary);">→ Outernet London</span>
+                    </div>
+                </div>
+                <div class="case-images">
+                    <div class="photo-card reveal" style="aspect-ratio: 3/4; background: #f0f0f0; display: flex; align-items: center; justify-content: center;">
+                        <span class="mono-label" style="color: #ccc;">Media</span>
+                    </div>
+                    <div class="photo-card reveal" style="aspect-ratio: 3/4; background: #f0f0f0; display: flex; align-items: center; justify-content: center;">
+                        <span class="mono-label" style="color: #ccc;">Media</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <img src="shxft-wordmark-black.png" alt="" class="slide-logo">
+    </section>
+
+    <!-- =============================================
+         SLIDE 8 — CASE STUDY: SOUNDSTORM
+         ============================================= -->
+    <section class="slide" id="slide-case-soundstorm">
+        <img src="pattern-tile.png" class="sketch-element invert" style="top: 5%; left: 4%; width: clamp(60px, 8vw, 120px); transform: rotate(3deg);" alt="">
+        <img src="corner-bracket.png" class="sketch-element sketch-br" alt="">
+
+        <div class="slide-content">
+            <div class="case-layout">
+                <div class="case-text">
+                    <span class="mono-label reveal">[ Case Study ]</span>
+                    <h2 class="reveal"><span class="highlight">SOUNDSTORM</span><br>2025</h2>
+                    <p class="reveal">Festival-scale FRXME deployment at MDLBEAST Soundstorm. Multiple interactive mirrors, real-time AR filters, and photo activations across the venue.</p>
+                    <div class="reveal" style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                        <span class="mono-label" style="color: var(--text-secondary);">→ MDLBEAST</span>
+                        <span class="mono-label" style="color: var(--text-secondary);">→ Multi-Unit Deploy</span>
+                        <span class="mono-label" style="color: var(--text-secondary);">→ 50K+ Interactions</span>
+                    </div>
+                </div>
+                <div class="case-images">
+                    <div class="photo-card reveal" style="aspect-ratio: 3/4; background: #f0f0f0; display: flex; align-items: center; justify-content: center;">
+                        <span class="mono-label" style="color: #ccc;">Media</span>
+                    </div>
+                    <div class="photo-card reveal" style="aspect-ratio: 3/4; background: #f0f0f0; display: flex; align-items: center; justify-content: center;">
+                        <span class="mono-label" style="color: #ccc;">Media</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <img src="shxft-wordmark-black.png" alt="" class="slide-logo">
+    </section>
+
+    <!-- =============================================
+         SLIDE 9 — GET IN TOUCH
+         ============================================= -->
+    <section class="slide" id="slide-contact">
+        <img src="corner-bracket.png" class="sketch-element sketch-tl" alt="">
+        <img src="corner-bracket.png" class="sketch-element sketch-br" alt="">
+        <img src="flowing-arrows.png" class="sketch-element invert" style="top: 15%; right: 5%; width: clamp(80px, 10vw, 150px); transform: rotate(-20deg);" alt="">
+
+        <div class="slide-content" style="align-items: center; text-align: center;">
+            <span class="mono-label reveal">[ Get in Touch ]</span>
+            <h1 class="reveal-scale" style="margin-bottom: clamp(0.5rem, 1.5vw, 1rem);">LET'S<br><span class="highlight">BUILD</span><br>TOGETHER.</h1>
+
+            <a href="mailto:hello@shxft.co" class="cta-button reveal" style="margin-bottom: clamp(1rem, 2vw, 1.5rem);">
+                Get in Touch →
+            </a>
+
+            <div class="contact-info reveal">
+                <div class="contact-item">
+                    <span class="label">Email</span>
+                    <span class="value">hello@shxft.co</span>
+                </div>
+                <div class="contact-item">
+                    <span class="label">Web</span>
+                    <span class="value">shxft.co</span>
+                </div>
+                <div class="contact-item">
+                    <span class="label">Based in</span>
+                    <span class="value">Dubai, UAE</span>
+                </div>
+            </div>
+
+            <img src="shxft-wordmark-black.png" alt="SHXFT" class="reveal" style="width: clamp(100px, 15vw, 180px); margin-top: clamp(1rem, 2vw, 2rem); opacity: 0.5;">
+        </div>
+    </section>
+
+    <!-- =============================================
+         THREE.JS + SCRIPTS
+         ============================================= -->
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://cdn.jsdelivr.net/npm/three@0.162.0/build/three.module.js",
+            "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.162.0/examples/jsm/"
+        }
+    }
+    </script>
+
+    <script type="module">
+        import * as THREE from 'three';
+        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+        import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+        import { RGBELoader } from 'three/addons/loaders/RGBELoader.js';
+
+        // ==========================================
+        // SLIDE OBSERVER (reveal on scroll)
+        // ==========================================
+        const slides = document.querySelectorAll('.slide');
+        const navDotsContainer = document.getElementById('nav-dots');
+        const progressBar = document.getElementById('progress-bar');
+
+        // Create nav dots
+        slides.forEach((slide, i) => {
+            const dot = document.createElement('button');
+            dot.className = 'nav-dot';
+            dot.setAttribute('aria-label', `Go to slide ${i + 1}`);
+            // Dark dots for dark slides
+            if (slide.classList.contains('slide-frxme') || slide.classList.contains('slide-divider')) {
+                dot.classList.add('dark-dot');
+            }
+            dot.addEventListener('click', () => {
+                slide.scrollIntoView({ behavior: 'smooth' });
+            });
+            navDotsContainer.appendChild(dot);
+        });
+
+        const navDots = navDotsContainer.querySelectorAll('.nav-dot');
+
+        const slideObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    // Update nav dots
+                    const idx = Array.from(slides).indexOf(entry.target);
+                    navDots.forEach((d, i) => d.classList.toggle('active', i === idx));
+                    // Update progress
+                    const pct = ((idx + 1) / slides.length) * 100;
+                    progressBar.style.width = pct + '%';
+                }
+            });
+        }, { threshold: 0.3 });
+
+        slides.forEach(s => slideObserver.observe(s));
+
+        // ==========================================
+        // THREE.JS — FRXME 3D MODEL
+        // ==========================================
+        const container = document.getElementById('frxme-canvas-container');
+        if (container) {
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(35, 1, 0.1, 100);
+            camera.position.set(0, 0.3, 2.8);
+
+            const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            renderer.toneMapping = THREE.ACESFilmicToneMapping;
+            renderer.toneMappingExposure = 1.2;
+            renderer.outputColorSpace = THREE.SRGBColorSpace;
+            container.appendChild(renderer.domElement);
+
+            function resizeRenderer() {
+                const w = container.clientWidth;
+                const h = container.clientHeight;
+                renderer.setSize(w, h);
+                camera.aspect = w / h;
+                camera.updateProjectionMatrix();
+            }
+            resizeRenderer();
+            window.addEventListener('resize', resizeRenderer);
+
+            // Lighting
+            const ambient = new THREE.AmbientLight(0xffffff, 0.4);
+            scene.add(ambient);
+            const dirLight = new THREE.DirectionalLight(0xffffff, 1.2);
+            dirLight.position.set(3, 5, 4);
+            scene.add(dirLight);
+            const fillLight = new THREE.DirectionalLight(0xffffff, 0.4);
+            fillLight.position.set(-3, 2, -2);
+            scene.add(fillLight);
+
+            // HDRI environment
+            new RGBELoader().load('studio_small_09_1k.hdr', (hdr) => {
+                hdr.mapping = THREE.EquirectangularReflectionMapping;
+                scene.environment = hdr;
+            });
+
+            // Animated screen canvas
+            const screenCanvas = document.createElement('canvas');
+            screenCanvas.width = 512;
+            screenCanvas.height = 512;
+            const sCtx = screenCanvas.getContext('2d');
+            const screenTexture = new THREE.CanvasTexture(screenCanvas);
+            screenTexture.colorSpace = THREE.SRGBColorSpace;
+            screenTexture.wrapS = THREE.ClampToEdgeWrapping;
+            screenTexture.wrapT = THREE.ClampToEdgeWrapping;
+            screenTexture.repeat.set(1, -1);
+            screenTexture.offset.set(0, 1);
+
+            // Pre-render static dot grid
+            const dotGridCanvas = document.createElement('canvas');
+            dotGridCanvas.width = 512;
+            dotGridCanvas.height = 512;
+            const dgCtx = dotGridCanvas.getContext('2d');
+            for (let x = 0; x < 512; x += 20) {
+                for (let y = 0; y < 512; y += 20) {
+                    dgCtx.beginPath();
+                    dgCtx.arc(x, y, 0.8, 0, Math.PI * 2);
+                    dgCtx.fillStyle = 'rgba(6,182,212,0.15)';
+                    dgCtx.fill();
+                }
+            }
+
+            // Particles for screen
+            const screenParticles = Array.from({ length: 5 }, () => ({
+                x: Math.random() * 512,
+                y: Math.random() * 512,
+                speed: 0.3 + Math.random() * 0.5,
+                size: 1 + Math.random() * 2,
+                phase: Math.random() * Math.PI * 2
+            }));
+
+            // Graph data
+            const graphPoints = Array.from({ length: 20 }, (_, i) => ({
+                base: 0.3 + Math.random() * 0.4,
+                phase: i * 0.5
+            }));
+
+            function drawScreenFrame(time) {
+                const t = time * 0.001;
+                const W = 512, H = 512;
+
+                // 1. Dark gradient bg
+                const grad = sCtx.createRadialGradient(W / 2, H / 2, 0, W / 2, H / 2, W * 0.7);
+                grad.addColorStop(0, '#0d1117');
+                grad.addColorStop(1, '#060609');
+                sCtx.fillStyle = grad;
+                sCtx.fillRect(0, 0, W, H);
+
+                // 2. Dot grid
+                sCtx.drawImage(dotGridCanvas, 0, 0);
+
+                // 3. Scanline
+                const scanY = ((t * 0.18) % 1) * H;
+                const scanGrad = sCtx.createLinearGradient(0, scanY - 15, 0, scanY + 15);
+                scanGrad.addColorStop(0, 'transparent');
+                scanGrad.addColorStop(0.5, 'rgba(6,182,212,0.25)');
+                scanGrad.addColorStop(1, 'transparent');
+                sCtx.fillStyle = scanGrad;
+                sCtx.fillRect(0, scanY - 15, W, 30);
+
+                // 4. Header: FRXME + LIVE pill
+                sCtx.font = 'bold 28px Inter, sans-serif';
+                sCtx.fillStyle = '#fafafa';
+                sCtx.textAlign = 'left';
+                sCtx.fillText('FRXME', 30, 48);
+
+                // LIVE pill
+                const pillX = 140, pillY = 34;
+                sCtx.fillStyle = 'rgba(16,185,129,0.2)';
+                sCtx.beginPath();
+                sCtx.roundRect(pillX, pillY, 56, 20, 10);
+                sCtx.fill();
+                const dotPulse = 0.5 + 0.5 * Math.sin(t * 4);
+                sCtx.beginPath();
+                sCtx.arc(pillX + 14, pillY + 10, 3, 0, Math.PI * 2);
+                sCtx.fillStyle = `rgba(16,185,129,${0.5 + dotPulse * 0.5})`;
+                sCtx.fill();
+                sCtx.font = '500 10px Inter, sans-serif';
+                sCtx.fillStyle = '#10b981';
+                sCtx.fillText('LIVE', pillX + 24, pillY + 14);
+
+                // 5. Metric cards
+                const metrics = [
+                    { label: 'SESSIONS', value: Math.floor(1240 + Math.sin(t * 0.7) * 30) },
+                    { label: 'ENGAGE %', value: (78 + Math.sin(t * 0.5) * 5).toFixed(1) },
+                    { label: 'AVG TIME', value: `${(2.4 + Math.sin(t * 0.3) * 0.3).toFixed(1)}m` }
+                ];
+                const cardW = 140, cardH = 60, cardGap = 14;
+                const cardsStartX = 30, cardsStartY = 70;
+                metrics.forEach((m, i) => {
+                    const cx = cardsStartX + i * (cardW + cardGap);
+                    sCtx.fillStyle = 'rgba(24,24,27,0.7)';
+                    sCtx.beginPath();
+                    sCtx.roundRect(cx, cardsStartY, cardW, cardH, 8);
+                    sCtx.fill();
+                    sCtx.strokeStyle = 'rgba(6,182,212,0.15)';
+                    sCtx.lineWidth = 1;
+                    sCtx.stroke();
+
+                    sCtx.font = '500 9px JetBrains Mono, monospace';
+                    sCtx.fillStyle = '#71717a';
+                    sCtx.textAlign = 'left';
+                    sCtx.fillText(m.label, cx + 12, cardsStartY + 18);
+
+                    sCtx.font = 'bold 22px Inter, sans-serif';
+                    sCtx.fillStyle = '#06b6d4';
+                    sCtx.fillText(String(m.value), cx + 12, cardsStartY + 46);
+                });
+
+                // 6. Line graph
+                const graphX = 30, graphY = 155, graphW = 450, graphH = 160;
+                sCtx.font = '500 9px JetBrains Mono, monospace';
+                sCtx.fillStyle = '#71717a';
+                sCtx.textAlign = 'left';
+                sCtx.fillText('ENGAGEMENT OVER TIME', graphX, graphY - 8);
+
+                // Graph bg
+                sCtx.fillStyle = 'rgba(24,24,27,0.5)';
+                sCtx.beginPath();
+                sCtx.roundRect(graphX, graphY, graphW, graphH, 8);
+                sCtx.fill();
+
+                // Draw graph line
+                const lineProgress = Math.min(1, (t % 10) / 8);
+                const visiblePoints = Math.floor(lineProgress * graphPoints.length);
+                if (visiblePoints > 1) {
+                    sCtx.beginPath();
+                    for (let i = 0; i < visiblePoints; i++) {
+                        const px = graphX + 15 + (i / (graphPoints.length - 1)) * (graphW - 30);
+                        const py = graphY + graphH - 20 - (graphPoints[i].base + Math.sin(t * 0.5 + graphPoints[i].phase) * 0.08) * (graphH - 40);
+                        if (i === 0) sCtx.moveTo(px, py);
+                        else sCtx.lineTo(px, py);
+                    }
+                    sCtx.strokeStyle = '#06b6d4';
+                    sCtx.lineWidth = 2;
+                    sCtx.stroke();
+
+                    // Gradient fill under line
+                    const lastPx = graphX + 15 + ((visiblePoints - 1) / (graphPoints.length - 1)) * (graphW - 30);
+                    sCtx.lineTo(lastPx, graphY + graphH - 12);
+                    sCtx.lineTo(graphX + 15, graphY + graphH - 12);
+                    sCtx.closePath();
+                    const fillGrad = sCtx.createLinearGradient(0, graphY, 0, graphY + graphH);
+                    fillGrad.addColorStop(0, 'rgba(6,182,212,0.15)');
+                    fillGrad.addColorStop(1, 'rgba(6,182,212,0.02)');
+                    sCtx.fillStyle = fillGrad;
+                    sCtx.fill();
+
+                    // Leading edge dot
+                    const lastI = visiblePoints - 1;
+                    const dotX = graphX + 15 + (lastI / (graphPoints.length - 1)) * (graphW - 30);
+                    const dotY = graphY + graphH - 20 - (graphPoints[lastI].base + Math.sin(t * 0.5 + graphPoints[lastI].phase) * 0.08) * (graphH - 40);
+                    sCtx.beginPath();
+                    sCtx.arc(dotX, dotY, 4, 0, Math.PI * 2);
+                    sCtx.fillStyle = '#06b6d4';
+                    sCtx.fill();
+                    sCtx.beginPath();
+                    sCtx.arc(dotX, dotY, 8, 0, Math.PI * 2);
+                    sCtx.fillStyle = 'rgba(6,182,212,0.3)';
+                    sCtx.fill();
+                }
+
+                // 7. Mini bar chart
+                const barX = 30, barY = 350, barW = 450, barH = 110;
+                sCtx.font = '500 9px JetBrains Mono, monospace';
+                sCtx.fillStyle = '#71717a';
+                sCtx.textAlign = 'left';
+                sCtx.fillText('INTERACTION FREQUENCY', barX, barY - 8);
+
+                const barCount = 12;
+                const barGap = 6;
+                const singleBarW = (barW - (barCount - 1) * barGap) / barCount;
+                for (let i = 0; i < barCount; i++) {
+                    const h = (0.3 + 0.7 * Math.abs(Math.sin(t * 0.8 + i * 0.5))) * (barH - 20);
+                    const bx = barX + i * (singleBarW + barGap);
+                    const by = barY + barH - h;
+                    const barGrad = sCtx.createLinearGradient(0, by, 0, barY + barH);
+                    barGrad.addColorStop(0, '#06b6d4');
+                    barGrad.addColorStop(1, '#0891b2');
+                    sCtx.fillStyle = barGrad;
+                    sCtx.beginPath();
+                    sCtx.roundRect(bx, by, singleBarW, h, 3);
+                    sCtx.fill();
+                }
+
+                // 8. Floating particles
+                screenParticles.forEach(p => {
+                    p.y -= p.speed;
+                    if (p.y < -10) { p.y = H + 10; p.x = Math.random() * W; }
+                    const alpha = 0.3 + 0.3 * Math.sin(t * 2 + p.phase);
+                    sCtx.beginPath();
+                    sCtx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                    sCtx.fillStyle = `rgba(6,182,212,${alpha})`;
+                    sCtx.fill();
+                });
+            }
+
+            // Load GLB model
+            const loader = new GLTFLoader();
+            let kiosk = null;
+            loader.load('frxme_low_poly.glb', (gltf) => {
+                kiosk = gltf.scene;
+                scene.add(kiosk);
+
+                kiosk.traverse((child) => {
+                    if (!child.isMesh) return;
+
+                    // Logo material
+                    if (child.name === 'logo_plane' || child.name === 'm_logo') {
+                        const logoTex = new THREE.TextureLoader().load('FRXME_MODEL_LOGO.png');
+                        logoTex.colorSpace = THREE.SRGBColorSpace;
+                        logoTex.wrapS = THREE.ClampToEdgeWrapping;
+                        logoTex.wrapT = THREE.ClampToEdgeWrapping;
+                        logoTex.repeat.set(1, -1);
+                        logoTex.offset.set(0, 1);
+                        const mat = new THREE.MeshBasicMaterial({
+                            map: logoTex,
+                            transparent: true,
+                            side: THREE.DoubleSide,
+                        });
+                        mat.toneMapped = false;
+                        child.material = mat;
+                    }
+
+                    // Screen material — animated canvas
+                    if (child.name === 'Mesh001' || child.name === 'Mesh001_1') {
+                        const oldMat = child.material;
+                        child.material = new THREE.MeshBasicMaterial({
+                            map: screenTexture,
+                            transparent: oldMat.transparent || false,
+                            opacity: oldMat.opacity !== undefined ? oldMat.opacity : 1,
+                        });
+                        child.material.toneMapped = false;
+                        oldMat.dispose();
+                    }
+                });
+
+                // Center model
+                const box = new THREE.Box3().setFromObject(kiosk);
+                const center = box.getCenter(new THREE.Vector3());
+                kiosk.position.sub(center);
+                kiosk.position.y += 0.1;
+            });
+
+            // Controls
+            const controls = new OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true;
+            controls.dampingFactor = 0.05;
+            controls.enableZoom = false;
+            controls.enablePan = false;
+            controls.autoRotate = true;
+            controls.autoRotateSpeed = 1.5;
+            controls.minPolarAngle = Math.PI * 0.35;
+            controls.maxPolarAngle = Math.PI * 0.65;
+
+            // Animation loop
+            let screenFrameCount = 0;
+            function animate() {
+                requestAnimationFrame(animate);
+                screenFrameCount++;
+                if (screenFrameCount % 2 === 0) {
+                    drawScreenFrame(performance.now());
+                    screenTexture.needsUpdate = true;
+                }
+                controls.update();
+                renderer.render(scene, camera);
+            }
+
+            // Only animate when FRXME slide is visible
+            const frxmeSlide = document.getElementById('slide-frxme');
+            let animating = false;
+            const frxmeObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting && !animating) {
+                        animating = true;
+                        animate();
+                    } else if (!entry.isIntersecting) {
+                        animating = false;
+                    }
+                });
+            }, { threshold: 0.1 });
+            frxmeObserver.observe(frxmeSlide);
+        }
+    </script>
+
+</body>
+</html>
