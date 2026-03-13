@@ -26,14 +26,13 @@
             --font-body: 'Onest', sans-serif;
             --font-mono: 'JetBrains Mono', monospace;
             --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
-
-            /* FRXME slide dark mode vars */
             --frxme-bg: #09090b;
             --frxme-surface: #18181b;
             --frxme-brand: #06b6d4;
             --frxme-brand-glow: rgba(6, 182, 212, 0.25);
             --frxme-text: #fafafa;
             --frxme-text-muted: #71717a;
+            --cnqr-blue: #1a56db;
         }
 
         html {
@@ -130,7 +129,7 @@
         }
 
         /* =========================================
-           HIGHLIGHT (inverted text)
+           HIGHLIGHT
            ========================================= */
         .highlight {
             background: var(--highlight-bg);
@@ -167,7 +166,6 @@
             from { opacity: 0; transform: translateY(8px); }
             to { opacity: 0.12; }
         }
-        /* Preserve flip transforms after fade */
         .slide.visible .sketch-tr { animation-name: sketch-fade-flipX; }
         .slide.visible .sketch-bl { animation-name: sketch-fade-flipY; }
         .slide.visible .sketch-br { animation-name: sketch-fade-flipXY; }
@@ -211,8 +209,6 @@
             opacity: 1;
             transform: translateY(0) scale(1) translateX(0);
         }
-
-        /* Stagger children */
         .visible .reveal:nth-child(1),
         .visible .reveal-left:nth-child(1) { transition-delay: 0.1s; }
         .visible .reveal:nth-child(2),
@@ -256,130 +252,128 @@
         }
 
         /* =========================================
-           CAPABILITY CARDS
+           SERVICE BRACKET CARDS (2x2 with icons)
            ========================================= */
-        .capability-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: clamp(0.75rem, 1.5vw, 1.25rem);
-        }
-
-        .capability-card {
-            border: 2px solid #000;
-            padding: clamp(0.75rem, 1.5vw, 1.5rem);
-            position: relative;
-            transition: all 0.2s ease;
-        }
-
-        .capability-card .card-number {
-            font-family: var(--font-display);
-            font-size: clamp(2rem, 4vw, 3.5rem);
-            font-weight: 900;
-            color: #eee;
-            line-height: 1;
-            margin-bottom: 0.5rem;
-        }
-
-        .capability-card h3 {
-            font-size: clamp(0.85rem, 1.5vw, 1.1rem);
-            margin-bottom: 0.35rem;
-        }
-
-        .capability-card p {
-            font-size: clamp(0.7rem, 1.1vw, 0.85rem) !important;
-            line-height: 1.45;
-            color: var(--text-muted);
-        }
-
-        /* =========================================
-           SERVICES GRID
-           ========================================= */
-        .services-grid {
+        .service-bracket-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: clamp(1rem, 2vw, 2rem);
+            gap: clamp(1rem, 2vw, 1.5rem);
         }
 
-        .service-block {
+        .service-bracket {
+            border: 2px solid var(--sketch-stroke);
             padding: clamp(1rem, 2vw, 1.75rem);
-            border-left: 3px solid #000;
-        }
-
-        .service-block h3 {
-            margin-bottom: 0.5rem;
-        }
-
-        .service-block ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        .service-block ul li {
-            font-size: clamp(0.72rem, 1.2vw, 0.9rem);
-            padding: 0.2rem 0;
-            color: var(--text-secondary);
-        }
-        .service-block ul li::before {
-            content: '→ ';
-            color: var(--text-muted);
-        }
-
-        /* =========================================
-           SECTION DIVIDER
-           ========================================= */
-        .slide-divider {
-            background: #000;
-            color: #fff;
-        }
-        .slide-divider h1 {
-            color: #fff;
-            font-size: clamp(3rem, 12vw, 9rem);
             text-align: center;
-            line-height: 0.9;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
         }
-        .slide-divider .sketch-element { filter: none; opacity: 0; }
-        .slide-divider.visible .sketch-element {
-            animation: sketch-fade-white 0.8s ease forwards;
+
+        .service-bracket .service-icon {
+            font-size: clamp(1.5rem, 3vw, 2.5rem);
+            margin-bottom: 0.25rem;
         }
-        @keyframes sketch-fade-white {
-            from { opacity: 0; transform: translateY(8px); }
-            to { opacity: 0.15; }
+
+        .service-bracket h3 {
+            font-size: clamp(0.9rem, 1.8vw, 1.2rem);
+            margin-bottom: 0.25rem;
+        }
+
+        .service-bracket p {
+            font-size: clamp(0.72rem, 1.1vw, 0.88rem) !important;
+            color: var(--text-secondary);
+            line-height: 1.5;
         }
 
         /* =========================================
-           DIFFERENTIATOR SLIDE
+           DIFF POINTS
            ========================================= */
         .diff-points {
             display: flex;
             flex-direction: column;
-            gap: clamp(0.75rem, 1.5vw, 1.25rem);
+            gap: clamp(0.5rem, 1.2vw, 1rem);
         }
+
         .diff-point {
-            display: flex;
-            align-items: flex-start;
-            gap: clamp(0.75rem, 1.5vw, 1.25rem);
-            padding: clamp(0.75rem, 1.5vw, 1.25rem) 0;
-            border-bottom: 1px solid #eee;
+            padding-left: clamp(0.75rem, 1.5vw, 1.25rem);
         }
-        .diff-number {
-            font-family: var(--font-display);
-            font-size: clamp(1.5rem, 3vw, 2.5rem);
-            font-weight: 900;
-            color: #ddd;
-            line-height: 1;
-            min-width: clamp(30px, 4vw, 50px);
+
+        .diff-point p {
+            font-size: clamp(0.85rem, 1.4vw, 1.05rem) !important;
         }
-        .diff-text h3 {
-            font-size: clamp(0.9rem, 1.8vw, 1.2rem);
-            margin-bottom: 0.25rem;
-        }
-        .diff-text p {
-            font-size: clamp(0.75rem, 1.2vw, 0.9rem) !important;
-            color: var(--text-muted);
+
+        /* Large icon watermark */
+        .icon-watermark {
+            position: absolute;
+            right: 5%;
+            top: 50%;
+            transform: translateY(-50%);
+            width: clamp(200px, 30vw, 400px);
+            opacity: 0.06;
+            pointer-events: none;
+            z-index: 0;
         }
 
         /* =========================================
-           FRXME PRODUCT SLIDE (dark mode island)
+           SHOWCASE GRID (4 cards in a row)
+           ========================================= */
+        .showcase-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: clamp(0.5rem, 1.2vw, 1rem);
+        }
+
+        .showcase-card {
+            border: 3px solid #333;
+            box-shadow: 3px 3px 0 #333;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .showcase-card .card-image {
+            aspect-ratio: 9/16;
+            background: #f0f0f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .showcase-card .card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .showcase-card .card-label {
+            padding: clamp(0.35rem, 0.7vw, 0.5rem) clamp(0.5rem, 1vw, 0.75rem);
+            font-family: var(--font-body);
+            font-size: clamp(0.55rem, 0.85vw, 0.7rem);
+            font-weight: 500;
+            color: var(--text-secondary);
+            text-align: center;
+            border-top: 1px solid #eee;
+        }
+
+        /* =========================================
+           CASE STUDY LAYOUT
+           ========================================= */
+        .case-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: clamp(1.5rem, 3vw, 3rem);
+            align-items: center;
+        }
+        .case-text { display: flex; flex-direction: column; gap: clamp(0.5rem, 1vw, 0.75rem); }
+        .case-text h2 { font-size: clamp(1.5rem, 4vw, 2.8rem); }
+        .case-images {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.75rem;
+        }
+
+        /* =========================================
+           FRXME SLIDE (dark mode island)
            ========================================= */
         .slide-frxme {
             background: var(--frxme-bg);
@@ -414,7 +408,6 @@
         .frxme-specs {
             display: flex;
             flex-direction: column;
-            gap: 0;
         }
         .frxme-spec-row {
             display: flex;
@@ -440,7 +433,6 @@
             height: 100% !important;
         }
 
-        /* Dot grid bg for FRXME slide */
         .frxme-dot-grid {
             position: absolute;
             inset: 0;
@@ -450,7 +442,6 @@
             z-index: 0;
         }
 
-        /* Glow orb behind 3D model */
         .frxme-glow-orb {
             position: absolute;
             top: 50%;
@@ -470,66 +461,166 @@
         }
 
         /* =========================================
-           CASE STUDY SLIDE
+           SECTION DIVIDER (black bg)
            ========================================= */
-        .case-layout {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: clamp(1.5rem, 3vw, 3rem);
-            align-items: center;
+        .slide-divider {
+            background: #000;
+            color: #fff;
         }
-        .case-text { display: flex; flex-direction: column; gap: clamp(0.5rem, 1vw, 0.75rem); }
-        .case-text h2 { font-size: clamp(1.5rem, 4vw, 2.8rem); }
-        .case-images {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 0.75rem;
+        .slide-divider h1 {
+            color: #fff;
+            font-size: clamp(3rem, 12vw, 9rem);
+            text-align: center;
+            line-height: 0.9;
+        }
+        .slide-divider .sketch-element { filter: none; opacity: 0; }
+        .slide-divider.visible .sketch-element {
+            animation: sketch-fade-white 0.8s ease forwards;
+        }
+        @keyframes sketch-fade-white {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 0.15; }
         }
 
         /* =========================================
-           CTA SLIDE
+           CNQR MEDIA SLIDES (blue bg)
            ========================================= */
-        .cta-button {
-            display: inline-block;
-            border: 2px solid #000;
-            padding: clamp(0.6rem, 1.5vw, 1rem) clamp(1.5rem, 3vw, 2.5rem);
+        .slide-cnqr {
+            background: var(--cnqr-blue);
+            color: #fff;
+        }
+        .slide-cnqr h2 { color: #fff; }
+        .slide-cnqr p { color: rgba(255,255,255,0.85); }
+        .slide-cnqr .highlight {
+            background: #fff;
+            color: var(--cnqr-blue);
+        }
+        .slide-cnqr .sketch-element { filter: none; opacity: 0; }
+        .slide-cnqr.visible .sketch-element {
+            animation: sketch-fade-white 0.8s ease forwards;
+        }
+
+        .athlete-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: clamp(0.75rem, 1.5vw, 1.25rem);
+        }
+
+        .athlete-card {
+            background: rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: clamp(0.75rem, 1.5vw, 1.25rem);
+            text-align: center;
+            backdrop-filter: blur(8px);
+        }
+
+        .athlete-card .athlete-photo {
+            width: clamp(60px, 8vw, 100px);
+            height: clamp(60px, 8vw, 100px);
+            border-radius: 50%;
+            background: rgba(255,255,255,0.15);
+            margin: 0 auto clamp(0.5rem, 1vw, 0.75rem);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: clamp(1.5rem, 3vw, 2.5rem);
+        }
+
+        .athlete-card h3 {
+            font-size: clamp(0.85rem, 1.5vw, 1.1rem);
+            color: #fff;
+            margin-bottom: 0.25rem;
+        }
+
+        .athlete-card .athlete-stats {
+            font-family: var(--font-mono);
+            font-size: clamp(0.55rem, 0.85vw, 0.7rem);
+            color: rgba(255,255,255,0.6);
+            letter-spacing: 0.05em;
+        }
+
+        /* =========================================
+           CLIENT LOGOS GRID
+           ========================================= */
+        .logos-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: clamp(1rem, 2vw, 2rem);
+            align-items: center;
+            justify-items: center;
+        }
+
+        .logo-item {
+            width: clamp(60px, 10vw, 120px);
+            height: clamp(40px, 6vw, 70px);
+            background: #f5f5f5;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             font-family: var(--font-display);
             font-weight: 700;
-            font-size: clamp(0.85rem, 1.5vw, 1.1rem);
+            font-size: clamp(0.5rem, 0.9vw, 0.7rem);
+            color: #999;
             text-transform: uppercase;
-            text-decoration: none;
-            color: #000;
             letter-spacing: 0.05em;
-            transition: all 0.2s ease;
         }
 
-        @media (hover: hover) {
-            .cta-button:hover {
-                background: #000;
-                color: #fff;
-            }
+        .logo-item img {
+            max-width: 80%;
+            max-height: 80%;
+            object-fit: contain;
         }
 
-        .contact-info {
+        /* =========================================
+           CTA / CONTACT
+           ========================================= */
+        .contact-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: clamp(2rem, 4vw, 4rem);
+            align-items: center;
+        }
+
+        .contact-person {
             display: flex;
-            gap: clamp(1.5rem, 3vw, 3rem);
-            flex-wrap: wrap;
+            align-items: center;
+            gap: clamp(1rem, 2vw, 1.5rem);
         }
-        .contact-item {
-            display: flex;
-            flex-direction: column;
-            gap: 0.15rem;
+
+        .contact-photo {
+            width: clamp(80px, 12vw, 140px);
+            height: clamp(80px, 12vw, 140px);
+            border-radius: 50%;
+            background: #f0f0f0;
+            overflow: hidden;
+            flex-shrink: 0;
         }
-        .contact-item .label {
-            font-family: var(--font-mono);
-            font-size: clamp(0.55rem, 0.8vw, 0.65rem);
-            letter-spacing: 0.15em;
-            text-transform: uppercase;
-            color: var(--text-muted);
+
+        .contact-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
-        .contact-item .value {
-            font-size: clamp(0.8rem, 1.3vw, 1rem);
+
+        .contact-details h3 {
+            font-size: clamp(1.2rem, 2.5vw, 2rem);
+            text-transform: none;
+            margin-bottom: 0.15rem;
+        }
+
+        .contact-details .role {
             font-weight: 600;
+            font-size: clamp(0.8rem, 1.3vw, 1rem);
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .contact-details .contact-line {
+            font-family: var(--font-mono);
+            font-size: clamp(0.65rem, 1vw, 0.8rem);
+            color: var(--text-muted);
+            letter-spacing: 0.03em;
         }
 
         /* =========================================
@@ -546,7 +637,7 @@
         }
 
         /* =========================================
-           PROGRESS BAR
+           PROGRESS BAR & NAV DOTS
            ========================================= */
         .progress-bar {
             position: fixed;
@@ -558,9 +649,6 @@
             z-index: 9999;
         }
 
-        /* =========================================
-           NAV DOTS
-           ========================================= */
         .nav-dots {
             position: fixed;
             right: clamp(12px, 2vw, 24px);
@@ -568,11 +656,11 @@
             transform: translateY(-50%);
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 6px;
             z-index: 9998;
         }
         .nav-dot {
-            width: 10px; height: 10px;
+            width: 8px; height: 8px;
             border-radius: 50%;
             border: 1.5px solid rgba(0,0,0,0.25);
             background: transparent;
@@ -585,13 +673,31 @@
             border-color: #000;
             transform: scale(1.3);
         }
-        /* Dark slide nav dots */
         .nav-dot.dark-dot {
             border-color: rgba(255,255,255,0.3);
         }
         .nav-dot.dark-dot.active {
+            background: #fff;
+            border-color: #fff;
+        }
+        .nav-dot.brand-dot.active {
             background: var(--frxme-brand);
             border-color: var(--frxme-brand);
+        }
+
+        /* =========================================
+           IMAGE PLACEHOLDER
+           ========================================= */
+        .img-placeholder {
+            background: #f0f0f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ccc;
+            font-family: var(--font-mono);
+            font-size: clamp(0.5rem, 0.8vw, 0.65rem);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
         }
 
         /* =========================================
@@ -604,27 +710,30 @@
             p { font-size: clamp(0.78rem, 2.2vw, 0.9rem) !important; line-height: 1.45 !important; }
             .mono-label { font-size: clamp(0.55rem, 1.5vw, 0.7rem); }
 
-            .capability-grid { grid-template-columns: repeat(2, 1fr); }
-            .services-grid { grid-template-columns: 1fr; }
+            .service-bracket-grid { grid-template-columns: 1fr 1fr; }
+            .showcase-grid { grid-template-columns: repeat(2, 1fr); }
             .frxme-layout { grid-template-columns: 1fr; }
             .case-layout { grid-template-columns: 1fr; }
             .case-images { grid-template-columns: 1fr 1fr; gap: 0.5rem; }
+            .athlete-grid { grid-template-columns: repeat(3, 1fr); gap: 0.5rem; }
+            .logos-grid { grid-template-columns: repeat(3, 1fr); gap: 0.75rem; }
+            .contact-layout { grid-template-columns: 1fr; text-align: center; }
+            .contact-person { flex-direction: column; }
 
             #frxme-canvas-container { max-height: clamp(200px, 35vh, 300px); }
-
             .slide-divider h1 { font-size: clamp(2.5rem, 14vw, 5rem); }
-
             .photo-card { transform: rotate(-1deg); }
             .photo-card:nth-child(even) { transform: rotate(0.8deg); }
-
             .slide-logo { width: clamp(55px, 12vw, 80px); }
+            .icon-watermark { display: none; }
         }
 
         @media (max-width: 400px) and (max-height: 750px) {
             .slide-content { gap: clamp(0.35rem, 1.2vw, 0.75rem); }
             h2 { font-size: clamp(1.1rem, 4.5vw, 1.6rem); }
-            .capability-grid { grid-template-columns: 1fr 1fr; gap: 0.5rem; }
-            .capability-card .card-number { font-size: clamp(1.5rem, 3.5vw, 2rem); }
+            .service-bracket-grid { grid-template-columns: 1fr; }
+            .showcase-grid { grid-template-columns: repeat(2, 1fr); }
+            .athlete-grid { grid-template-columns: 1fr 1fr 1fr; }
         }
 
         @media (max-height: 500px) {
@@ -632,13 +741,14 @@
             .slide-content { gap: 0.4rem; }
             h2 { font-size: clamp(1rem, 3.5vw, 1.5rem); }
             p { font-size: clamp(0.7rem, 1.8vw, 0.82rem) !important; }
-            .capability-grid { grid-template-columns: repeat(4, 1fr); gap: 0.5rem; }
+            .service-bracket-grid { grid-template-columns: repeat(2, 1fr); gap: 0.5rem; }
             .nav-dots { display: none; }
             .slide-divider h1 { font-size: clamp(2rem, 8vw, 4rem); }
+            .case-layout { grid-template-columns: 1fr 1fr; gap: 0.75rem; }
         }
 
         @media (max-width: 600px) {
-            .contact-info { flex-direction: column; gap: 0.75rem; }
+            .contact-layout { grid-template-columns: 1fr; }
         }
 
         @media (prefers-reduced-motion: reduce) {
@@ -653,64 +763,79 @@
 </head>
 <body>
 
-    <!-- Progress Bar -->
     <div class="progress-bar" id="progress-bar"></div>
-
-    <!-- Nav Dots -->
     <nav class="nav-dots" id="nav-dots"></nav>
 
     <!-- =============================================
          SLIDE 1 — TITLE
          ============================================= -->
     <section class="slide" id="slide-title">
-        <!-- Sketch decorations -->
         <img src="corner-bracket.png" class="sketch-element sketch-tl" alt="">
         <img src="corner-bracket.png" class="sketch-element sketch-br" alt="">
         <img src="flowing-arrows.png" class="sketch-element invert" style="bottom: 12%; right: 8%; width: clamp(80px, 12vw, 180px); transform: rotate(-15deg);" alt="">
+        <img src="flowing-arrows.png" class="sketch-element invert" style="top: 8%; left: 6%; width: clamp(80px, 12vw, 180px); transform: rotate(160deg);" alt="">
 
         <div class="slide-content" style="align-items: center; text-align: center;">
             <img src="shxft-wordmark-black.png" alt="SHXFT" class="reveal-scale" style="width: clamp(200px, 40vw, 450px); margin-bottom: clamp(0.5rem, 1.5vw, 1rem);">
             <h2 class="reveal" style="font-weight: 600; text-transform: none; font-size: clamp(1rem, 2.5vw, 1.6rem); letter-spacing: 0.05em;">
-                CREATIVE <span class="highlight">XR</span> & INNOVATION STUDIO
+                Creative XR & Innovation Studio
             </h2>
-            <p class="reveal" style="font-family: var(--font-mono); font-size: clamp(0.6rem, 1vw, 0.75rem) !important; color: var(--text-muted); letter-spacing: 0.2em; text-transform: uppercase;">
+            <p class="reveal" style="font-family: var(--font-mono); font-size: clamp(0.55rem, 0.9vw, 0.7rem) !important; color: var(--text-muted); letter-spacing: 0.2em; text-transform: uppercase; margin-top: 0.5rem;">
                 A Division of CNQR Media FZCO
             </p>
         </div>
     </section>
 
     <!-- =============================================
-         SLIDE 2 — WHAT WE DO
+         SLIDE 2 — WHO ARE WE?
+         ============================================= -->
+    <section class="slide" id="slide-who">
+        <img src="corner-bracket.png" class="sketch-element sketch-tl" alt="">
+        <img src="corner-bracket.png" class="sketch-element sketch-br" alt="">
+        <img src="sketch-arrow.png" class="sketch-element" style="bottom: 10%; left: 5%; width: clamp(50px, 7vw, 90px); transform: rotate(30deg);" alt="">
+        <img src="flowing-arrows.png" class="sketch-element invert" style="top: 6%; right: 4%; width: clamp(80px, 10vw, 140px); transform: rotate(-20deg);" alt="">
+
+        <div class="slide-content" style="align-items: center; text-align: center;">
+            <h2 class="reveal" style="margin-bottom: clamp(0.5rem, 1.5vw, 1rem);">WHO ARE WE?</h2>
+            <div class="bracket-frame reveal" style="max-width: 700px;">
+                <p class="subtitle" style="font-size: clamp(1rem, 2.2vw, 1.5rem) !important; font-weight: 500; color: var(--text-primary); line-height: 1.5 !important;">
+                    SHXFT is a creative agency built for what's next. We blend <span class="highlight">strategy, design, and tech</span> to make brands move at the speed of culture.
+                </p>
+            </div>
+        </div>
+        <img src="shxft-wordmark-black.png" alt="" class="slide-logo">
+    </section>
+
+    <!-- =============================================
+         SLIDE 3 — WHAT WE DO
          ============================================= -->
     <section class="slide" id="slide-what-we-do">
-        <img src="sketch-arrow.png" class="sketch-element" style="top: 8%; right: 6%; width: clamp(40px, 6vw, 80px); transform: rotate(25deg);" alt="">
-        <img src="shapes-group.png" class="sketch-element invert" style="bottom: 8%; left: 5%; width: clamp(60px, 8vw, 120px);" alt="">
+        <img src="shapes-group.png" class="sketch-element invert" style="bottom: 8%; right: 4%; width: clamp(60px, 8vw, 110px);" alt="">
+        <img src="sketch-arrow.png" class="sketch-element" style="top: 6%; right: 8%; width: clamp(35px, 5vw, 65px); transform: rotate(-30deg);" alt="">
 
         <div class="slide-content">
-            <span class="mono-label reveal">[ What We Do ]</span>
-            <h2 class="reveal">WE DON'T JUST CREATE <span class="highlight">CONTENT.</span><br>WE CREATE <span class="highlight">MOMENTS.</span></h2>
-            <p class="subtitle reveal" style="max-width: 600px;">We build experiences that blur the line between digital and physical — bridging audiences with brands through immersive technology.</p>
+            <h2 class="reveal" style="text-align: center; margin-bottom: clamp(0.5rem, 1.5vw, 1rem);">WHAT WE DO.</h2>
 
-            <div class="capability-grid" style="margin-top: clamp(0.5rem, 1.5vw, 1rem);">
-                <div class="capability-card reveal">
-                    <div class="card-number">01</div>
-                    <h3>Strategy</h3>
-                    <p>Creative direction, audience insights, campaign architecture</p>
+            <div class="service-bracket-grid">
+                <div class="service-bracket bracket-frame reveal" style="transform: rotate(-0.3deg);">
+                    <div class="service-icon">&#9900;</div>
+                    <h3>STRATEGY</h3>
+                    <p>From brand positioning to <span class="highlight">content ecosystems</span> — we shape the ideas behind the impact.</p>
                 </div>
-                <div class="capability-card reveal">
-                    <div class="card-number">02</div>
-                    <h3>Digital</h3>
-                    <p>AR lenses, WebAR, interactive filters for TikTok & Snapchat</p>
+                <div class="service-bracket bracket-frame reveal" style="transform: rotate(0.4deg);">
+                    <div class="service-icon">&#10024;</div>
+                    <h3>DIGITAL</h3>
+                    <p>We design <span class="highlight">immersive experiences</span> using AR on TikTok, Snapchat, and the web — blending creativity with interaction.</p>
                 </div>
-                <div class="capability-card reveal">
-                    <div class="card-number">03</div>
-                    <h3>Creative</h3>
-                    <p>3D design, motion graphics, real-time generative content</p>
+                <div class="service-bracket bracket-frame reveal" style="transform: rotate(0.3deg);">
+                    <div class="service-icon">&#128161;</div>
+                    <h3>CREATIVE</h3>
+                    <p>We craft campaigns, visuals, and <span class="highlight">stories that connect</span> — with purpose, punch, and personality.</p>
                 </div>
-                <div class="capability-card reveal">
-                    <div class="card-number">04</div>
-                    <h3>Production</h3>
-                    <p>End-to-end event production, installations, on-site tech</p>
+                <div class="service-bracket bracket-frame reveal" style="transform: rotate(-0.4deg);">
+                    <div class="service-icon">&#127909;</div>
+                    <h3>PRODUCTION</h3>
+                    <p>From FOOH and CGI videos to <span class="highlight">interactive AR mirror</span> (our product FRXME), we bring ideas to life in motion and mixed reality.</p>
                 </div>
             </div>
         </div>
@@ -718,44 +843,34 @@
     </section>
 
     <!-- =============================================
-         SLIDE 3 — WHAT MAKES US DIFFERENT
+         SLIDE 4 — WHAT MAKES US DIFFERENT
          ============================================= -->
     <section class="slide" id="slide-different">
         <img src="corner-bracket.png" class="sketch-element sketch-tr" alt="">
-        <img src="pattern-tile.png" class="sketch-element invert" style="bottom: 10%; right: 5%; width: clamp(80px, 10vw, 150px); transform: rotate(5deg);" alt="">
+        <img src="pattern-tile.png" class="sketch-element invert" style="bottom: 8%; left: 4%; width: clamp(60px, 8vw, 120px); transform: rotate(5deg);" alt="">
+        <img src="shxft-icon-black.png" class="icon-watermark" alt="">
 
-        <div class="slide-content">
-            <span class="mono-label reveal">[ What Makes Us Different ]</span>
-            <h2 class="reveal">WE THINK <span class="highlight">AUDIENCE</span> FIRST.</h2>
+        <div class="slide-content" style="max-width: min(90vw, 750px);">
+            <h2 class="reveal" style="text-align: center; margin-bottom: clamp(0.5rem, 1vw, 0.75rem);">WHAT MAKES US DIFFERENT?</h2>
+
+            <div class="reveal" style="margin-bottom: clamp(0.5rem, 1vw, 0.75rem);">
+                <p style="font-weight: 700; color: var(--text-primary); font-size: clamp(0.9rem, 1.5vw, 1.1rem) !important;">We're not your typical agency.</p>
+                <p>We're fast, plugged in, and culture fluent.</p>
+            </div>
+            <p class="reveal">No fluff. No ego. Just sharp work that actually ships:</p>
 
             <div class="diff-points">
                 <div class="diff-point reveal">
-                    <div class="diff-number">01</div>
-                    <div class="diff-text">
-                        <h3>EXPERIENCE OVER EXPOSURE</h3>
-                        <p>We don't create ads that interrupt. We create experiences people seek out, share, and remember.</p>
-                    </div>
+                    <p>&#8226;&ensp;<strong>Culture</strong> in our veins, not trends in our wake.</p>
                 </div>
                 <div class="diff-point reveal">
-                    <div class="diff-number">02</div>
-                    <div class="diff-text">
-                        <h3>TECH THAT SERVES THE STORY</h3>
-                        <p>AR, mixed reality, and interactive tech are tools — not gimmicks. Every piece of technology serves the narrative.</p>
-                    </div>
+                    <p>&#8226;&ensp;Built to <strong>launch</strong>, not just to brainstorm.</p>
                 </div>
                 <div class="diff-point reveal">
-                    <div class="diff-number">03</div>
-                    <div class="diff-text">
-                        <h3>END-TO-END OWNERSHIP</h3>
-                        <p>From concept to on-site deployment. One team, one vision, zero hand-off friction.</p>
-                    </div>
+                    <p>&#8226;&ensp;<strong>Lean, agile, senior</strong> where it matters.</p>
                 </div>
                 <div class="diff-point reveal">
-                    <div class="diff-number">04</div>
-                    <div class="diff-text">
-                        <h3>BUILT FOR THE REGION</h3>
-                        <p>Deep understanding of GCC audiences, cultural nuance, and the pace of transformation in the Middle East.</p>
-                    </div>
+                    <p>&#8226;&ensp;Small team. <strong>Big energy</strong>. <strong>Bigger moves</strong>.</p>
                 </div>
             </div>
         </div>
@@ -763,60 +878,7 @@
     </section>
 
     <!-- =============================================
-         SLIDE 4 — SERVICES BREAKDOWN
-         ============================================= -->
-    <section class="slide" id="slide-services">
-        <img src="flowing-arrows.png" class="sketch-element invert" style="top: 6%; left: 4%; width: clamp(70px, 10vw, 140px); transform: rotate(-10deg);" alt="">
-        <img src="sketch-arrow.png" class="sketch-element" style="bottom: 10%; right: 6%; width: clamp(35px, 5vw, 65px); transform: rotate(-45deg);" alt="">
-
-        <div class="slide-content">
-            <span class="mono-label reveal">[ Our Services ]</span>
-            <h2 class="reveal">HOW WE <span class="highlight">DELIVER.</span></h2>
-
-            <div class="services-grid" style="margin-top: clamp(0.5rem, 1vw, 0.75rem);">
-                <div class="service-block reveal">
-                    <h3>STRATEGY</h3>
-                    <ul>
-                        <li>Creative & Campaign Strategy</li>
-                        <li>Audience Research & Insights</li>
-                        <li>Experience Architecture</li>
-                        <li>Technology Consulting</li>
-                    </ul>
-                </div>
-                <div class="service-block reveal">
-                    <h3>DIGITAL</h3>
-                    <ul>
-                        <li>AR Lenses — TikTok, Snapchat, Instagram</li>
-                        <li>WebAR Experiences</li>
-                        <li>Interactive Filters & Games</li>
-                        <li>AI-Powered Generative Content</li>
-                    </ul>
-                </div>
-                <div class="service-block reveal">
-                    <h3>CREATIVE</h3>
-                    <ul>
-                        <li>3D Design & Animation</li>
-                        <li>Motion Graphics</li>
-                        <li>Real-Time Content</li>
-                        <li>Brand Identity & Visual Systems</li>
-                    </ul>
-                </div>
-                <div class="service-block reveal">
-                    <h3>PRODUCTION</h3>
-                    <ul>
-                        <li>Event Installations & Set Design</li>
-                        <li>On-Site Tech Operations</li>
-                        <li>Interactive Display Deployment</li>
-                        <li>Live Event Content Management</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <img src="shxft-wordmark-black.png" alt="" class="slide-logo">
-    </section>
-
-    <!-- =============================================
-         SLIDE 5 — FRXME PRODUCT (Dark Mode Island)
+         SLIDE 5 — THE FRXME (dark mode island)
          ============================================= -->
     <section class="slide slide-frxme" id="slide-frxme">
         <div class="frxme-dot-grid"></div>
@@ -847,21 +909,19 @@
                             <span class="frxme-spec-value">LED Ring Light</span>
                         </div>
                         <div class="frxme-spec-row">
-                            <span class="frxme-spec-label">Output</span>
-                            <span class="frxme-spec-value">QR Download + Analytics</span>
+                            <span class="frxme-spec-label">Branding</span>
+                            <span class="frxme-spec-value">Painted or LED-Backlit</span>
                         </div>
                     </div>
                 </div>
 
-                <div id="frxme-canvas-container" class="reveal-scale">
-                    <!-- Three.js canvas injected here -->
-                </div>
+                <div id="frxme-canvas-container" class="reveal-scale"></div>
             </div>
         </div>
     </section>
 
     <!-- =============================================
-         SLIDE 6 — OUR WORK (Section Divider)
+         SLIDE 6 — OUR WORK (divider)
          ============================================= -->
     <section class="slide slide-divider" id="slide-our-work">
         <img src="flowing-arrows.png" class="sketch-element" style="top: 10%; left: 5%; width: clamp(80px, 12vw, 160px);" alt="">
@@ -876,30 +936,79 @@
     </section>
 
     <!-- =============================================
-         SLIDE 7 — CASE STUDY: DIRIYAH
+         SLIDE 7 — AR CASE STUDY: SOCIAL AR (4-grid)
          ============================================= -->
-    <section class="slide" id="slide-case-diriyah">
+    <section class="slide" id="slide-social-ar">
+        <img src="corner-bracket.png" class="sketch-element sketch-tl" alt="">
+        <img src="corner-bracket.png" class="sketch-element sketch-tr" alt="">
+
+        <div class="slide-content">
+            <div style="text-align: center; margin-bottom: clamp(0.5rem, 1vw, 0.75rem);">
+                <h2 class="reveal">AR CASE STUDY.</h2>
+                <p class="reveal" style="font-family: var(--font-display); font-weight: 600; font-size: clamp(0.9rem, 1.5vw, 1.15rem) !important; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-secondary);">Social AR</p>
+            </div>
+
+            <div class="showcase-grid">
+                <div class="showcase-card reveal">
+                    <div class="card-image img-placeholder" style="aspect-ratio: 9/16;">
+                        <!-- Replace with: <img src="ar-soundstorm.jpg" alt="SoundStorm 2024"> -->
+                        AR GAME
+                    </div>
+                    <div class="card-label">SoundStorm 2024 | MDL Beast</div>
+                </div>
+                <div class="showcase-card reveal">
+                    <div class="card-image img-placeholder" style="aspect-ratio: 9/16;">
+                        <!-- Replace with: <img src="ar-etisalat.jpg" alt="e& Egypt"> -->
+                        WORLD AR
+                    </div>
+                    <div class="card-label">Summer Treasure Hunt | e& Egypt</div>
+                </div>
+                <div class="showcase-card reveal">
+                    <div class="card-image img-placeholder" style="aspect-ratio: 9/16;">
+                        <!-- Replace with: <img src="ar-asos.jpg" alt="ASOS x AJIO"> -->
+                        TRY-ON
+                    </div>
+                    <div class="card-label">ASOS x AJIO | ASOS India</div>
+                </div>
+                <div class="showcase-card reveal">
+                    <div class="card-image img-placeholder" style="aspect-ratio: 9/16;">
+                        <!-- Replace with: <img src="ar-starbucks.jpg" alt="Starbucks KSA"> -->
+                        FACE AR
+                    </div>
+                    <div class="card-label">Dallah's Treasure | Starbucks KSA</div>
+                </div>
+            </div>
+        </div>
+        <img src="shxft-wordmark-black.png" alt="" class="slide-logo">
+    </section>
+
+    <!-- =============================================
+         SLIDE 8 — DIRIYAH OUTERNET (page 1)
+         ============================================= -->
+    <section class="slide" id="slide-diriyah-1">
         <img src="corner-bracket.png" class="sketch-element sketch-tl" alt="">
         <img src="sketch-arrow.png" class="sketch-element" style="top: 6%; right: 8%; width: clamp(35px, 5vw, 60px); transform: rotate(15deg);" alt="">
 
         <div class="slide-content">
             <div class="case-layout">
                 <div class="case-text">
-                    <span class="mono-label reveal">[ Case Study ]</span>
-                    <h2 class="reveal">DIRIYAH<br><span class="highlight">AT OUTERNET</span></h2>
-                    <p class="reveal">Interactive mixed-reality experience for Diriyah at Outernet London. Custom AR body-tracking, gesture-driven games, and photo booth activations — powered by FRXME.</p>
-                    <div class="reveal" style="display: flex; gap: 1rem; flex-wrap: wrap;">
-                        <span class="mono-label" style="color: var(--text-secondary);">→ AR Games</span>
-                        <span class="mono-label" style="color: var(--text-secondary);">→ Photo Booth</span>
-                        <span class="mono-label" style="color: var(--text-secondary);">→ Outernet London</span>
+                    <div>
+                        <h2 class="reveal" style="font-size: clamp(1.2rem, 2.5vw, 1.8rem);">AR CASE STUDY.</h2>
+                        <h2 class="reveal">DIRIYAH OUTERNET</h2>
                     </div>
+                    <p class="reveal" style="font-weight: 700; color: var(--text-primary);">A monumental event deserves a monumental moment.</p>
+                    <p class="reveal">Diriyah asked us to bring a piece of their world to London's iconic Outernet. We delivered.</p>
+                    <p class="reveal">Using our custom-designed MR Screens, we created fun, engaging Diriyah-inspired experiences that pulled guests into the world of Diriyah in a way they could see, touch, and share.</p>
+                    <p class="reveal" style="font-weight: 600; color: var(--text-primary); font-style: italic;">Branded to Diriyah. Designed for play. Built for memories.</p>
                 </div>
                 <div class="case-images">
-                    <div class="photo-card reveal" style="aspect-ratio: 3/4; background: #f0f0f0; display: flex; align-items: center; justify-content: center;">
-                        <span class="mono-label" style="color: #ccc;">Media</span>
+                    <div class="photo-card reveal img-placeholder" style="aspect-ratio: 3/4;">
+                        <!-- Replace with event photo -->
+                        FRXME IN ACTION
                     </div>
-                    <div class="photo-card reveal" style="aspect-ratio: 3/4; background: #f0f0f0; display: flex; align-items: center; justify-content: center;">
-                        <span class="mono-label" style="color: #ccc;">Media</span>
+                    <div class="photo-card reveal img-placeholder" style="aspect-ratio: 3/4;">
+                        <!-- Replace with event photo -->
+                        OUTERNET
                     </div>
                 </div>
             </div>
@@ -908,30 +1017,93 @@
     </section>
 
     <!-- =============================================
-         SLIDE 8 — CASE STUDY: SOUNDSTORM
+         SLIDE 9 — DIRIYAH OUTERNET (page 2 — AR card)
          ============================================= -->
-    <section class="slide" id="slide-case-soundstorm">
-        <img src="pattern-tile.png" class="sketch-element invert" style="top: 5%; left: 4%; width: clamp(60px, 8vw, 120px); transform: rotate(3deg);" alt="">
+    <section class="slide" id="slide-diriyah-2">
+        <img src="corner-bracket.png" class="sketch-element sketch-br" alt="">
+        <img src="flowing-arrows.png" class="sketch-element invert" style="top: 8%; left: 4%; width: clamp(60px, 8vw, 120px); transform: rotate(10deg);" alt="">
+
+        <div class="slide-content">
+            <div class="case-layout">
+                <div class="case-text">
+                    <div>
+                        <h2 class="reveal" style="font-size: clamp(1.2rem, 2.5vw, 1.8rem);">AR CASE STUDY.</h2>
+                        <h2 class="reveal">DIRIYAH OUTERNET</h2>
+                    </div>
+                    <p class="reveal" style="font-weight: 700; color: var(--text-primary);">Coupled with our stunning MR Screens, we created something unforgettable.</p>
+                    <p class="reveal">Each guest received a beautifully designed, AR-activated keepsake card. By scanning the QR code, they unlocked an interactive AR experience, bringing Diriyah to life in their hands.</p>
+                    <p class="reveal">Aim your camera at the map, and a 3D Diriyah rises from the card — a pocket-sized portal into the world of Diriyah.</p>
+                </div>
+                <div style="display: flex; align-items: center; justify-content: center;">
+                    <div class="photo-card reveal img-placeholder" style="aspect-ratio: 3/4; width: 80%; max-width: 300px;">
+                        <!-- Replace with AR keepsake card image -->
+                        AR KEEPSAKE
+                    </div>
+                </div>
+            </div>
+        </div>
+        <img src="shxft-wordmark-black.png" alt="" class="slide-logo">
+    </section>
+
+    <!-- =============================================
+         SLIDE 10 — SOUNDSTORM 2025 (page 1)
+         ============================================= -->
+    <section class="slide" id="slide-soundstorm-1">
+        <img src="pattern-tile.png" class="sketch-element invert" style="top: 5%; right: 4%; width: clamp(60px, 8vw, 120px); transform: rotate(3deg);" alt="">
+        <img src="sketch-arrow.png" class="sketch-element" style="bottom: 8%; left: 5%; width: clamp(40px, 6vw, 70px); transform: rotate(-25deg);" alt="">
+
+        <div class="slide-content">
+            <div class="case-layout">
+                <div class="case-text">
+                    <div>
+                        <h2 class="reveal" style="font-size: clamp(1.2rem, 2.5vw, 1.8rem);">AR CASE STUDY.</h2>
+                        <h2 class="reveal">SOUNDSTORM 2025</h2>
+                    </div>
+                    <p class="reveal" style="font-weight: 700; color: var(--text-primary);">A festival of this scale demands experiences built for impact.</p>
+                    <p class="reveal">Soundstorm 2025 called for intuitive, high-speed solutions that could match the energy, movement, and scale of the event. We delivered.</p>
+                    <p class="reveal">Using our custom FRXME XR screens, we created an interactive venue map experience designed to help VIB guests navigate the festival with confidence.</p>
+                    <p class="reveal" style="font-weight: 600; color: var(--text-primary); font-style: italic;">Purpose-built for the pace of Soundstorm. Designed for clarity. Built for seamless movement.</p>
+                </div>
+                <div class="case-images">
+                    <div class="photo-card reveal img-placeholder" style="aspect-ratio: 3/4;">
+                        <!-- Replace with venue map photo -->
+                        VENUE MAP
+                    </div>
+                    <div class="photo-card reveal img-placeholder" style="aspect-ratio: 3/4;">
+                        <!-- Replace with FRXME at Soundstorm -->
+                        FRXME LIVE
+                    </div>
+                </div>
+            </div>
+        </div>
+        <img src="shxft-wordmark-black.png" alt="" class="slide-logo">
+    </section>
+
+    <!-- =============================================
+         SLIDE 11 — SOUNDSTORM 2025 (page 2 — photo booth)
+         ============================================= -->
+    <section class="slide" id="slide-soundstorm-2">
+        <img src="corner-bracket.png" class="sketch-element sketch-tl" alt="">
         <img src="corner-bracket.png" class="sketch-element sketch-br" alt="">
 
         <div class="slide-content">
             <div class="case-layout">
                 <div class="case-text">
-                    <span class="mono-label reveal">[ Case Study ]</span>
-                    <h2 class="reveal"><span class="highlight">SOUNDSTORM</span><br>2025</h2>
-                    <p class="reveal">Festival-scale FRXME deployment at MDLBEAST Soundstorm. Multiple interactive mirrors, real-time AR filters, and photo activations across the venue.</p>
-                    <div class="reveal" style="display: flex; gap: 1rem; flex-wrap: wrap;">
-                        <span class="mono-label" style="color: var(--text-secondary);">→ MDLBEAST</span>
-                        <span class="mono-label" style="color: var(--text-secondary);">→ Multi-Unit Deploy</span>
-                        <span class="mono-label" style="color: var(--text-secondary);">→ 50K+ Interactions</span>
+                    <div>
+                        <h2 class="reveal" style="font-size: clamp(1.2rem, 2.5vw, 1.8rem);">AR CASE STUDY.</h2>
+                        <h2 class="reveal">SOUNDSTORM 2025</h2>
                     </div>
+                    <p class="reveal" style="font-weight: 700; color: var(--text-primary);">Alongside our interactive venue maps, we created a photo booth experience designed to deliver unforgettable festival moments.</p>
+                    <p class="reveal">Guests captured high-energy moments during Soundstorm 2025 and received a QR code to instantly save or share their photos, turning a festival memory into a social-first moment.</p>
                 </div>
                 <div class="case-images">
-                    <div class="photo-card reveal" style="aspect-ratio: 3/4; background: #f0f0f0; display: flex; align-items: center; justify-content: center;">
-                        <span class="mono-label" style="color: #ccc;">Media</span>
+                    <div class="photo-card reveal img-placeholder" style="aspect-ratio: 3/4;">
+                        <!-- Replace with photo booth shot -->
+                        PHOTO BOOTH
                     </div>
-                    <div class="photo-card reveal" style="aspect-ratio: 3/4; background: #f0f0f0; display: flex; align-items: center; justify-content: center;">
-                        <span class="mono-label" style="color: #ccc;">Media</span>
+                    <div class="photo-card reveal img-placeholder" style="aspect-ratio: 3/4;">
+                        <!-- Replace with guests at FRXME -->
+                        GUESTS
                     </div>
                 </div>
             </div>
@@ -940,38 +1112,193 @@
     </section>
 
     <!-- =============================================
-         SLIDE 9 — GET IN TOUCH
+         SLIDE 12 — CGI CASE STUDY: STARBUCKS
+         ============================================= -->
+    <section class="slide" id="slide-cgi-starbucks">
+        <img src="corner-bracket.png" class="sketch-element sketch-tl" alt="">
+        <img src="corner-bracket.png" class="sketch-element sketch-tr" alt="">
+        <img src="sketch-arrow.png" class="sketch-element" style="bottom: 6%; right: 6%; width: clamp(40px, 5vw, 65px); transform: rotate(-40deg);" alt="">
+
+        <div class="slide-content">
+            <div style="text-align: center; margin-bottom: clamp(0.5rem, 1vw, 0.75rem);">
+                <h2 class="reveal">CGI CASE STUDY.</h2>
+                <p class="reveal" style="font-family: var(--font-display); font-weight: 600; font-size: clamp(0.9rem, 1.5vw, 1.15rem) !important; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-secondary);">Starbucks</p>
+            </div>
+
+            <div class="showcase-grid">
+                <div class="showcase-card reveal">
+                    <div class="card-image img-placeholder" style="aspect-ratio: 9/16;">
+                        <!-- Replace with CGI render -->
+                        FOOH
+                    </div>
+                    <div class="card-label">Strawberry Matcha Launch | KSA</div>
+                </div>
+                <div class="showcase-card reveal">
+                    <div class="card-image img-placeholder" style="aspect-ratio: 9/16;">
+                        <!-- Replace with CGI render -->
+                        FOOH
+                    </div>
+                    <div class="card-label">Eid Campaign | UAE</div>
+                </div>
+                <div class="showcase-card reveal">
+                    <div class="card-image img-placeholder" style="aspect-ratio: 9/16;">
+                        <!-- Replace with CGI render -->
+                        FOOH
+                    </div>
+                    <div class="card-label">Ramadan Campaign | Kuwait</div>
+                </div>
+                <div class="showcase-card reveal">
+                    <div class="card-image img-placeholder" style="aspect-ratio: 9/16;">
+                        <!-- Replace with CGI render -->
+                        FOOH
+                    </div>
+                    <div class="card-label">Ramadan Campaign | KSA</div>
+                </div>
+            </div>
+        </div>
+        <img src="shxft-wordmark-black.png" alt="" class="slide-logo">
+    </section>
+
+    <!-- =============================================
+         SLIDE 13 — CNQR MEDIA (page 1)
+         ============================================= -->
+    <section class="slide slide-cnqr" id="slide-cnqr-1">
+        <img src="flowing-arrows.png" class="sketch-element" style="top: 5%; left: 3%; width: clamp(60px, 10vw, 140px);" alt="">
+        <img src="shapes-group.png" class="sketch-element" style="bottom: 5%; right: 4%; width: clamp(50px, 7vw, 100px);" alt="">
+
+        <div class="slide-content">
+            <h2 class="reveal" style="text-align: center;">CNQR MEDIA</h2>
+
+            <div class="reveal" style="max-width: 800px;">
+                <p style="font-weight: 700; color: #fff; margin-bottom: 0.75rem;">Backed by CNQR Media</p>
+                <p>SHXFT operates as the internal immersive studio of CNQR Media — a leading agency representing top-tier athletes and <span class="highlight">building culture-shifting brand stories.</span></p>
+            </div>
+            <div class="reveal">
+                <p>We work closely with <span class="highlight">global footballers</span> on their image, content, and commercial strategy, managing everything from social media to brand partnerships.</p>
+            </div>
+            <div class="reveal">
+                <p>This gives SHXFT a <span class="highlight">unique edge:</span> blending elite-level creative execution with real-world storytelling that resonates, converts, and scales.</p>
+            </div>
+            <div class="reveal">
+                <p>We work with athletes from some of Europe's top clubs and including all PIF clubs in Saudi Arabia: <strong style="color: #fff;">Al Ahli, Al Hilal, Al Ittihad & Al Nassr.</strong></p>
+            </div>
+        </div>
+    </section>
+
+    <!-- =============================================
+         SLIDE 14 — CNQR MEDIA (page 2 — athletes)
+         ============================================= -->
+    <section class="slide slide-cnqr" id="slide-cnqr-2">
+        <img src="sketch-arrow.png" class="sketch-element" style="top: 5%; right: 5%; width: clamp(40px, 6vw, 80px); transform: rotate(-20deg);" alt="">
+        <img src="flowing-arrows.png" class="sketch-element" style="bottom: 5%; left: 3%; width: clamp(60px, 8vw, 120px);" alt="">
+
+        <div class="slide-content">
+            <h2 class="reveal" style="text-align: center; margin-bottom: clamp(0.5rem, 1vw, 0.75rem);">CNQR MEDIA</h2>
+
+            <div class="athlete-grid">
+                <div class="athlete-card reveal">
+                    <div class="athlete-photo img-placeholder" style="border-radius: 50%; background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.3);">
+                        <!-- Replace with player photo -->
+                        &#9917;
+                    </div>
+                    <h3>PEREIRA</h3>
+                    <div class="athlete-stats">
+                        IG: 4.7M+ &ensp; X: 1M+
+                    </div>
+                </div>
+                <div class="athlete-card reveal">
+                    <div class="athlete-photo img-placeholder" style="border-radius: 50%; background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.3);">
+                        <!-- Replace with player photo -->
+                        &#9917;
+                    </div>
+                    <h3>AUBAMEYANG</h3>
+                    <div class="athlete-stats">
+                        IG: 13.6M+ &ensp; X: 2.2M+
+                    </div>
+                </div>
+                <div class="athlete-card reveal">
+                    <div class="athlete-photo img-placeholder" style="border-radius: 50%; background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.3);">
+                        <!-- Replace with player photo -->
+                        &#9917;
+                    </div>
+                    <h3>RAKITIC</h3>
+                    <div class="athlete-stats">
+                        IG: 17.3M+ &ensp; X: 2.2M+
+                    </div>
+                </div>
+            </div>
+
+            <p class="reveal" style="text-align: center; font-size: clamp(0.7rem, 1vw, 0.85rem) !important; color: rgba(255,255,255,0.5); margin-top: 0.5rem;">
+                These are just three of the players we work with & help work on their online/offline strategies.<br>
+                <em>Full/more expansive list is available on request.</em>
+            </p>
+        </div>
+    </section>
+
+    <!-- =============================================
+         SLIDE 15 — PAST PARTNERSHIPS (client logos)
+         ============================================= -->
+    <section class="slide" id="slide-logos">
+        <img src="corner-bracket.png" class="sketch-element sketch-tl" alt="">
+        <img src="corner-bracket.png" class="sketch-element sketch-br" alt="">
+        <img src="sketch-arrow.png" class="sketch-element" style="bottom: 8%; left: 5%; width: clamp(40px, 5vw, 65px); transform: rotate(25deg);" alt="">
+
+        <div class="slide-content" style="align-items: center;">
+            <h2 class="reveal" style="text-align: center; margin-bottom: clamp(0.75rem, 1.5vw, 1.25rem);">PAST PARTNERSHIPS,<br>FUTURE POSSIBILITIES.</h2>
+
+            <div class="logos-grid reveal">
+                <div class="logo-item">Diriyah</div>
+                <div class="logo-item">Starbucks</div>
+                <div class="logo-item">Emirates</div>
+                <div class="logo-item">e&</div>
+                <div class="logo-item">Myntra</div>
+                <div class="logo-item">Spotify</div>
+                <div class="logo-item">Unilever</div>
+                <div class="logo-item">AlUla FC</div>
+                <div class="logo-item">Orange</div>
+                <div class="logo-item">RCU</div>
+                <div class="logo-item">Huda Beauty</div>
+                <div class="logo-item">ASOS</div>
+                <div class="logo-item">Samsung</div>
+                <div class="logo-item">MDL Beast</div>
+                <div class="logo-item">Prime Video</div>
+                <div class="logo-item">Qiddiya</div>
+            </div>
+        </div>
+        <img src="shxft-wordmark-black.png" alt="" class="slide-logo">
+    </section>
+
+    <!-- =============================================
+         SLIDE 16 — CONTACT
          ============================================= -->
     <section class="slide" id="slide-contact">
         <img src="corner-bracket.png" class="sketch-element sketch-tl" alt="">
         <img src="corner-bracket.png" class="sketch-element sketch-br" alt="">
-        <img src="flowing-arrows.png" class="sketch-element invert" style="top: 15%; right: 5%; width: clamp(80px, 10vw, 150px); transform: rotate(-20deg);" alt="">
+        <img src="flowing-arrows.png" class="sketch-element invert" style="top: 10%; right: 3%; width: clamp(80px, 10vw, 150px); transform: rotate(-25deg);" alt="">
+        <img src="shapes-group.png" class="sketch-element invert" style="bottom: 10%; left: 3%; width: clamp(60px, 8vw, 110px);" alt="">
 
-        <div class="slide-content" style="align-items: center; text-align: center;">
-            <span class="mono-label reveal">[ Get in Touch ]</span>
-            <h1 class="reveal-scale" style="margin-bottom: clamp(0.5rem, 1.5vw, 1rem);">LET'S<br><span class="highlight">BUILD</span><br>TOGETHER.</h1>
-
-            <a href="mailto:hello@shxft.co" class="cta-button reveal" style="margin-bottom: clamp(1rem, 2vw, 1.5rem);">
-                Get in Touch →
-            </a>
-
-            <div class="contact-info reveal">
-                <div class="contact-item">
-                    <span class="label">Email</span>
-                    <span class="value">hello@shxft.co</span>
+        <div class="slide-content">
+            <div class="contact-layout">
+                <div class="contact-person reveal">
+                    <div class="contact-photo img-placeholder" style="border-radius: 50; font-size: 2rem; color: #ccc;">
+                        <!-- Replace with: <img src="hasan.jpg" alt="Hasan Shah"> -->
+                        &#128100;
+                    </div>
+                    <div class="contact-details">
+                        <h3>Hasan Shah</h3>
+                        <div class="role">CEO</div>
+                        <div class="contact-line">hasan@shxft.studio</div>
+                    </div>
                 </div>
-                <div class="contact-item">
-                    <span class="label">Web</span>
-                    <span class="value">shxft.co</span>
-                </div>
-                <div class="contact-item">
-                    <span class="label">Based in</span>
-                    <span class="value">Dubai, UAE</span>
+                <div class="reveal" style="display: flex; align-items: center; justify-content: center;">
+                    <img src="shxft-wordmark-black.png" alt="SHXFT" style="width: clamp(150px, 25vw, 300px);">
                 </div>
             </div>
-
-            <img src="shxft-wordmark-black.png" alt="SHXFT" class="reveal" style="width: clamp(100px, 15vw, 180px); margin-top: clamp(1rem, 2vw, 2rem); opacity: 0.5;">
         </div>
+
+        <p style="position: absolute; bottom: clamp(8px, 1.5vh, 16px); left: 50%; transform: translateX(-50%); font-family: var(--font-mono); font-size: clamp(0.4rem, 0.6vw, 0.5rem); color: var(--text-muted); letter-spacing: 0.05em; text-align: center; max-width: 90vw; white-space: nowrap;">
+            This document is confidential and remains the property of CNQR MEDIA FZCO.
+        </p>
     </section>
 
     <!-- =============================================
@@ -993,24 +1320,19 @@
         import { RGBELoader } from 'three/addons/loaders/RGBELoader.js';
 
         // ==========================================
-        // SLIDE OBSERVER (reveal on scroll)
+        // SLIDE OBSERVER
         // ==========================================
         const slides = document.querySelectorAll('.slide');
         const navDotsContainer = document.getElementById('nav-dots');
         const progressBar = document.getElementById('progress-bar');
 
-        // Create nav dots
         slides.forEach((slide, i) => {
             const dot = document.createElement('button');
             dot.className = 'nav-dot';
             dot.setAttribute('aria-label', `Go to slide ${i + 1}`);
-            // Dark dots for dark slides
-            if (slide.classList.contains('slide-frxme') || slide.classList.contains('slide-divider')) {
-                dot.classList.add('dark-dot');
-            }
-            dot.addEventListener('click', () => {
-                slide.scrollIntoView({ behavior: 'smooth' });
-            });
+            if (slide.classList.contains('slide-frxme')) dot.classList.add('dark-dot', 'brand-dot');
+            else if (slide.classList.contains('slide-divider') || slide.classList.contains('slide-cnqr')) dot.classList.add('dark-dot');
+            dot.addEventListener('click', () => slide.scrollIntoView({ behavior: 'smooth' }));
             navDotsContainer.appendChild(dot);
         });
 
@@ -1020,12 +1342,9 @@
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('visible');
-                    // Update nav dots
                     const idx = Array.from(slides).indexOf(entry.target);
                     navDots.forEach((d, i) => d.classList.toggle('active', i === idx));
-                    // Update progress
-                    const pct = ((idx + 1) / slides.length) * 100;
-                    progressBar.style.width = pct + '%';
+                    progressBar.style.width = ((idx + 1) / slides.length) * 100 + '%';
                 }
             });
         }, { threshold: 0.3 });
@@ -1058,7 +1377,6 @@
             resizeRenderer();
             window.addEventListener('resize', resizeRenderer);
 
-            // Lighting
             const ambient = new THREE.AmbientLight(0xffffff, 0.4);
             scene.add(ambient);
             const dirLight = new THREE.DirectionalLight(0xffffff, 1.2);
@@ -1068,7 +1386,6 @@
             fillLight.position.set(-3, 2, -2);
             scene.add(fillLight);
 
-            // HDRI environment
             new RGBELoader().load('studio_small_09_1k.hdr', (hdr) => {
                 hdr.mapping = THREE.EquirectangularReflectionMapping;
                 scene.environment = hdr;
@@ -1086,7 +1403,6 @@
             screenTexture.repeat.set(1, -1);
             screenTexture.offset.set(0, 1);
 
-            // Pre-render static dot grid
             const dotGridCanvas = document.createElement('canvas');
             dotGridCanvas.width = 512;
             dotGridCanvas.height = 512;
@@ -1100,192 +1416,144 @@
                 }
             }
 
-            // Particles for screen
             const screenParticles = Array.from({ length: 5 }, () => ({
-                x: Math.random() * 512,
-                y: Math.random() * 512,
-                speed: 0.3 + Math.random() * 0.5,
-                size: 1 + Math.random() * 2,
+                x: Math.random() * 512, y: Math.random() * 512,
+                speed: 0.3 + Math.random() * 0.5, size: 1 + Math.random() * 2,
                 phase: Math.random() * Math.PI * 2
             }));
 
-            // Graph data
             const graphPoints = Array.from({ length: 20 }, (_, i) => ({
-                base: 0.3 + Math.random() * 0.4,
-                phase: i * 0.5
+                base: 0.3 + Math.random() * 0.4, phase: i * 0.5
             }));
 
             function drawScreenFrame(time) {
                 const t = time * 0.001;
                 const W = 512, H = 512;
-
-                // 1. Dark gradient bg
-                const grad = sCtx.createRadialGradient(W / 2, H / 2, 0, W / 2, H / 2, W * 0.7);
+                const grad = sCtx.createRadialGradient(W/2, H/2, 0, W/2, H/2, W*0.7);
                 grad.addColorStop(0, '#0d1117');
                 grad.addColorStop(1, '#060609');
                 sCtx.fillStyle = grad;
                 sCtx.fillRect(0, 0, W, H);
-
-                // 2. Dot grid
                 sCtx.drawImage(dotGridCanvas, 0, 0);
 
-                // 3. Scanline
                 const scanY = ((t * 0.18) % 1) * H;
-                const scanGrad = sCtx.createLinearGradient(0, scanY - 15, 0, scanY + 15);
+                const scanGrad = sCtx.createLinearGradient(0, scanY-15, 0, scanY+15);
                 scanGrad.addColorStop(0, 'transparent');
                 scanGrad.addColorStop(0.5, 'rgba(6,182,212,0.25)');
                 scanGrad.addColorStop(1, 'transparent');
                 sCtx.fillStyle = scanGrad;
-                sCtx.fillRect(0, scanY - 15, W, 30);
+                sCtx.fillRect(0, scanY-15, W, 30);
 
-                // 4. Header: FRXME + LIVE pill
                 sCtx.font = 'bold 28px Inter, sans-serif';
                 sCtx.fillStyle = '#fafafa';
                 sCtx.textAlign = 'left';
                 sCtx.fillText('FRXME', 30, 48);
 
-                // LIVE pill
                 const pillX = 140, pillY = 34;
                 sCtx.fillStyle = 'rgba(16,185,129,0.2)';
                 sCtx.beginPath();
                 sCtx.roundRect(pillX, pillY, 56, 20, 10);
                 sCtx.fill();
-                const dotPulse = 0.5 + 0.5 * Math.sin(t * 4);
                 sCtx.beginPath();
-                sCtx.arc(pillX + 14, pillY + 10, 3, 0, Math.PI * 2);
-                sCtx.fillStyle = `rgba(16,185,129,${0.5 + dotPulse * 0.5})`;
+                sCtx.arc(pillX+14, pillY+10, 3, 0, Math.PI*2);
+                sCtx.fillStyle = `rgba(16,185,129,${0.5+0.5*Math.sin(t*4)*0.5})`;
                 sCtx.fill();
                 sCtx.font = '500 10px Inter, sans-serif';
                 sCtx.fillStyle = '#10b981';
-                sCtx.fillText('LIVE', pillX + 24, pillY + 14);
+                sCtx.fillText('LIVE', pillX+24, pillY+14);
 
-                // 5. Metric cards
                 const metrics = [
-                    { label: 'SESSIONS', value: Math.floor(1240 + Math.sin(t * 0.7) * 30) },
-                    { label: 'ENGAGE %', value: (78 + Math.sin(t * 0.5) * 5).toFixed(1) },
-                    { label: 'AVG TIME', value: `${(2.4 + Math.sin(t * 0.3) * 0.3).toFixed(1)}m` }
+                    { label: 'SESSIONS', value: Math.floor(1240+Math.sin(t*0.7)*30) },
+                    { label: 'ENGAGE %', value: (78+Math.sin(t*0.5)*5).toFixed(1) },
+                    { label: 'AVG TIME', value: `${(2.4+Math.sin(t*0.3)*0.3).toFixed(1)}m` }
                 ];
-                const cardW = 140, cardH = 60, cardGap = 14;
-                const cardsStartX = 30, cardsStartY = 70;
+                const cardW=140, cardH=60, cardGap=14, cardsX=30, cardsY=70;
                 metrics.forEach((m, i) => {
-                    const cx = cardsStartX + i * (cardW + cardGap);
+                    const cx = cardsX + i*(cardW+cardGap);
                     sCtx.fillStyle = 'rgba(24,24,27,0.7)';
                     sCtx.beginPath();
-                    sCtx.roundRect(cx, cardsStartY, cardW, cardH, 8);
+                    sCtx.roundRect(cx, cardsY, cardW, cardH, 8);
                     sCtx.fill();
                     sCtx.strokeStyle = 'rgba(6,182,212,0.15)';
                     sCtx.lineWidth = 1;
                     sCtx.stroke();
-
                     sCtx.font = '500 9px JetBrains Mono, monospace';
                     sCtx.fillStyle = '#71717a';
                     sCtx.textAlign = 'left';
-                    sCtx.fillText(m.label, cx + 12, cardsStartY + 18);
-
+                    sCtx.fillText(m.label, cx+12, cardsY+18);
                     sCtx.font = 'bold 22px Inter, sans-serif';
                     sCtx.fillStyle = '#06b6d4';
-                    sCtx.fillText(String(m.value), cx + 12, cardsStartY + 46);
+                    sCtx.fillText(String(m.value), cx+12, cardsY+46);
                 });
 
-                // 6. Line graph
-                const graphX = 30, graphY = 155, graphW = 450, graphH = 160;
+                const gX=30, gY=155, gW=450, gH=160;
                 sCtx.font = '500 9px JetBrains Mono, monospace';
                 sCtx.fillStyle = '#71717a';
                 sCtx.textAlign = 'left';
-                sCtx.fillText('ENGAGEMENT OVER TIME', graphX, graphY - 8);
-
-                // Graph bg
+                sCtx.fillText('ENGAGEMENT OVER TIME', gX, gY-8);
                 sCtx.fillStyle = 'rgba(24,24,27,0.5)';
                 sCtx.beginPath();
-                sCtx.roundRect(graphX, graphY, graphW, graphH, 8);
+                sCtx.roundRect(gX, gY, gW, gH, 8);
                 sCtx.fill();
 
-                // Draw graph line
-                const lineProgress = Math.min(1, (t % 10) / 8);
-                const visiblePoints = Math.floor(lineProgress * graphPoints.length);
-                if (visiblePoints > 1) {
+                const lineProgress = Math.min(1, (t%10)/8);
+                const visiblePts = Math.floor(lineProgress * graphPoints.length);
+                if (visiblePts > 1) {
                     sCtx.beginPath();
-                    for (let i = 0; i < visiblePoints; i++) {
-                        const px = graphX + 15 + (i / (graphPoints.length - 1)) * (graphW - 30);
-                        const py = graphY + graphH - 20 - (graphPoints[i].base + Math.sin(t * 0.5 + graphPoints[i].phase) * 0.08) * (graphH - 40);
-                        if (i === 0) sCtx.moveTo(px, py);
-                        else sCtx.lineTo(px, py);
+                    for (let i=0; i<visiblePts; i++) {
+                        const px = gX+15+(i/(graphPoints.length-1))*(gW-30);
+                        const py = gY+gH-20-(graphPoints[i].base+Math.sin(t*0.5+graphPoints[i].phase)*0.08)*(gH-40);
+                        if (i===0) sCtx.moveTo(px, py); else sCtx.lineTo(px, py);
                     }
                     sCtx.strokeStyle = '#06b6d4';
                     sCtx.lineWidth = 2;
                     sCtx.stroke();
-
-                    // Gradient fill under line
-                    const lastPx = graphX + 15 + ((visiblePoints - 1) / (graphPoints.length - 1)) * (graphW - 30);
-                    sCtx.lineTo(lastPx, graphY + graphH - 12);
-                    sCtx.lineTo(graphX + 15, graphY + graphH - 12);
+                    const lastPx = gX+15+((visiblePts-1)/(graphPoints.length-1))*(gW-30);
+                    sCtx.lineTo(lastPx, gY+gH-12);
+                    sCtx.lineTo(gX+15, gY+gH-12);
                     sCtx.closePath();
-                    const fillGrad = sCtx.createLinearGradient(0, graphY, 0, graphY + graphH);
-                    fillGrad.addColorStop(0, 'rgba(6,182,212,0.15)');
-                    fillGrad.addColorStop(1, 'rgba(6,182,212,0.02)');
-                    sCtx.fillStyle = fillGrad;
+                    const fg = sCtx.createLinearGradient(0, gY, 0, gY+gH);
+                    fg.addColorStop(0, 'rgba(6,182,212,0.15)');
+                    fg.addColorStop(1, 'rgba(6,182,212,0.02)');
+                    sCtx.fillStyle = fg;
                     sCtx.fill();
-
-                    // Leading edge dot
-                    const lastI = visiblePoints - 1;
-                    const dotX = graphX + 15 + (lastI / (graphPoints.length - 1)) * (graphW - 30);
-                    const dotY = graphY + graphH - 20 - (graphPoints[lastI].base + Math.sin(t * 0.5 + graphPoints[lastI].phase) * 0.08) * (graphH - 40);
-                    sCtx.beginPath();
-                    sCtx.arc(dotX, dotY, 4, 0, Math.PI * 2);
-                    sCtx.fillStyle = '#06b6d4';
-                    sCtx.fill();
-                    sCtx.beginPath();
-                    sCtx.arc(dotX, dotY, 8, 0, Math.PI * 2);
-                    sCtx.fillStyle = 'rgba(6,182,212,0.3)';
-                    sCtx.fill();
+                    const li = visiblePts-1;
+                    const dx = gX+15+(li/(graphPoints.length-1))*(gW-30);
+                    const dy = gY+gH-20-(graphPoints[li].base+Math.sin(t*0.5+graphPoints[li].phase)*0.08)*(gH-40);
+                    sCtx.beginPath(); sCtx.arc(dx, dy, 4, 0, Math.PI*2); sCtx.fillStyle='#06b6d4'; sCtx.fill();
+                    sCtx.beginPath(); sCtx.arc(dx, dy, 8, 0, Math.PI*2); sCtx.fillStyle='rgba(6,182,212,0.3)'; sCtx.fill();
                 }
 
-                // 7. Mini bar chart
-                const barX = 30, barY = 350, barW = 450, barH = 110;
+                const bX=30, bY=350, bW=450, bH=110;
                 sCtx.font = '500 9px JetBrains Mono, monospace';
-                sCtx.fillStyle = '#71717a';
-                sCtx.textAlign = 'left';
-                sCtx.fillText('INTERACTION FREQUENCY', barX, barY - 8);
-
-                const barCount = 12;
-                const barGap = 6;
-                const singleBarW = (barW - (barCount - 1) * barGap) / barCount;
-                for (let i = 0; i < barCount; i++) {
-                    const h = (0.3 + 0.7 * Math.abs(Math.sin(t * 0.8 + i * 0.5))) * (barH - 20);
-                    const bx = barX + i * (singleBarW + barGap);
-                    const by = barY + barH - h;
-                    const barGrad = sCtx.createLinearGradient(0, by, 0, barY + barH);
-                    barGrad.addColorStop(0, '#06b6d4');
-                    barGrad.addColorStop(1, '#0891b2');
-                    sCtx.fillStyle = barGrad;
-                    sCtx.beginPath();
-                    sCtx.roundRect(bx, by, singleBarW, h, 3);
-                    sCtx.fill();
+                sCtx.fillStyle = '#71717a'; sCtx.textAlign = 'left';
+                sCtx.fillText('INTERACTION FREQUENCY', bX, bY-8);
+                const bC=12, bG=6, sW=(bW-(bC-1)*bG)/bC;
+                for (let i=0; i<bC; i++) {
+                    const h = (0.3+0.7*Math.abs(Math.sin(t*0.8+i*0.5)))*(bH-20);
+                    const bx = bX+i*(sW+bG), by = bY+bH-h;
+                    const bg = sCtx.createLinearGradient(0, by, 0, bY+bH);
+                    bg.addColorStop(0, '#06b6d4'); bg.addColorStop(1, '#0891b2');
+                    sCtx.fillStyle = bg;
+                    sCtx.beginPath(); sCtx.roundRect(bx, by, sW, h, 3); sCtx.fill();
                 }
 
-                // 8. Floating particles
                 screenParticles.forEach(p => {
                     p.y -= p.speed;
-                    if (p.y < -10) { p.y = H + 10; p.x = Math.random() * W; }
-                    const alpha = 0.3 + 0.3 * Math.sin(t * 2 + p.phase);
-                    sCtx.beginPath();
-                    sCtx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-                    sCtx.fillStyle = `rgba(6,182,212,${alpha})`;
+                    if (p.y < -10) { p.y = H+10; p.x = Math.random()*W; }
+                    sCtx.beginPath(); sCtx.arc(p.x, p.y, p.size, 0, Math.PI*2);
+                    sCtx.fillStyle = `rgba(6,182,212,${0.3+0.3*Math.sin(t*2+p.phase)})`;
                     sCtx.fill();
                 });
             }
 
-            // Load GLB model
             const loader = new GLTFLoader();
             let kiosk = null;
             loader.load('frxme_low_poly.glb', (gltf) => {
                 kiosk = gltf.scene;
                 scene.add(kiosk);
-
                 kiosk.traverse((child) => {
                     if (!child.isMesh) return;
-
-                    // Logo material
                     if (child.name === 'logo_plane' || child.name === 'm_logo') {
                         const logoTex = new THREE.TextureLoader().load('FRXME_MODEL_LOGO.png');
                         logoTex.colorSpace = THREE.SRGBColorSpace;
@@ -1293,16 +1561,10 @@
                         logoTex.wrapT = THREE.ClampToEdgeWrapping;
                         logoTex.repeat.set(1, -1);
                         logoTex.offset.set(0, 1);
-                        const mat = new THREE.MeshBasicMaterial({
-                            map: logoTex,
-                            transparent: true,
-                            side: THREE.DoubleSide,
-                        });
+                        const mat = new THREE.MeshBasicMaterial({ map: logoTex, transparent: true, side: THREE.DoubleSide });
                         mat.toneMapped = false;
                         child.material = mat;
                     }
-
-                    // Screen material — animated canvas
                     if (child.name === 'Mesh001' || child.name === 'Mesh001_1') {
                         const oldMat = child.material;
                         child.material = new THREE.MeshBasicMaterial({
@@ -1314,15 +1576,12 @@
                         oldMat.dispose();
                     }
                 });
-
-                // Center model
                 const box = new THREE.Box3().setFromObject(kiosk);
                 const center = box.getCenter(new THREE.Vector3());
                 kiosk.position.sub(center);
                 kiosk.position.y += 0.1;
             });
 
-            // Controls
             const controls = new OrbitControls(camera, renderer.domElement);
             controls.enableDamping = true;
             controls.dampingFactor = 0.05;
@@ -1333,7 +1592,6 @@
             controls.minPolarAngle = Math.PI * 0.35;
             controls.maxPolarAngle = Math.PI * 0.65;
 
-            // Animation loop
             let screenFrameCount = 0;
             function animate() {
                 requestAnimationFrame(animate);
@@ -1346,20 +1604,14 @@
                 renderer.render(scene, camera);
             }
 
-            // Only animate when FRXME slide is visible
-            const frxmeSlide = document.getElementById('slide-frxme');
             let animating = false;
             const frxmeObserver = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
-                    if (entry.isIntersecting && !animating) {
-                        animating = true;
-                        animate();
-                    } else if (!entry.isIntersecting) {
-                        animating = false;
-                    }
+                    if (entry.isIntersecting && !animating) { animating = true; animate(); }
+                    else if (!entry.isIntersecting) { animating = false; }
                 });
             }, { threshold: 0.1 });
-            frxmeObserver.observe(frxmeSlide);
+            frxmeObserver.observe(document.getElementById('slide-frxme'));
         }
     </script>
 
