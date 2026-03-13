@@ -143,92 +143,131 @@
         /* =========================================
            SKETCH ELEMENTS
            ========================================= */
+        /* =========================================
+           SKETCH SVG ELEMENTS — Drawn stroke animation
+           ========================================= */
         .sketch-element {
             position: absolute;
             pointer-events: none;
-            opacity: 0;
             z-index: 0;
-            will-change: opacity, transform, clip-path;
-        }
-        .sketch-element.invert { filter: invert(1); }
-
-        .sketch-tl { top: 4%; left: 4%; width: clamp(60px, 9vw, 130px); }
-        .sketch-tr { top: 4%; right: 4%; width: clamp(60px, 9vw, 130px); transform: scaleX(-1); }
-        .sketch-bl { bottom: 4%; left: 4%; width: clamp(60px, 9vw, 130px); transform: scaleY(-1); }
-        .sketch-br { bottom: 4%; right: 4%; width: clamp(60px, 9vw, 130px); transform: scale(-1); }
-
-        /* === ENTRANCE: Draw-in with clip-path wipe === */
-        .slide.visible .sketch-element {
-            animation: sketch-draw-in 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards,
-                       sketch-jitter 4s ease-in-out 1.2s infinite;
-        }
-        .slide.visible .sketch-element:nth-child(2) {
-            animation-delay: 0.2s, 1.4s;
-            --jitter-seed: 1;
-        }
-        .slide.visible .sketch-element:nth-child(3) {
-            animation-delay: 0.4s, 1.8s;
-            --jitter-seed: 2;
-        }
-        .slide.visible .sketch-element:nth-child(4) {
-            animation-delay: 0.6s, 2.2s;
-            --jitter-seed: 3;
+            overflow: visible;
         }
 
-        /* Draw-in: clip-path reveals left→right + slight scale bounce */
-        @keyframes sketch-draw-in {
+        .sketch-tl { top: 4%; left: 4%; width: clamp(60px, 9vw, 130px); height: clamp(60px, 9vw, 130px); }
+        .sketch-tr { top: 4%; right: 4%; width: clamp(60px, 9vw, 130px); height: clamp(60px, 9vw, 130px); }
+        .sketch-bl { bottom: 4%; left: 4%; width: clamp(60px, 9vw, 130px); height: clamp(60px, 9vw, 130px); }
+        .sketch-br { bottom: 4%; right: 4%; width: clamp(60px, 9vw, 130px); height: clamp(60px, 9vw, 130px); }
+
+        /* All SVG paths start hidden (fully dashed-offset) */
+        .sketch-element path,
+        .sketch-element line,
+        .sketch-element circle,
+        .sketch-element polyline,
+        .sketch-element ellipse {
+            stroke-dasharray: var(--path-len, 300);
+            stroke-dashoffset: var(--path-len, 300);
+            fill: none;
+            stroke: #333;
+            stroke-width: 2.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        /* When slide is visible → draw the stroke + fade in */
+        .slide.visible .sketch-element path,
+        .slide.visible .sketch-element line,
+        .slide.visible .sketch-element circle,
+        .slide.visible .sketch-element polyline,
+        .slide.visible .sketch-element ellipse {
+            animation: draw-stroke 1.2s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+        }
+
+        /* Stagger each element's children */
+        .slide.visible .sketch-element:nth-child(1) path,
+        .slide.visible .sketch-element:nth-child(1) line,
+        .slide.visible .sketch-element:nth-child(1) circle,
+        .slide.visible .sketch-element:nth-child(1) polyline,
+        .slide.visible .sketch-element:nth-child(1) ellipse {
+            animation-delay: 0.1s;
+        }
+        .slide.visible .sketch-element:nth-child(2) path,
+        .slide.visible .sketch-element:nth-child(2) line,
+        .slide.visible .sketch-element:nth-child(2) circle,
+        .slide.visible .sketch-element:nth-child(2) polyline,
+        .slide.visible .sketch-element:nth-child(2) ellipse {
+            animation-delay: 0.35s;
+        }
+        .slide.visible .sketch-element:nth-child(3) path,
+        .slide.visible .sketch-element:nth-child(3) line,
+        .slide.visible .sketch-element:nth-child(3) circle,
+        .slide.visible .sketch-element:nth-child(3) polyline,
+        .slide.visible .sketch-element:nth-child(3) ellipse {
+            animation-delay: 0.6s;
+        }
+        .slide.visible .sketch-element:nth-child(4) path,
+        .slide.visible .sketch-element:nth-child(4) line,
+        .slide.visible .sketch-element:nth-child(4) circle,
+        .slide.visible .sketch-element:nth-child(4) polyline,
+        .slide.visible .sketch-element:nth-child(4) ellipse {
+            animation-delay: 0.85s;
+        }
+
+        /* Multi-path elements: stagger sub-paths within each SVG */
+        .sketch-element path:nth-child(2) { animation-delay: calc(var(--base-delay, 0s) + 0.2s) !important; }
+        .sketch-element path:nth-child(3) { animation-delay: calc(var(--base-delay, 0s) + 0.4s) !important; }
+        .sketch-element circle { animation-delay: calc(var(--base-delay, 0s) + 0.15s) !important; }
+
+        @keyframes draw-stroke {
             0% {
-                opacity: 0;
-                clip-path: inset(0 100% 0 0);
-                transform: scale(0.7) rotate(-5deg);
+                stroke-dashoffset: var(--path-len, 300);
+                opacity: 0.6;
             }
-            60% {
-                opacity: 0.4;
-                clip-path: inset(0 0% 0 0);
-                transform: scale(1.05) rotate(1deg);
+            15% {
+                opacity: 1;
             }
             100% {
-                opacity: 0.35;
-                clip-path: inset(0 0% 0 0);
-                transform: scale(1) rotate(0deg);
+                stroke-dashoffset: 0;
+                opacity: 0.4;
             }
         }
 
-        /* Flip variants preserve their base transform */
-        .slide.visible .sketch-tr {
-            animation-name: sketch-draw-in-flipX, sketch-jitter;
+        /* Continuous wobble after drawing completes */
+        .slide.visible .sketch-element {
+            animation: sketch-wobble 5s ease-in-out 1.5s infinite;
         }
-        .slide.visible .sketch-bl {
-            animation-name: sketch-draw-in-flipY, sketch-jitter;
-        }
-        .slide.visible .sketch-br {
-            animation-name: sketch-draw-in-flipXY, sketch-jitter;
-        }
-
-        @keyframes sketch-draw-in-flipX {
-            0% { opacity: 0; clip-path: inset(0 100% 0 0); transform: scaleX(-1) scale(0.7) rotate(-5deg); }
-            60% { opacity: 0.4; clip-path: inset(0 0% 0 0); transform: scaleX(-1) scale(1.05) rotate(1deg); }
-            100% { opacity: 0.35; clip-path: inset(0 0% 0 0); transform: scaleX(-1) scale(1) rotate(0deg); }
-        }
-        @keyframes sketch-draw-in-flipY {
-            0% { opacity: 0; clip-path: inset(0 0 100% 0); transform: scaleY(-1) scale(0.7); }
-            60% { opacity: 0.4; clip-path: inset(0 0 0% 0); transform: scaleY(-1) scale(1.05); }
-            100% { opacity: 0.35; clip-path: inset(0 0 0% 0); transform: scaleY(-1) scale(1); }
-        }
-        @keyframes sketch-draw-in-flipXY {
-            0% { opacity: 0; clip-path: inset(100% 0 0 0); transform: scale(-1) scale(0.7); }
-            60% { opacity: 0.4; clip-path: inset(0% 0 0 0); transform: scale(-1) scale(1.05); }
-            100% { opacity: 0.35; clip-path: inset(0% 0 0 0); transform: scale(-1) scale(1); }
-        }
-
-        /* Continuous: hand-drawn jitter — subtle wobble + drift */
-        @keyframes sketch-jitter {
+        @keyframes sketch-wobble {
             0%, 100% { translate: 0 0; rotate: 0deg; }
-            15% { translate: 2px -3px; rotate: 0.8deg; }
-            35% { translate: -1px -5px; rotate: -0.5deg; }
-            50% { translate: 1px -6px; rotate: 0.3deg; }
-            65% { translate: -2px -4px; rotate: -0.8deg; }
-            85% { translate: 1px -2px; rotate: 0.5deg; }
+            20% { translate: 1px -2px; rotate: 0.6deg; }
+            40% { translate: -1px -4px; rotate: -0.4deg; }
+            60% { translate: 1px -3px; rotate: 0.3deg; }
+            80% { translate: -1px -1px; rotate: -0.5deg; }
+        }
+
+        /* White variant for dark/blue slides */
+        .slide-divider .sketch-element path,
+        .slide-divider .sketch-element line,
+        .slide-divider .sketch-element circle,
+        .slide-divider .sketch-element polyline,
+        .slide-cnqr .sketch-element path,
+        .slide-cnqr .sketch-element line,
+        .slide-cnqr .sketch-element circle,
+        .slide-cnqr .sketch-element polyline {
+            stroke: rgba(255,255,255,0.8);
+        }
+        .slide-divider.visible .sketch-element path,
+        .slide-divider.visible .sketch-element line,
+        .slide-divider.visible .sketch-element circle,
+        .slide-divider.visible .sketch-element polyline,
+        .slide-cnqr.visible .sketch-element path,
+        .slide-cnqr.visible .sketch-element line,
+        .slide-cnqr.visible .sketch-element circle,
+        .slide-cnqr.visible .sketch-element polyline {
+            animation: draw-stroke-white 1.2s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+        }
+        @keyframes draw-stroke-white {
+            0% { stroke-dashoffset: var(--path-len, 300); opacity: 0.4; }
+            15% { opacity: 0.7; }
+            100% { stroke-dashoffset: 0; opacity: 0.3; }
         }
 
         /* =========================================
@@ -473,8 +512,8 @@
 
         #frxme-canvas-container {
             width: 100%;
-            aspect-ratio: 1;
-            max-height: clamp(300px, 45vh, 500px);
+            aspect-ratio: 3/4;
+            max-height: clamp(350px, 60vh, 600px);
             position: relative;
         }
         #frxme-canvas-container canvas {
@@ -522,16 +561,7 @@
             text-align: center;
             line-height: 0.9;
         }
-        .slide-divider .sketch-element { filter: none; opacity: 0; }
-        .slide-divider.visible .sketch-element {
-            animation: sketch-draw-in-white 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards,
-                       sketch-jitter 4s ease-in-out 1.2s infinite;
-        }
-        @keyframes sketch-draw-in-white {
-            0% { opacity: 0; clip-path: inset(0 100% 0 0); transform: scale(0.7) rotate(-5deg); }
-            60% { opacity: 0.3; clip-path: inset(0 0% 0 0); transform: scale(1.05) rotate(1deg); }
-            100% { opacity: 0.25; clip-path: inset(0 0% 0 0); transform: scale(1) rotate(0deg); }
-        }
+        /* divider sketch: stroke color handled in main sketch CSS block */
 
         /* =========================================
            CNQR MEDIA SLIDES (blue bg)
@@ -546,11 +576,7 @@
             background: #fff;
             color: var(--cnqr-blue);
         }
-        .slide-cnqr .sketch-element { filter: none; opacity: 0; }
-        .slide-cnqr.visible .sketch-element {
-            animation: sketch-draw-in-white 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards,
-                       sketch-jitter 4s ease-in-out 1.2s infinite;
-        }
+        /* cnqr sketch: stroke color handled in main sketch CSS block */
 
         .athlete-grid {
             display: grid;
@@ -822,19 +848,28 @@
          SLIDE 1 — TITLE
          ============================================= -->
     <section class="slide" id="slide-title">
-        <img src="corner-bracket.png" class="sketch-element sketch-tl" alt="">
-        <img src="corner-bracket.png" class="sketch-element sketch-br" alt="">
-        <img src="flowing-arrows.png" class="sketch-element invert" style="bottom: 12%; right: 8%; width: clamp(80px, 12vw, 180px); transform: rotate(-15deg);" alt="">
-        <img src="flowing-arrows.png" class="sketch-element invert" style="top: 8%; left: 6%; width: clamp(80px, 12vw, 180px); transform: rotate(160deg);" alt="">
+        <!-- Sparkle cluster top-left -->
+        <svg class="sketch-element" style="top: 6%; left: 5%; width: clamp(70px, 10vw, 140px); height: clamp(70px, 10vw, 140px);" viewBox="0 0 100 100">
+            <path d="M 30 10 L 32 20 L 34 10 M 31 14 L 25 16 L 37 16" style="--path-len:40" />
+            <path d="M 15 35 L 17 50 L 19 35 M 16 42 L 8 44 L 26 44" style="--path-len:50" />
+            <path d="M 60 25 L 62 32 L 64 25 M 61 28 L 56 30 L 68 30" style="--path-len:35" />
+        </svg>
+        <!-- Swoosh underline bottom-right area -->
+        <svg class="sketch-element" style="bottom: 15%; right: 6%; width: clamp(120px, 18vw, 250px); height: clamp(40px, 5vw, 70px);" viewBox="0 0 200 50">
+            <path d="M 5 40 C 50 45, 80 10, 130 15 C 155 18, 175 30, 195 25" style="--path-len:210" />
+            <path d="M 180 20 L 195 25 L 182 32" style="--path-len:28" />
+        </svg>
 
         <div class="slide-content" style="align-items: center; text-align: center;">
             <img src="shxft-wordmark-black.png" alt="SHXFT" class="reveal-scale" style="width: clamp(200px, 40vw, 450px); margin-bottom: clamp(0.5rem, 1.5vw, 1rem);">
             <h2 class="reveal" style="font-weight: 600; text-transform: none; font-size: clamp(1rem, 2.5vw, 1.6rem); letter-spacing: 0.05em;">
                 Creative XR & Innovation Studio
             </h2>
-            <p class="reveal" style="font-family: var(--font-mono); font-size: clamp(0.55rem, 0.9vw, 0.7rem) !important; color: var(--text-muted); letter-spacing: 0.2em; text-transform: uppercase; margin-top: 0.5rem;">
-                A Division of CNQR Media FZCO
-            </p>
+            <div class="reveal" style="display: flex; align-items: center; justify-content: center; gap: 0.5em; margin-top: 0.5rem;">
+                <span style="font-family: var(--font-mono); font-size: clamp(0.55rem, 0.9vw, 0.7rem); color: var(--text-muted); letter-spacing: 0.2em; text-transform: uppercase;">A Division of</span>
+                <img src="CNQR CONT BANNER.png" alt="CNQR Media" style="height: clamp(14px, 2vw, 22px); opacity: 0.45; filter: grayscale(1);">
+                <span style="font-family: var(--font-mono); font-size: clamp(0.55rem, 0.9vw, 0.7rem); color: var(--text-muted); letter-spacing: 0.2em; text-transform: uppercase;">FZCO</span>
+            </div>
         </div>
     </section>
 
@@ -842,10 +877,14 @@
          SLIDE 2 — WHO ARE WE?
          ============================================= -->
     <section class="slide" id="slide-who">
-        <img src="corner-bracket.png" class="sketch-element sketch-tl" alt="">
-        <img src="corner-bracket.png" class="sketch-element sketch-br" alt="">
-        <img src="sketch-arrow.png" class="sketch-element" style="bottom: 10%; left: 5%; width: clamp(50px, 7vw, 90px); transform: rotate(30deg);" alt="">
-        <img src="flowing-arrows.png" class="sketch-element invert" style="top: 6%; right: 4%; width: clamp(80px, 10vw, 140px); transform: rotate(-20deg);" alt="">
+        <!-- Hand-drawn emphasis circle (loose, imperfect) top-right -->
+        <svg class="sketch-element" style="top: 5%; right: 4%; width: clamp(80px, 10vw, 150px); height: clamp(80px, 10vw, 150px);" viewBox="0 0 100 100">
+            <path d="M 50 8 C 80 6, 96 30, 94 55 C 92 78, 72 96, 48 94 C 24 92, 4 74, 6 48 C 8 22, 28 10, 52 10" style="--path-len:290" />
+        </svg>
+        <!-- Small spiral doodle bottom-left -->
+        <svg class="sketch-element" style="bottom: 8%; left: 5%; width: clamp(50px, 6vw, 80px); height: clamp(50px, 6vw, 80px);" viewBox="0 0 80 80">
+            <path d="M 40 42 C 44 38, 48 42, 44 46 C 38 52, 30 46, 34 38 C 40 28, 54 30, 52 44 C 50 58, 32 60, 28 46 C 24 30, 36 20, 50 24" style="--path-len:200" />
+        </svg>
 
         <div class="slide-content" style="align-items: center; text-align: center;">
             <h2 class="reveal" style="margin-bottom: clamp(0.5rem, 1.5vw, 1rem);">WHO ARE WE?</h2>
@@ -862,8 +901,10 @@
          SLIDE 3 — WHAT WE DO
          ============================================= -->
     <section class="slide" id="slide-what-we-do">
-        <img src="shapes-group.png" class="sketch-element invert" style="bottom: 8%; right: 4%; width: clamp(60px, 8vw, 110px);" alt="">
-        <img src="sketch-arrow.png" class="sketch-element" style="top: 6%; right: 8%; width: clamp(35px, 5vw, 65px); transform: rotate(-30deg);" alt="">
+        <!-- Zigzag energy line bottom-right -->
+        <svg class="sketch-element" style="bottom: 6%; right: 3%; width: clamp(80px, 12vw, 160px); height: clamp(40px, 5vw, 60px);" viewBox="0 0 160 50">
+            <path d="M 5 25 L 25 8 L 45 35 L 65 5 L 85 40 L 105 10 L 125 35 L 145 15 L 155 25" style="--path-len:300" />
+        </svg>
 
         <div class="slide-content">
             <h2 class="reveal" style="text-align: center; margin-bottom: clamp(0.5rem, 1.5vw, 1rem);">WHAT WE DO.</h2>
@@ -898,8 +939,12 @@
          SLIDE 4 — WHAT MAKES US DIFFERENT
          ============================================= -->
     <section class="slide" id="slide-different">
-        <img src="corner-bracket.png" class="sketch-element sketch-tr" alt="">
-        <img src="pattern-tile.png" class="sketch-element invert" style="bottom: 8%; left: 4%; width: clamp(60px, 8vw, 120px); transform: rotate(5deg);" alt="">
+        <!-- Exclamation marks cluster top-right -->
+        <svg class="sketch-element" style="top: 5%; right: 5%; width: clamp(50px, 7vw, 100px); height: clamp(60px, 8vw, 110px);" viewBox="0 0 80 90">
+            <path d="M 20 10 L 20 45 M 20 55 L 20 60" style="--path-len:50" />
+            <path d="M 45 5 L 45 50 M 45 60 L 45 65" style="--path-len:55" />
+            <path d="M 65 15 L 65 42 M 65 52 L 65 57" style="--path-len:37" />
+        </svg>
         <img src="shxft-icon-black.png" class="icon-watermark" alt="">
 
         <div class="slide-content" style="max-width: min(90vw, 750px);">
@@ -940,7 +985,7 @@
             <div class="frxme-layout">
                 <div class="frxme-info">
                     <span class="mono-label reveal" style="color: var(--frxme-brand);">[ Product ]</span>
-                    <img src="frxme-logo-dark.png" alt="FRXME" class="frxme-logo-img reveal-scale">
+                    <img src="frxme-logo-light.png" alt="FRXME" class="frxme-logo-img reveal-scale">
                     <p class="reveal" style="max-width: 400px;">Our proprietary mixed-reality interactive display. Built for events, retail activations, and brand experiences.</p>
 
                     <div class="frxme-specs reveal">
@@ -976,8 +1021,11 @@
          SLIDE 6 — OUR WORK (divider)
          ============================================= -->
     <section class="slide slide-divider" id="slide-our-work">
-        <img src="flowing-arrows.png" class="sketch-element" style="top: 10%; left: 5%; width: clamp(80px, 12vw, 160px);" alt="">
-        <img src="shapes-group.png" class="sketch-element" style="bottom: 10%; right: 5%; width: clamp(60px, 8vw, 120px);" alt="">
+        <!-- Big dramatic underline swoosh -->
+        <svg class="sketch-element" style="bottom: 22%; left: 50%; transform: translateX(-50%); width: clamp(200px, 40vw, 500px); height: clamp(30px, 4vw, 50px);" viewBox="0 0 300 40">
+            <path d="M 5 30 C 60 35, 100 5, 150 10 C 200 15, 240 5, 295 12" style="--path-len:310" />
+            <path d="M 15 35 C 80 38, 130 15, 180 18 C 230 21, 270 12, 290 18" style="--path-len:290" />
+        </svg>
 
         <div class="slide-content" style="align-items: center; text-align: center;">
             <h1 class="reveal-scale">OUR<br>WORK.</h1>
@@ -991,8 +1039,11 @@
          SLIDE 7 — AR CASE STUDY: SOCIAL AR (4-grid)
          ============================================= -->
     <section class="slide" id="slide-social-ar">
-        <img src="corner-bracket.png" class="sketch-element sketch-tl" alt="">
-        <img src="corner-bracket.png" class="sketch-element sketch-tr" alt="">
+        <!-- Curly arrow pointing down to grid -->
+        <svg class="sketch-element" style="top: 3%; right: 8%; width: clamp(50px, 6vw, 80px); height: clamp(60px, 8vw, 100px);" viewBox="0 0 60 80">
+            <path d="M 30 5 C 45 10, 50 25, 35 35 C 20 45, 25 60, 30 70" style="--path-len:100" />
+            <path d="M 22 62 L 30 72 L 38 62" style="--path-len:24" />
+        </svg>
 
         <div class="slide-content">
             <div style="text-align: center; margin-bottom: clamp(0.5rem, 1vw, 0.75rem);">
@@ -1038,8 +1089,10 @@
          SLIDE 8 — DIRIYAH OUTERNET (page 1)
          ============================================= -->
     <section class="slide" id="slide-diriyah-1">
-        <img src="corner-bracket.png" class="sketch-element sketch-tl" alt="">
-        <img src="sketch-arrow.png" class="sketch-element" style="top: 6%; right: 8%; width: clamp(35px, 5vw, 60px); transform: rotate(15deg);" alt="">
+        <!-- Small star doodle top-right -->
+        <svg class="sketch-element" style="top: 5%; right: 6%; width: clamp(35px, 5vw, 60px); height: clamp(35px, 5vw, 60px);" viewBox="0 0 60 60">
+            <path d="M 30 5 L 33 22 L 50 15 L 38 28 L 55 35 L 37 35 L 40 55 L 30 40 L 20 55 L 23 35 L 5 35 L 22 28 L 10 15 L 27 22 Z" style="--path-len:250" />
+        </svg>
 
         <div class="slide-content">
             <div class="case-layout">
@@ -1072,8 +1125,10 @@
          SLIDE 9 — DIRIYAH OUTERNET (page 2 — AR card)
          ============================================= -->
     <section class="slide" id="slide-diriyah-2">
-        <img src="corner-bracket.png" class="sketch-element sketch-br" alt="">
-        <img src="flowing-arrows.png" class="sketch-element invert" style="top: 8%; left: 4%; width: clamp(60px, 8vw, 120px); transform: rotate(10deg);" alt="">
+        <!-- Wavy line top -->
+        <svg class="sketch-element" style="top: 4%; left: 3%; width: clamp(100px, 14vw, 180px); height: clamp(20px, 3vw, 35px);" viewBox="0 0 180 30">
+            <path d="M 5 15 C 20 5, 35 25, 50 15 C 65 5, 80 25, 95 15 C 110 5, 125 25, 140 15 C 155 5, 170 20, 175 15" style="--path-len:190" />
+        </svg>
 
         <div class="slide-content">
             <div class="case-layout">
@@ -1101,8 +1156,12 @@
          SLIDE 10 — SOUNDSTORM 2025 (page 1)
          ============================================= -->
     <section class="slide" id="slide-soundstorm-1">
-        <img src="pattern-tile.png" class="sketch-element invert" style="top: 5%; right: 4%; width: clamp(60px, 8vw, 120px); transform: rotate(3deg);" alt="">
-        <img src="sketch-arrow.png" class="sketch-element" style="bottom: 8%; left: 5%; width: clamp(40px, 6vw, 70px); transform: rotate(-25deg);" alt="">
+        <!-- Music note doodle bottom-left -->
+        <svg class="sketch-element" style="bottom: 6%; left: 4%; width: clamp(40px, 5vw, 65px); height: clamp(50px, 6vw, 80px);" viewBox="0 0 50 65">
+            <path d="M 15 55 L 15 15 L 40 10 L 40 48" style="--path-len:110" />
+            <ellipse cx="12" cy="55" rx="8" ry="5" style="--path-len:42" />
+            <ellipse cx="37" cy="48" rx="8" ry="5" style="--path-len:42" />
+        </svg>
 
         <div class="slide-content">
             <div class="case-layout">
@@ -1135,8 +1194,11 @@
          SLIDE 11 — SOUNDSTORM 2025 (page 2 — photo booth)
          ============================================= -->
     <section class="slide" id="slide-soundstorm-2">
-        <img src="corner-bracket.png" class="sketch-element sketch-tl" alt="">
-        <img src="corner-bracket.png" class="sketch-element sketch-br" alt="">
+        <!-- Camera doodle top-right -->
+        <svg class="sketch-element" style="top: 5%; right: 5%; width: clamp(50px, 7vw, 90px); height: clamp(40px, 5vw, 70px);" viewBox="0 0 90 65">
+            <path d="M 10 20 L 25 10 L 40 20 L 80 20 L 80 55 L 10 55 Z" style="--path-len:220" />
+            <circle cx="48" cy="38" r="12" style="--path-len:76" />
+        </svg>
 
         <div class="slide-content">
             <div class="case-layout">
@@ -1167,9 +1229,12 @@
          SLIDE 12 — CGI CASE STUDY: STARBUCKS
          ============================================= -->
     <section class="slide" id="slide-cgi-starbucks">
-        <img src="corner-bracket.png" class="sketch-element sketch-tl" alt="">
-        <img src="corner-bracket.png" class="sketch-element sketch-tr" alt="">
-        <img src="sketch-arrow.png" class="sketch-element" style="bottom: 6%; right: 6%; width: clamp(40px, 5vw, 65px); transform: rotate(-40deg);" alt="">
+        <!-- Film clapperboard doodle bottom-right -->
+        <svg class="sketch-element" style="bottom: 5%; right: 5%; width: clamp(50px, 7vw, 90px); height: clamp(45px, 6vw, 75px);" viewBox="0 0 80 70">
+            <path d="M 5 20 L 75 20 L 75 65 L 5 65 Z" style="--path-len:210" />
+            <path d="M 5 20 L 75 20 L 75 5 L 5 5 Z" style="--path-len:170" />
+            <path d="M 20 5 L 30 20 M 40 5 L 50 20 M 55 5 L 65 20" style="--path-len:60" />
+        </svg>
 
         <div class="slide-content">
             <div style="text-align: center; margin-bottom: clamp(0.5rem, 1vw, 0.75rem);">
@@ -1215,8 +1280,13 @@
          SLIDE 13 — CNQR MEDIA (page 1)
          ============================================= -->
     <section class="slide slide-cnqr" id="slide-cnqr-1">
-        <img src="flowing-arrows.png" class="sketch-element" style="top: 5%; left: 3%; width: clamp(60px, 10vw, 140px);" alt="">
-        <img src="shapes-group.png" class="sketch-element" style="bottom: 5%; right: 4%; width: clamp(50px, 7vw, 100px);" alt="">
+        <!-- Globe doodle top-left -->
+        <svg class="sketch-element" style="top: 5%; left: 4%; width: clamp(50px, 7vw, 100px); height: clamp(50px, 7vw, 100px);" viewBox="0 0 80 80">
+            <circle cx="40" cy="40" r="30" style="--path-len:190" />
+            <path d="M 10 40 L 70 40" style="--path-len:60" />
+            <path d="M 40 10 C 25 25, 25 55, 40 70" style="--path-len:80" />
+            <path d="M 40 10 C 55 25, 55 55, 40 70" style="--path-len:80" />
+        </svg>
 
         <div class="slide-content">
             <h2 class="reveal" style="text-align: center;">CNQR MEDIA</h2>
@@ -1241,8 +1311,14 @@
          SLIDE 14 — CNQR MEDIA (page 2 — athletes)
          ============================================= -->
     <section class="slide slide-cnqr" id="slide-cnqr-2">
-        <img src="sketch-arrow.png" class="sketch-element" style="top: 5%; right: 5%; width: clamp(40px, 6vw, 80px); transform: rotate(-20deg);" alt="">
-        <img src="flowing-arrows.png" class="sketch-element" style="bottom: 5%; left: 3%; width: clamp(60px, 8vw, 120px);" alt="">
+        <!-- Trophy doodle top-right -->
+        <svg class="sketch-element" style="top: 4%; right: 5%; width: clamp(40px, 5vw, 70px); height: clamp(50px, 7vw, 90px);" viewBox="0 0 60 75">
+            <path d="M 18 5 L 42 5 L 42 30 C 42 45, 30 50, 30 50 C 30 50, 18 45, 18 30 Z" style="--path-len:130" />
+            <path d="M 18 15 C 8 15, 5 25, 12 30" style="--path-len:30" />
+            <path d="M 42 15 C 52 15, 55 25, 48 30" style="--path-len:30" />
+            <path d="M 25 50 L 25 60 L 35 60 L 35 50" style="--path-len:30" />
+            <path d="M 20 60 L 40 60 L 42 65 L 18 65 Z" style="--path-len:55" />
+        </svg>
 
         <div class="slide-content">
             <h2 class="reveal" style="text-align: center; margin-bottom: clamp(0.5rem, 1vw, 0.75rem);">CNQR MEDIA</h2>
@@ -1291,9 +1367,12 @@
          SLIDE 15 — PAST PARTNERSHIPS (client logos)
          ============================================= -->
     <section class="slide" id="slide-logos">
-        <img src="corner-bracket.png" class="sketch-element sketch-tl" alt="">
-        <img src="corner-bracket.png" class="sketch-element sketch-br" alt="">
-        <img src="sketch-arrow.png" class="sketch-element" style="bottom: 8%; left: 5%; width: clamp(40px, 5vw, 65px); transform: rotate(25deg);" alt="">
+        <!-- Handshake doodle bottom-right -->
+        <svg class="sketch-element" style="bottom: 5%; right: 5%; width: clamp(60px, 8vw, 110px); height: clamp(40px, 5vw, 70px);" viewBox="0 0 110 65">
+            <path d="M 5 35 L 25 35 L 40 20 L 55 35 L 70 20 L 85 35 L 105 35" style="--path-len:160" />
+            <path d="M 25 35 L 25 55" style="--path-len:20" />
+            <path d="M 85 35 L 85 55" style="--path-len:20" />
+        </svg>
 
         <div class="slide-content" style="align-items: center;">
             <h2 class="reveal" style="text-align: center; margin-bottom: clamp(0.75rem, 1.5vw, 1.25rem);">PAST PARTNERSHIPS,<br>FUTURE POSSIBILITIES.</h2>
@@ -1324,10 +1403,15 @@
          SLIDE 16 — CONTACT
          ============================================= -->
     <section class="slide" id="slide-contact">
-        <img src="corner-bracket.png" class="sketch-element sketch-tl" alt="">
-        <img src="corner-bracket.png" class="sketch-element sketch-br" alt="">
-        <img src="flowing-arrows.png" class="sketch-element invert" style="top: 10%; right: 3%; width: clamp(80px, 10vw, 150px); transform: rotate(-25deg);" alt="">
-        <img src="shapes-group.png" class="sketch-element invert" style="bottom: 10%; left: 3%; width: clamp(60px, 8vw, 110px);" alt="">
+        <!-- Envelope doodle top-right -->
+        <svg class="sketch-element" style="top: 6%; right: 5%; width: clamp(55px, 7vw, 95px); height: clamp(40px, 5vw, 65px);" viewBox="0 0 90 60">
+            <path d="M 5 10 L 85 10 L 85 55 L 5 55 Z" style="--path-len:210" />
+            <path d="M 5 10 L 45 35 L 85 10" style="--path-len:100" />
+        </svg>
+        <!-- Small sparkle bottom-left -->
+        <svg class="sketch-element" style="bottom: 8%; left: 4%; width: clamp(30px, 4vw, 50px); height: clamp(30px, 4vw, 50px);" viewBox="0 0 40 40">
+            <path d="M 20 2 L 20 38 M 2 20 L 38 20 M 8 8 L 32 32 M 32 8 L 8 32" style="--path-len:160" />
+        </svg>
 
         <div class="slide-content">
             <div class="contact-layout">
@@ -1409,8 +1493,8 @@
         const container = document.getElementById('frxme-canvas-container');
         if (container) {
             const scene = new THREE.Scene();
-            const camera = new THREE.PerspectiveCamera(35, 1, 0.1, 100);
-            camera.position.set(0, 0.3, 2.8);
+            const camera = new THREE.PerspectiveCamera(35, 3/4, 0.1, 100);
+            camera.position.set(0, 0.4, 3.2);
 
             const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
             renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
