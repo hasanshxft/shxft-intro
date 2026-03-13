@@ -132,12 +132,48 @@
            HIGHLIGHT
            ========================================= */
         .highlight {
-            background: var(--highlight-bg);
             color: var(--highlight-text);
-            padding: 0.05em 0.25em;
+            padding: 0.05em 0.3em;
             display: inline;
             box-decoration-break: clone;
             -webkit-box-decoration-break: clone;
+            position: relative;
+            z-index: 1;
+            background: transparent;
+        }
+        /* Animated sweep-in background */
+        .highlight::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: var(--highlight-bg);
+            z-index: -1;
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .visible .highlight::before {
+            transform: scaleX(1);
+            transition-delay: 0.6s;
+        }
+        /* Stagger multiple highlights */
+        .visible .reveal:nth-child(3) .highlight::before { transition-delay: 0.8s; }
+        .visible .reveal:nth-child(4) .highlight::before { transition-delay: 1.0s; }
+        .visible .reveal:nth-child(5) .highlight::before { transition-delay: 1.2s; }
+
+        /* CNQR logo hover → blue glow */
+        .cnqr-logo-inline {
+            height: clamp(14px, 2vw, 22px);
+            opacity: 0.4;
+            filter: grayscale(1);
+            transition: all 0.4s ease;
+            cursor: pointer;
+        }
+        .cnqr-logo-inline:hover {
+            opacity: 1;
+            filter: grayscale(0);
+            drop-shadow: 0 0 12px rgba(26, 86, 219, 0.6);
+            filter: grayscale(0) drop-shadow(0 0 12px rgba(26, 86, 219, 0.5));
         }
 
         /* =========================================
@@ -314,11 +350,37 @@
            BRACKET FRAME
            ========================================= */
         .bracket-frame {
-            border: 2px solid var(--sketch-stroke);
+            border: none;
             border-radius: 0;
             transform: rotate(-0.5deg);
             padding: clamp(1rem, 2.5vw, 2rem);
             position: relative;
+        }
+        /* Animated border that draws itself in */
+        .bracket-frame::before,
+        .bracket-frame::after {
+            content: '';
+            position: absolute;
+            border: 2px solid var(--sketch-stroke);
+            transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .bracket-frame::before {
+            top: 0; left: 0;
+            width: 0; height: 0;
+            border-right: none;
+            border-bottom: none;
+        }
+        .bracket-frame::after {
+            bottom: 0; right: 0;
+            width: 0; height: 0;
+            border-left: none;
+            border-top: none;
+        }
+        .visible .bracket-frame::before,
+        .visible .bracket-frame::after {
+            width: 100%;
+            height: 100%;
+            transition-delay: 0.3s;
         }
 
         /* =========================================
@@ -356,11 +418,32 @@
             flex-direction: column;
             align-items: center;
             gap: 0.5rem;
+            position: relative;
+            transition: transform 0.35s var(--ease-out-expo),
+                        box-shadow 0.35s var(--ease-out-expo);
+            cursor: default;
+        }
+        .service-bracket:hover {
+            transform: translateY(-6px) rotate(0deg) !important;
+            box-shadow: 6px 8px 0 #333;
         }
 
         .service-bracket .service-icon {
             font-size: clamp(1.5rem, 3vw, 2.5rem);
             margin-bottom: 0.25rem;
+            display: inline-block;
+        }
+        /* Icon bounce on entrance */
+        .visible .service-bracket .service-icon {
+            animation: icon-bounce 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+        .visible .service-bracket:nth-child(2) .service-icon { animation-delay: 0.2s; }
+        .visible .service-bracket:nth-child(3) .service-icon { animation-delay: 0.4s; }
+        .visible .service-bracket:nth-child(4) .service-icon { animation-delay: 0.6s; }
+        @keyframes icon-bounce {
+            0% { transform: scale(0) rotate(-20deg); opacity: 0; }
+            60% { transform: scale(1.3) rotate(5deg); opacity: 1; }
+            100% { transform: scale(1) rotate(0deg); opacity: 1; }
         }
 
         .service-bracket h3 {
@@ -385,11 +468,42 @@
 
         .diff-point {
             padding-left: clamp(0.75rem, 1.5vw, 1.25rem);
+            border-left: 3px solid transparent;
+            transition: border-color 0.4s ease;
+        }
+        /* Slide-in from left with border accent */
+        .visible .diff-point {
+            border-left-color: #000;
+        }
+        .visible .diff-point.reveal {
+            transform: translateX(0);
+            opacity: 1;
         }
 
         .diff-point p {
             font-size: clamp(0.85rem, 1.4vw, 1.05rem) !important;
         }
+
+        /* Animated underline on bold/strong words */
+        .diff-point strong {
+            position: relative;
+        }
+        .diff-point strong::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 2.5px;
+            background: #000;
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .visible .diff-point:nth-child(1) strong::after { transition-delay: 0.5s; transform: scaleX(1); }
+        .visible .diff-point:nth-child(2) strong::after { transition-delay: 0.7s; transform: scaleX(1); }
+        .visible .diff-point:nth-child(3) strong::after { transition-delay: 0.9s; transform: scaleX(1); }
+        .visible .diff-point:nth-child(4) strong::after { transition-delay: 1.1s; transform: scaleX(1); }
 
         /* Large icon watermark */
         .icon-watermark {
@@ -867,7 +981,7 @@
             </h2>
             <div class="reveal" style="display: flex; align-items: center; justify-content: center; gap: 0.5em; margin-top: 0.5rem;">
                 <span style="font-family: var(--font-mono); font-size: clamp(0.55rem, 0.9vw, 0.7rem); color: var(--text-muted); letter-spacing: 0.2em; text-transform: uppercase;">A Division of</span>
-                <img src="CNQR CONT BANNER.png" alt="CNQR Media" style="height: clamp(14px, 2vw, 22px); opacity: 0.45; filter: grayscale(1);">
+                <img src="CNQR CONT BANNER.png" alt="CNQR Media" class="cnqr-logo-inline">
                 <span style="font-family: var(--font-mono); font-size: clamp(0.55rem, 0.9vw, 0.7rem); color: var(--text-muted); letter-spacing: 0.2em; text-transform: uppercase;">FZCO</span>
             </div>
         </div>
@@ -957,16 +1071,16 @@
             <p class="reveal">No fluff. No ego. Just sharp work that actually ships:</p>
 
             <div class="diff-points">
-                <div class="diff-point reveal">
+                <div class="diff-point reveal-left">
                     <p>&#8226;&ensp;<strong>Culture</strong> in our veins, not trends in our wake.</p>
                 </div>
-                <div class="diff-point reveal">
+                <div class="diff-point reveal-left">
                     <p>&#8226;&ensp;Built to <strong>launch</strong>, not just to brainstorm.</p>
                 </div>
-                <div class="diff-point reveal">
+                <div class="diff-point reveal-left">
                     <p>&#8226;&ensp;<strong>Lean, agile, senior</strong> where it matters.</p>
                 </div>
-                <div class="diff-point reveal">
+                <div class="diff-point reveal-left">
                     <p>&#8226;&ensp;Small team. <strong>Big energy</strong>. <strong>Bigger moves</strong>.</p>
                 </div>
             </div>
