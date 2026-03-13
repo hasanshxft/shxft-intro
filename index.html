@@ -148,38 +148,87 @@
             pointer-events: none;
             opacity: 0;
             z-index: 0;
+            will-change: opacity, transform, clip-path;
         }
         .sketch-element.invert { filter: invert(1); }
 
-        .sketch-tl { top: 4%; left: 4%; width: clamp(50px, 7vw, 100px); }
-        .sketch-tr { top: 4%; right: 4%; width: clamp(50px, 7vw, 100px); transform: scaleX(-1); }
-        .sketch-bl { bottom: 4%; left: 4%; width: clamp(50px, 7vw, 100px); transform: scaleY(-1); }
-        .sketch-br { bottom: 4%; right: 4%; width: clamp(50px, 7vw, 100px); transform: scale(-1); }
+        .sketch-tl { top: 4%; left: 4%; width: clamp(60px, 9vw, 130px); }
+        .sketch-tr { top: 4%; right: 4%; width: clamp(60px, 9vw, 130px); transform: scaleX(-1); }
+        .sketch-bl { bottom: 4%; left: 4%; width: clamp(60px, 9vw, 130px); transform: scaleY(-1); }
+        .sketch-br { bottom: 4%; right: 4%; width: clamp(60px, 9vw, 130px); transform: scale(-1); }
 
+        /* === ENTRANCE: Draw-in with clip-path wipe === */
         .slide.visible .sketch-element {
-            animation: sketch-fade 0.8s ease forwards;
+            animation: sketch-draw-in 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards,
+                       sketch-jitter 4s ease-in-out 1.2s infinite;
         }
-        .slide.visible .sketch-element:nth-child(2) { animation-delay: 0.15s; }
-        .slide.visible .sketch-element:nth-child(3) { animation-delay: 0.3s; }
+        .slide.visible .sketch-element:nth-child(2) {
+            animation-delay: 0.2s, 1.4s;
+            --jitter-seed: 1;
+        }
+        .slide.visible .sketch-element:nth-child(3) {
+            animation-delay: 0.4s, 1.8s;
+            --jitter-seed: 2;
+        }
+        .slide.visible .sketch-element:nth-child(4) {
+            animation-delay: 0.6s, 2.2s;
+            --jitter-seed: 3;
+        }
 
-        @keyframes sketch-fade {
-            from { opacity: 0; transform: translateY(8px); }
-            to { opacity: 0.12; }
+        /* Draw-in: clip-path reveals left→right + slight scale bounce */
+        @keyframes sketch-draw-in {
+            0% {
+                opacity: 0;
+                clip-path: inset(0 100% 0 0);
+                transform: scale(0.7) rotate(-5deg);
+            }
+            60% {
+                opacity: 0.4;
+                clip-path: inset(0 0% 0 0);
+                transform: scale(1.05) rotate(1deg);
+            }
+            100% {
+                opacity: 0.35;
+                clip-path: inset(0 0% 0 0);
+                transform: scale(1) rotate(0deg);
+            }
         }
-        .slide.visible .sketch-tr { animation-name: sketch-fade-flipX; }
-        .slide.visible .sketch-bl { animation-name: sketch-fade-flipY; }
-        .slide.visible .sketch-br { animation-name: sketch-fade-flipXY; }
-        @keyframes sketch-fade-flipX {
-            from { opacity: 0; transform: scaleX(-1) translateY(8px); }
-            to { opacity: 0.12; transform: scaleX(-1) translateY(0); }
+
+        /* Flip variants preserve their base transform */
+        .slide.visible .sketch-tr {
+            animation-name: sketch-draw-in-flipX, sketch-jitter;
         }
-        @keyframes sketch-fade-flipY {
-            from { opacity: 0; transform: scaleY(-1) translateY(-8px); }
-            to { opacity: 0.12; transform: scaleY(-1) translateY(0); }
+        .slide.visible .sketch-bl {
+            animation-name: sketch-draw-in-flipY, sketch-jitter;
         }
-        @keyframes sketch-fade-flipXY {
-            from { opacity: 0; transform: scale(-1) translateY(-8px); }
-            to { opacity: 0.12; transform: scale(-1) translateY(0); }
+        .slide.visible .sketch-br {
+            animation-name: sketch-draw-in-flipXY, sketch-jitter;
+        }
+
+        @keyframes sketch-draw-in-flipX {
+            0% { opacity: 0; clip-path: inset(0 100% 0 0); transform: scaleX(-1) scale(0.7) rotate(-5deg); }
+            60% { opacity: 0.4; clip-path: inset(0 0% 0 0); transform: scaleX(-1) scale(1.05) rotate(1deg); }
+            100% { opacity: 0.35; clip-path: inset(0 0% 0 0); transform: scaleX(-1) scale(1) rotate(0deg); }
+        }
+        @keyframes sketch-draw-in-flipY {
+            0% { opacity: 0; clip-path: inset(0 0 100% 0); transform: scaleY(-1) scale(0.7); }
+            60% { opacity: 0.4; clip-path: inset(0 0 0% 0); transform: scaleY(-1) scale(1.05); }
+            100% { opacity: 0.35; clip-path: inset(0 0 0% 0); transform: scaleY(-1) scale(1); }
+        }
+        @keyframes sketch-draw-in-flipXY {
+            0% { opacity: 0; clip-path: inset(100% 0 0 0); transform: scale(-1) scale(0.7); }
+            60% { opacity: 0.4; clip-path: inset(0% 0 0 0); transform: scale(-1) scale(1.05); }
+            100% { opacity: 0.35; clip-path: inset(0% 0 0 0); transform: scale(-1) scale(1); }
+        }
+
+        /* Continuous: hand-drawn jitter — subtle wobble + drift */
+        @keyframes sketch-jitter {
+            0%, 100% { translate: 0 0; rotate: 0deg; }
+            15% { translate: 2px -3px; rotate: 0.8deg; }
+            35% { translate: -1px -5px; rotate: -0.5deg; }
+            50% { translate: 1px -6px; rotate: 0.3deg; }
+            65% { translate: -2px -4px; rotate: -0.8deg; }
+            85% { translate: 1px -2px; rotate: 0.5deg; }
         }
 
         /* =========================================
@@ -475,11 +524,13 @@
         }
         .slide-divider .sketch-element { filter: none; opacity: 0; }
         .slide-divider.visible .sketch-element {
-            animation: sketch-fade-white 0.8s ease forwards;
+            animation: sketch-draw-in-white 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards,
+                       sketch-jitter 4s ease-in-out 1.2s infinite;
         }
-        @keyframes sketch-fade-white {
-            from { opacity: 0; transform: translateY(8px); }
-            to { opacity: 0.15; }
+        @keyframes sketch-draw-in-white {
+            0% { opacity: 0; clip-path: inset(0 100% 0 0); transform: scale(0.7) rotate(-5deg); }
+            60% { opacity: 0.3; clip-path: inset(0 0% 0 0); transform: scale(1.05) rotate(1deg); }
+            100% { opacity: 0.25; clip-path: inset(0 0% 0 0); transform: scale(1) rotate(0deg); }
         }
 
         /* =========================================
@@ -497,7 +548,8 @@
         }
         .slide-cnqr .sketch-element { filter: none; opacity: 0; }
         .slide-cnqr.visible .sketch-element {
-            animation: sketch-fade-white 0.8s ease forwards;
+            animation: sketch-draw-in-white 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards,
+                       sketch-jitter 4s ease-in-out 1.2s infinite;
         }
 
         .athlete-grid {
