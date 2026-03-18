@@ -518,7 +518,7 @@
         }
 
         /* =========================================
-           SHOWCASE GRID (4 cards in a row)
+           SHOWCASE GRID (4 cards in a row) — FRXME-style
            ========================================= */
         .showcase-grid {
             display: grid;
@@ -531,7 +531,23 @@
             box-shadow: 3px 3px 0 #333;
             overflow: hidden;
             position: relative;
+            transition: transform 0.45s var(--ease-out-expo),
+                        box-shadow 0.45s var(--ease-out-expo);
+            cursor: default;
         }
+        .showcase-card:hover {
+            transform: translateY(-8px) scale(1.03);
+            box-shadow: 6px 10px 0 #333, 0 20px 40px rgba(0,0,0,0.12);
+        }
+
+        /* Stagger card entrances */
+        .visible .showcase-card.reveal:nth-child(1) { transition-delay: 0.15s; }
+        .visible .showcase-card.reveal:nth-child(2) { transition-delay: 0.25s; }
+        .visible .showcase-card.reveal:nth-child(3) { transition-delay: 0.35s; }
+        .visible .showcase-card.reveal:nth-child(4) { transition-delay: 0.45s; }
+
+        /* Vertical offset pattern — every other card slightly lower */
+        .showcase-card:nth-child(even) { margin-top: clamp(8px, 1.5vw, 20px); }
 
         .showcase-card .card-image {
             aspect-ratio: 9/16;
@@ -539,13 +555,27 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            position: relative;
+            overflow: hidden;
         }
+        /* Gradient overlay on hover */
+        .showcase-card .card-image::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, transparent 50%, rgba(0,0,0,0.4) 100%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+        .showcase-card:hover .card-image::after { opacity: 1; }
 
         .showcase-card .card-image img {
             width: 100%;
             height: 100%;
             object-fit: cover;
+            transition: transform 0.6s var(--ease-out-expo);
         }
+        .showcase-card:hover .card-image img { transform: scale(1.06); }
 
         .showcase-card .card-label {
             padding: clamp(0.35rem, 0.7vw, 0.5rem) clamp(0.5rem, 1vw, 0.75rem);
@@ -555,6 +585,16 @@
             color: var(--text-secondary);
             text-align: center;
             border-top: 1px solid #eee;
+        }
+
+        /* Photo cards — FRXME-style hover */
+        .photo-card {
+            transition: transform 0.45s var(--ease-out-expo),
+                        box-shadow 0.45s var(--ease-out-expo);
+        }
+        .photo-card:hover {
+            transform: rotate(0deg) translateY(-6px) !important;
+            box-shadow: 6px 8px 0 #333, 0 16px 32px rgba(0,0,0,0.1);
         }
 
         /* =========================================
@@ -678,16 +718,149 @@
         /* divider sketch: stroke color handled in main sketch CSS block */
 
         /* =========================================
-           CNQR MEDIA SLIDES (blue bg)
+           SLIDE TEXTURE BACKGROUNDS (slides 2-4)
+           ========================================= */
+        .slide-textured::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image:
+                radial-gradient(circle, rgba(0,0,0,0.03) 1px, transparent 1px);
+            background-size: 32px 32px;
+            pointer-events: none;
+            z-index: 0;
+        }
+        /* Animated subtle noise texture */
+        .slide-textured::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: repeating-linear-gradient(
+                -45deg,
+                transparent,
+                transparent 80px,
+                rgba(0,0,0,0.012) 80px,
+                rgba(0,0,0,0.012) 81px
+            );
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Animated horizontal rule between content */
+        .animated-rule {
+            width: 100%;
+            height: 2px;
+            background: transparent;
+            position: relative;
+            overflow: hidden;
+        }
+        .animated-rule::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, #333, transparent);
+            transform: scaleX(0);
+            transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.5s;
+        }
+        .visible .animated-rule::after { transform: scaleX(1); }
+        .slide-cnqr .animated-rule::after,
+        .slide-divider .animated-rule::after {
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent);
+        }
+
+        /* Typewriter cursor on headings */
+        .cursor-blink::after {
+            content: '_';
+            animation: cursorBlink 0.8s step-end infinite;
+            font-weight: 300;
+            opacity: 0.5;
+        }
+        @keyframes cursorBlink {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 0; }
+        }
+
+        /* =========================================
+           CNQR MEDIA SLIDES (blue bg — sports energy)
            ========================================= */
         .slide-cnqr {
             background: var(--cnqr-blue);
             color: #fff;
+            overflow: hidden;
         }
+
+        /* Dynamic diagonal speed lines background */
+        .cnqr-bg-lines {
+            position: absolute;
+            inset: 0;
+            overflow: hidden;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .cnqr-bg-lines::before {
+            content: '';
+            position: absolute;
+            inset: -50%;
+            background: repeating-linear-gradient(
+                -55deg,
+                transparent,
+                transparent 40px,
+                rgba(255,255,255,0.03) 40px,
+                rgba(255,255,255,0.03) 42px
+            );
+            animation: cnqr-lines-slide 20s linear infinite;
+        }
+        @keyframes cnqr-lines-slide {
+            0% { transform: translateX(0) translateY(0); }
+            100% { transform: translateX(80px) translateY(80px); }
+        }
+
+        /* Glowing orb accent */
+        .cnqr-glow {
+            position: absolute;
+            width: clamp(300px, 50vw, 600px);
+            height: clamp(300px, 50vw, 600px);
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 60%);
+            pointer-events: none;
+            z-index: 0;
+            animation: cnqr-glow-pulse 5s ease-in-out infinite;
+        }
+        @keyframes cnqr-glow-pulse {
+            0%, 100% { opacity: 0.5; transform: scale(1); }
+            50% { opacity: 0.9; transform: scale(1.08); }
+        }
+
+        /* Football pitch half-circle deco */
+        .cnqr-pitch-arc {
+            position: absolute;
+            bottom: -10%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: clamp(200px, 35vw, 450px);
+            height: clamp(100px, 18vw, 225px);
+            border: 2px solid rgba(255,255,255,0.06);
+            border-bottom: none;
+            border-radius: 50% 50% 0 0;
+            pointer-events: none;
+            z-index: 0;
+        }
+
         .slide-cnqr h2 { color: #fff; }
         .slide-cnqr p { color: rgba(255,255,255,0.85); }
         .slide-cnqr .highlight {
-            background: #fff;
+            background: transparent;
+            color: #fff;
+        }
+        .slide-cnqr .highlight::before {
+            background: rgba(255,255,255,0.95);
+        }
+        .visible .slide-cnqr .highlight::before,
+        .slide-cnqr.visible .highlight::before {
+            transform: scaleX(1);
+        }
+        .slide-cnqr .highlight {
             color: var(--cnqr-blue);
         }
         /* cnqr sketch: stroke color handled in main sketch CSS block */
@@ -699,36 +872,86 @@
         }
 
         .athlete-card {
-            background: rgba(255,255,255,0.1);
-            border-radius: 12px;
-            padding: clamp(0.75rem, 1.5vw, 1.25rem);
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 16px;
+            padding: clamp(1rem, 2vw, 1.5rem);
             text-align: center;
-            backdrop-filter: blur(8px);
+            backdrop-filter: blur(12px);
+            transition: transform 0.45s var(--ease-out-expo),
+                        box-shadow 0.45s var(--ease-out-expo),
+                        border-color 0.4s ease,
+                        background 0.4s ease;
+            cursor: default;
+            position: relative;
+            overflow: hidden;
+        }
+        /* Glow sweep on hover */
+        .athlete-card::before {
+            content: '';
+            position: absolute;
+            top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: radial-gradient(circle at center, rgba(255,255,255,0.08), transparent 60%);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            pointer-events: none;
+        }
+        .athlete-card:hover::before { opacity: 1; }
+        .athlete-card:hover {
+            transform: translateY(-8px) scale(1.03);
+            box-shadow: 0 16px 40px rgba(0,0,0,0.2), 0 0 30px rgba(255,255,255,0.06);
+            border-color: rgba(255,255,255,0.25);
+            background: rgba(255,255,255,0.12);
         }
 
+        /* Stagger athlete card entrances */
+        .visible .athlete-card.reveal:nth-child(1) { transition-delay: 0.15s; }
+        .visible .athlete-card.reveal:nth-child(2) { transition-delay: 0.3s; }
+        .visible .athlete-card.reveal:nth-child(3) { transition-delay: 0.45s; }
+
         .athlete-card .athlete-photo {
-            width: clamp(60px, 8vw, 100px);
-            height: clamp(60px, 8vw, 100px);
+            width: clamp(70px, 9vw, 110px);
+            height: clamp(70px, 9vw, 110px);
             border-radius: 50%;
-            background: rgba(255,255,255,0.15);
+            background: rgba(255,255,255,0.12);
+            border: 2px solid rgba(255,255,255,0.15);
             margin: 0 auto clamp(0.5rem, 1vw, 0.75rem);
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: clamp(1.5rem, 3vw, 2.5rem);
+            transition: border-color 0.4s ease, transform 0.4s ease;
+        }
+        .athlete-card:hover .athlete-photo {
+            border-color: rgba(255,255,255,0.4);
+            transform: scale(1.06);
         }
 
         .athlete-card h3 {
-            font-size: clamp(0.85rem, 1.5vw, 1.1rem);
+            font-size: clamp(0.9rem, 1.6vw, 1.15rem);
             color: #fff;
-            margin-bottom: 0.25rem;
+            margin-bottom: 0.15rem;
+            letter-spacing: 0.04em;
+        }
+
+        .athlete-card .athlete-role {
+            font-family: var(--font-body);
+            font-size: clamp(0.6rem, 0.9vw, 0.75rem);
+            color: rgba(255,255,255,0.5);
+            margin-bottom: 0.5rem;
         }
 
         .athlete-card .athlete-stats {
             font-family: var(--font-mono);
-            font-size: clamp(0.55rem, 0.85vw, 0.7rem);
-            color: rgba(255,255,255,0.6);
+            font-size: clamp(0.6rem, 0.9vw, 0.72rem);
+            color: rgba(255,255,255,0.7);
             letter-spacing: 0.05em;
+        }
+        .athlete-card .stat-number {
+            font-weight: 700;
+            color: #fff;
+            font-size: clamp(0.7rem, 1vw, 0.85rem);
         }
 
         /* =========================================
@@ -990,7 +1213,7 @@
     <!-- =============================================
          SLIDE 2 — WHO ARE WE?
          ============================================= -->
-    <section class="slide" id="slide-who">
+    <section class="slide slide-textured" id="slide-who">
         <!-- Hand-drawn emphasis circle (loose, imperfect) top-right -->
         <svg class="sketch-element" style="top: 5%; right: 4%; width: clamp(80px, 10vw, 150px); height: clamp(80px, 10vw, 150px);" viewBox="0 0 100 100">
             <path d="M 50 8 C 80 6, 96 30, 94 55 C 92 78, 72 96, 48 94 C 24 92, 4 74, 6 48 C 8 22, 28 10, 52 10" style="--path-len:290" />
@@ -999,9 +1222,25 @@
         <svg class="sketch-element" style="bottom: 8%; left: 5%; width: clamp(50px, 6vw, 80px); height: clamp(50px, 6vw, 80px);" viewBox="0 0 80 80">
             <path d="M 40 42 C 44 38, 48 42, 44 46 C 38 52, 30 46, 34 38 C 40 28, 54 30, 52 44 C 50 58, 32 60, 28 46 C 24 30, 36 20, 50 24" style="--path-len:200" />
         </svg>
+        <!-- Dot cluster accent mid-left -->
+        <svg class="sketch-element" style="top: 40%; left: 3%; width: clamp(40px, 5vw, 70px); height: clamp(60px, 7vw, 100px);" viewBox="0 0 50 80">
+            <circle cx="10" cy="15" r="3" style="--path-len:19" />
+            <circle cx="25" cy="8" r="2" style="--path-len:13" />
+            <circle cx="38" cy="22" r="4" style="--path-len:25" />
+            <circle cx="15" cy="40" r="2.5" style="--path-len:16" />
+            <circle cx="30" cy="50" r="3" style="--path-len:19" />
+            <circle cx="8" cy="65" r="2" style="--path-len:13" />
+            <circle cx="42" cy="70" r="3.5" style="--path-len:22" />
+        </svg>
+        <!-- Arrow pointing to bracket frame -->
+        <svg class="sketch-element" style="top: 20%; right: 12%; width: clamp(60px, 8vw, 100px); height: clamp(70px, 9vw, 110px);" viewBox="0 0 80 90">
+            <path d="M 70 10 C 55 15, 40 30, 25 55 C 20 65, 18 72, 15 80" style="--path-len:120" />
+            <path d="M 8 72 L 15 82 L 22 70" style="--path-len:28" />
+        </svg>
 
         <div class="slide-content" style="align-items: center; text-align: center;">
-            <h2 class="reveal" style="margin-bottom: clamp(0.5rem, 1.5vw, 1rem);">WHO ARE WE?</h2>
+            <h2 class="reveal cursor-blink" style="margin-bottom: clamp(0.5rem, 1.5vw, 1rem);">WHO ARE WE?</h2>
+            <div class="animated-rule reveal"></div>
             <div class="bracket-frame reveal" style="max-width: 700px;">
                 <p class="subtitle" style="font-size: clamp(1rem, 2.2vw, 1.5rem) !important; font-weight: 500; color: var(--text-primary); line-height: 1.5 !important;">
                     SHXFT is a creative agency built for what's next. We blend <span class="highlight">strategy, design, and tech</span> to make brands move at the speed of culture.
@@ -1014,10 +1253,27 @@
     <!-- =============================================
          SLIDE 3 — WHAT WE DO
          ============================================= -->
-    <section class="slide" id="slide-what-we-do">
+    <section class="slide slide-textured" id="slide-what-we-do">
         <!-- Zigzag energy line bottom-right -->
         <svg class="sketch-element" style="bottom: 6%; right: 3%; width: clamp(80px, 12vw, 160px); height: clamp(40px, 5vw, 60px);" viewBox="0 0 160 50">
             <path d="M 5 25 L 25 8 L 45 35 L 65 5 L 85 40 L 105 10 L 125 35 L 145 15 L 155 25" style="--path-len:300" />
+        </svg>
+        <!-- Light bulb doodle top-left -->
+        <svg class="sketch-element" style="top: 4%; left: 4%; width: clamp(45px, 6vw, 80px); height: clamp(60px, 7vw, 100px);" viewBox="0 0 60 80">
+            <path d="M 30 10 C 45 10, 52 22, 52 32 C 52 42, 44 48, 40 52 L 40 60 L 20 60 L 20 52 C 16 48, 8 42, 8 32 C 8 22, 15 10, 30 10 Z" style="--path-len:180" />
+            <path d="M 22 60 L 22 65 L 38 65 L 38 60" style="--path-len:30" />
+            <path d="M 24 65 L 24 68 L 36 68 L 36 65" style="--path-len:22" />
+            <path d="M 26 35 L 30 28 L 34 35" style="--path-len:20" />
+        </svg>
+        <!-- Connecting lines doodle mid-right -->
+        <svg class="sketch-element" style="top: 45%; right: 2%; width: clamp(40px, 5vw, 60px); height: clamp(80px, 10vw, 130px);" viewBox="0 0 50 110">
+            <circle cx="25" cy="10" r="5" style="--path-len:32" />
+            <path d="M 25 15 L 25 35" style="--path-len:20" />
+            <circle cx="25" cy="40" r="5" style="--path-len:32" />
+            <path d="M 25 45 L 25 65" style="--path-len:20" />
+            <circle cx="25" cy="70" r="5" style="--path-len:32" />
+            <path d="M 25 75 L 25 95" style="--path-len:20" />
+            <circle cx="25" cy="100" r="5" style="--path-len:32" />
         </svg>
 
         <div class="slide-content">
@@ -1052,17 +1308,35 @@
     <!-- =============================================
          SLIDE 4 — WHAT MAKES US DIFFERENT
          ============================================= -->
-    <section class="slide" id="slide-different">
+    <section class="slide slide-textured" id="slide-different">
         <!-- Exclamation marks cluster top-right -->
         <svg class="sketch-element" style="top: 5%; right: 5%; width: clamp(50px, 7vw, 100px); height: clamp(60px, 8vw, 110px);" viewBox="0 0 80 90">
             <path d="M 20 10 L 20 45 M 20 55 L 20 60" style="--path-len:50" />
             <path d="M 45 5 L 45 50 M 45 60 L 45 65" style="--path-len:55" />
             <path d="M 65 15 L 65 42 M 65 52 L 65 57" style="--path-len:37" />
         </svg>
+        <!-- Rocket doodle bottom-left -->
+        <svg class="sketch-element" style="bottom: 5%; left: 4%; width: clamp(50px, 6vw, 85px); height: clamp(70px, 9vw, 120px);" viewBox="0 0 60 90">
+            <path d="M 30 10 C 15 25, 12 50, 18 70 L 30 62 L 42 70 C 48 50, 45 25, 30 10 Z" style="--path-len:180" />
+            <path d="M 18 70 L 12 82 L 22 75" style="--path-len:30" />
+            <path d="M 42 70 L 48 82 L 38 75" style="--path-len:30" />
+            <circle cx="30" cy="38" r="6" style="--path-len:38" />
+            <path d="M 24 78 L 27 88 L 30 80 L 33 88 L 36 78" style="--path-len:35" />
+        </svg>
+        <!-- Checklist doodle mid-right -->
+        <svg class="sketch-element" style="top: 35%; right: 3%; width: clamp(40px, 5vw, 65px); height: clamp(50px, 6vw, 80px);" viewBox="0 0 50 65">
+            <path d="M 5 10 L 12 17 L 22 5" style="--path-len:28" />
+            <path d="M 28 12 L 45 12" style="--path-len:17" />
+            <path d="M 5 28 L 12 35 L 22 23" style="--path-len:28" />
+            <path d="M 28 30 L 45 30" style="--path-len:17" />
+            <path d="M 5 46 L 12 53 L 22 41" style="--path-len:28" />
+            <path d="M 28 48 L 45 48" style="--path-len:17" />
+        </svg>
         <img src="shxft-icon-black.png" class="icon-watermark" alt="">
 
         <div class="slide-content" style="max-width: min(90vw, 750px);">
             <h2 class="reveal" style="text-align: center; margin-bottom: clamp(0.5rem, 1vw, 0.75rem);">WHAT MAKES US DIFFERENT?</h2>
+            <div class="animated-rule reveal" style="max-width: 200px; margin: 0 auto;"></div>
 
             <div class="reveal" style="margin-bottom: clamp(0.5rem, 1vw, 0.75rem);">
                 <p style="font-weight: 700; color: var(--text-primary); font-size: clamp(0.9rem, 1.5vw, 1.1rem) !important;">We're not your typical agency.</p>
@@ -1394,6 +1668,11 @@
          SLIDE 13 — CNQR MEDIA (page 1)
          ============================================= -->
     <section class="slide slide-cnqr" id="slide-cnqr-1">
+        <!-- Dynamic background -->
+        <div class="cnqr-bg-lines"></div>
+        <div class="cnqr-glow" style="top: 20%; left: -10%;"></div>
+        <div class="cnqr-pitch-arc"></div>
+
         <!-- Globe doodle top-left -->
         <svg class="sketch-element" style="top: 5%; left: 4%; width: clamp(50px, 7vw, 100px); height: clamp(50px, 7vw, 100px);" viewBox="0 0 80 80">
             <circle cx="40" cy="40" r="30" style="--path-len:190" />
@@ -1401,12 +1680,19 @@
             <path d="M 40 10 C 25 25, 25 55, 40 70" style="--path-len:80" />
             <path d="M 40 10 C 55 25, 55 55, 40 70" style="--path-len:80" />
         </svg>
+        <!-- Football doodle bottom-right -->
+        <svg class="sketch-element" style="bottom: 6%; right: 5%; width: clamp(45px, 6vw, 80px); height: clamp(45px, 6vw, 80px);" viewBox="0 0 60 60">
+            <circle cx="30" cy="30" r="25" style="--path-len:157" />
+            <path d="M 30 5 L 24 18 L 12 18 L 8 30 L 15 42 L 12 55" style="--path-len:75" />
+            <path d="M 30 5 L 36 18 L 48 18 L 52 30 L 45 42 L 48 55" style="--path-len:75" />
+        </svg>
 
-        <div class="slide-content">
-            <h2 class="reveal" style="text-align: center;">CNQR MEDIA</h2>
+        <div class="slide-content" style="z-index: 2;">
+            <h2 class="reveal" style="text-align: center; font-size: clamp(2rem, 5.5vw, 3.8rem);">CNQR MEDIA</h2>
+            <div class="animated-rule reveal" style="max-width: 120px; margin: 0 auto;"></div>
 
             <div class="reveal" style="max-width: 800px;">
-                <p style="font-weight: 700; color: #fff; margin-bottom: 0.75rem;">Backed by CNQR Media</p>
+                <p style="font-weight: 700; color: #fff; margin-bottom: 0.75rem; font-size: clamp(1rem, 1.8vw, 1.3rem) !important;">Backed by CNQR Media</p>
                 <p>SHXFT operates as the internal immersive studio of CNQR Media — a leading agency representing top-tier athletes and <span class="highlight">building culture-shifting brand stories.</span></p>
             </div>
             <div class="reveal">
@@ -1425,6 +1711,11 @@
          SLIDE 14 — CNQR MEDIA (page 2 — athletes)
          ============================================= -->
     <section class="slide slide-cnqr" id="slide-cnqr-2">
+        <!-- Dynamic background -->
+        <div class="cnqr-bg-lines"></div>
+        <div class="cnqr-glow" style="bottom: 10%; right: -15%;"></div>
+        <div class="cnqr-pitch-arc"></div>
+
         <!-- Trophy doodle top-right -->
         <svg class="sketch-element" style="top: 4%; right: 5%; width: clamp(40px, 5vw, 70px); height: clamp(50px, 7vw, 90px);" viewBox="0 0 60 75">
             <path d="M 18 5 L 42 5 L 42 30 C 42 45, 30 50, 30 50 C 30 50, 18 45, 18 30 Z" style="--path-len:130" />
@@ -1433,9 +1724,16 @@
             <path d="M 25 50 L 25 60 L 35 60 L 35 50" style="--path-len:30" />
             <path d="M 20 60 L 40 60 L 42 65 L 18 65 Z" style="--path-len:55" />
         </svg>
+        <!-- Whistle doodle bottom-left -->
+        <svg class="sketch-element" style="bottom: 6%; left: 4%; width: clamp(50px, 7vw, 90px); height: clamp(35px, 5vw, 60px);" viewBox="0 0 90 50">
+            <path d="M 10 25 L 40 25 C 55 25, 65 15, 75 15 C 85 15, 85 35, 75 35 C 65 35, 55 25, 40 25" style="--path-len:130" />
+            <circle cx="76" cy="25" r="8" style="--path-len:50" />
+            <path d="M 10 25 L 5 18" style="--path-len:10" />
+        </svg>
 
-        <div class="slide-content">
-            <h2 class="reveal" style="text-align: center; margin-bottom: clamp(0.5rem, 1vw, 0.75rem);">CNQR MEDIA</h2>
+        <div class="slide-content" style="z-index: 2;">
+            <h2 class="reveal" style="text-align: center; margin-bottom: clamp(0.5rem, 1vw, 0.75rem);">OUR ATHLETES</h2>
+            <p class="reveal mono-label" style="text-align: center; color: rgba(255,255,255,0.5); margin-bottom: clamp(0.5rem, 1vw, 0.75rem);">[ Select Roster ]</p>
 
             <div class="athlete-grid">
                 <div class="athlete-card reveal">
@@ -1444,8 +1742,9 @@
                         &#9917;
                     </div>
                     <h3>PEREIRA</h3>
+                    <div class="athlete-role">Al Hilal · Defender</div>
                     <div class="athlete-stats">
-                        IG: 4.7M+ &ensp; X: 1M+
+                        <span class="stat-number">4.7M+</span> IG &ensp; <span class="stat-number">1M+</span> X
                     </div>
                 </div>
                 <div class="athlete-card reveal">
@@ -1454,8 +1753,9 @@
                         &#9917;
                     </div>
                     <h3>AUBAMEYANG</h3>
+                    <div class="athlete-role">Al Qadsiah · Forward</div>
                     <div class="athlete-stats">
-                        IG: 13.6M+ &ensp; X: 2.2M+
+                        <span class="stat-number">13.6M+</span> IG &ensp; <span class="stat-number">2.2M+</span> X
                     </div>
                 </div>
                 <div class="athlete-card reveal">
@@ -1464,13 +1764,14 @@
                         &#9917;
                     </div>
                     <h3>RAKITIC</h3>
+                    <div class="athlete-role">Retired · Midfielder</div>
                     <div class="athlete-stats">
-                        IG: 17.3M+ &ensp; X: 2.2M+
+                        <span class="stat-number">17.3M+</span> IG &ensp; <span class="stat-number">2.2M+</span> X
                     </div>
                 </div>
             </div>
 
-            <p class="reveal" style="text-align: center; font-size: clamp(0.7rem, 1vw, 0.85rem) !important; color: rgba(255,255,255,0.5); margin-top: 0.5rem;">
+            <p class="reveal" style="text-align: center; font-size: clamp(0.7rem, 1vw, 0.85rem) !important; color: rgba(255,255,255,0.5); margin-top: 0.75rem;">
                 These are just three of the players we work with & help work on their online/offline strategies.<br>
                 <em>Full/more expansive list is available on request.</em>
             </p>
