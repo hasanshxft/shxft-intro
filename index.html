@@ -1498,6 +1498,10 @@
         /* =========================================
            RESPONSIVE
            ========================================= */
+        @media (max-width: 768px) {
+            html { scroll-snap-type: none !important; }
+            .slide { scroll-snap-align: none; height: auto; min-height: 100dvh; overflow: visible; overflow-x: clip; }
+        }
         @media (max-width: 768px) and (max-height: 900px) {
             .nav-dots { display: none; }
             .slide { padding: clamp(0.75rem, 2.5vw, 1.5rem); }
@@ -2522,7 +2526,7 @@
                     progressBar.style.width = ((idx + 1) / slides.length) * 100 + '%';
                 }
             });
-        }, { threshold: 0.3 });
+        }, { threshold: 0.1 });
 
         slides.forEach(s => slideObserver.observe(s));
 
