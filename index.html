@@ -1501,6 +1501,15 @@
         @media (max-width: 768px) {
             html { scroll-snap-type: none !important; }
             .slide { scroll-snap-align: none; height: auto; min-height: 100dvh; overflow: visible; overflow-x: clip; }
+            /* Force everything visible on mobile — no reveal animations */
+            .reveal, .reveal-scale, .reveal-left, .reveal-right {
+                opacity: 1 !important;
+                transform: none !important;
+            }
+            .highlight::before {
+                transform: scaleX(1) !important;
+            }
+            .nav-dots { display: none; }
         }
         @media (max-width: 768px) and (max-height: 900px) {
             .nav-dots { display: none; }
