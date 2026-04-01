@@ -1499,6 +1499,7 @@
            RESPONSIVE
            ========================================= */
         @media (max-width: 768px) and (max-height: 900px) {
+            .nav-dots { display: none; }
             .slide { padding: clamp(0.75rem, 2.5vw, 1.5rem); }
             .slide-content { gap: clamp(0.5rem, 1.5vw, 1rem); }
             h2 { font-size: clamp(1.3rem, 5vw, 2rem); }
@@ -1686,7 +1687,7 @@
                     </div>
                     <div class="service-icon">&#10024;</div>
                     <h3>DIGITAL</h3>
-                    <p>We design <span class="highlight">immersive experiences</span> using AR on TikTok, Snapchat, and the web — blending creativity with interaction.</p>
+                    <p>We design <span class="highlight">immersive experiences</span> using AR on TikTok, Snapchat, and the web, blending creativity with interaction.</p>
                 </div>
                 <div class="service-bracket bracket-frame reveal" style="transform: rotate(0.3deg);">
                     <!-- Creative: pencil + palette -->
@@ -2400,22 +2401,22 @@
             <h2 class="reveal" style="text-align: center; margin-bottom: clamp(0.75rem, 1.5vw, 1.25rem);">PAST PARTNERSHIPS,<br>FUTURE POSSIBILITIES.</h2>
 
             <div class="logos-grid reveal">
-                <div class="logo-item"><img src="logos/Diriyah Logo.jpg" alt="Diriyah" style="max-height: 100%; max-width: 100%; object-fit: contain;"></div>
-                <div class="logo-item"><img src="logos/Starbucks Logo.png" alt="Starbucks" style="max-height: 100%; max-width: 100%; object-fit: contain;"></div>
-                <div class="logo-item"><img src="logos/Emirates logo.png" alt="Emirates" style="max-height: 100%; max-width: 100%; object-fit: contain;"></div>
-                <div class="logo-item"><img src="logos/e_logo.png" alt="e&" style="max-height: 100%; max-width: 100%; object-fit: contain;"></div>
-                <div class="logo-item"><img src="logos/Myntra_logo.png" alt="Myntra" style="max-height: 100%; max-width: 100%; object-fit: contain;"></div>
-                <div class="logo-item"><img src="logos/Spotify logo.png" alt="Spotify" style="max-height: 100%; max-width: 100%; object-fit: contain;"></div>
-                <div class="logo-item"><img src="logos/Unilever Logo.png" alt="Unilever" style="max-height: 100%; max-width: 100%; object-fit: contain;"></div>
-                <div class="logo-item"><img src="logos/Al Ula FC.svg" alt="AlUla FC" style="max-height: 100%; max-width: 100%; object-fit: contain;"></div>
-                <div class="logo-item"><img src="logos/Orange Logo.png" alt="Orange" style="max-height: 100%; max-width: 100%; object-fit: contain;"></div>
-                <div class="logo-item"><img src="logos/RCU Logo.jpg" alt="RCU" style="max-height: 100%; max-width: 100%; object-fit: contain;"></div>
-                <div class="logo-item"><img src="logos/HUDA Beauty Logo.png" alt="Huda Beauty" style="max-height: 100%; max-width: 100%; object-fit: contain;"></div>
-                <div class="logo-item"><img src="logos/ASOS Logo.png" alt="ASOS" style="max-height: 100%; max-width: 100%; object-fit: contain;"></div>
-                <div class="logo-item"><img src="logos/SAMSUNG Logo.avif" alt="Samsung" style="max-height: 100%; max-width: 100%; object-fit: contain;"></div>
-                <div class="logo-item"><img src="logos/MDL BEAST lodo.jpg" alt="MDL Beast" style="max-height: 100%; max-width: 100%; object-fit: contain;"></div>
-                <div class="logo-item"><img src="logos/Prime Video Logo.png" alt="Prime Video" style="max-height: 100%; max-width: 100%; object-fit: contain;"></div>
-                <div class="logo-item"><img src="logos/Qiddiya Logo.png" alt="Qiddiya" style="max-height: 100%; max-width: 100%; object-fit: contain;"></div>
+                <div class="logo-item"><img src="logos/Diriyah Logo.jpg" alt="Diriyah"></div>
+                <div class="logo-item"><img src="logos/Starbucks Logo.png" alt="Starbucks"></div>
+                <div class="logo-item"><img src="logos/Emirates logo.png" alt="Emirates"></div>
+                <div class="logo-item"><img src="logos/e_logo.png" alt="e&"></div>
+                <div class="logo-item"><img src="logos/Myntra_logo.png" alt="Myntra"></div>
+                <div class="logo-item"><img src="logos/Spotify logo.png" alt="Spotify"></div>
+                <div class="logo-item"><img src="logos/Unilever Logo.png" alt="Unilever"></div>
+                <div class="logo-item"><img src="logos/Al Ula FC.svg" alt="AlUla FC"></div>
+                <div class="logo-item"><img src="logos/Orange Logo.png" alt="Orange"></div>
+                <div class="logo-item"><img src="logos/RCU Logo.jpg" alt="RCU"></div>
+                <div class="logo-item"><img src="logos/HUDA Beauty Logo.png" alt="Huda Beauty"></div>
+                <div class="logo-item"><img src="logos/ASOS Logo.png" alt="ASOS"></div>
+                <div class="logo-item"><img src="logos/SAMSUNG Logo.avif" alt="Samsung"></div>
+                <div class="logo-item"><img src="logos/MDL BEAST lodo.jpg" alt="MDL Beast"></div>
+                <div class="logo-item"><img src="logos/Prime Video Logo.png" alt="Prime Video"></div>
+                <div class="logo-item"><img src="logos/Qiddiya Logo.png" alt="Qiddiya"></div>
             </div>
         </div>
         <img src="shxft-wordmark-black.png" alt="" class="slide-logo">
@@ -2787,6 +2788,22 @@
             }, { threshold: 0.1 });
             frxmeObserver.observe(document.getElementById('slide-frxme'));
         }
+    </script>
+
+    <!-- iOS video autoplay fix — trigger play when visible -->
+    <script>
+        const allVideos = document.querySelectorAll('video');
+        const videoObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                const v = entry.target;
+                if (entry.isIntersecting) {
+                    v.play().catch(() => {});
+                } else {
+                    v.pause();
+                }
+            });
+        }, { threshold: 0.1 });
+        allVideos.forEach(v => videoObserver.observe(v));
     </script>
 
     <!-- Content protection -->
