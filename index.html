@@ -2,6 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="icon" type="image/png" href="SHXFT_Favicon.png">
+    <link rel="apple-touch-icon" href="SHXFT_Favicon.png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SHXFT — Creative XR & Innovation Studio</title>
     <meta name="description" content="SHXFT — Creative XR & Innovation Studio. A Division of CNQR Media.">
@@ -428,6 +430,193 @@
             box-shadow: 6px 8px 0 #333;
         }
 
+        /* Pop-out card elements — rise from behind the card */
+        .service-bracket { overflow: visible; }
+        .popup-element {
+            position: absolute;
+            pointer-events: none;
+            transform: translateY(20px) scale(0.5);
+            opacity: 0;
+            transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1),
+                        opacity 0.25s ease;
+            z-index: -1;
+            filter: drop-shadow(3px 3px 0 rgba(0,0,0,0.08));
+        }
+        .popup-element svg {
+            stroke: var(--sketch-stroke);
+            stroke-width: 2.5;
+            fill: #f5f0e8;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+        .service-bracket:hover .popup-element {
+            opacity: 1;
+            z-index: 10;
+        }
+        .service-bracket:hover .popup-element.pop-tl {
+            transform: translate(-30%, -85%) scale(1) rotate(-12deg);
+        }
+        .service-bracket:hover .popup-element.pop-tr {
+            transform: translate(30%, -85%) scale(1) rotate(10deg);
+        }
+        .service-bracket:hover .popup-element.pop-tc {
+            transform: translate(0, -90%) scale(1) rotate(3deg);
+        }
+        .service-bracket:hover .popup-element:nth-child(1) { transition-delay: 0s; }
+        .service-bracket:hover .popup-element:nth-child(2) { transition-delay: 0.08s; }
+        .service-bracket:hover .popup-element:nth-child(3) { transition-delay: 0.15s; }
+
+        @media (max-width: 768px) {
+            .popup-element { display: none; }
+        }
+
+        /* ===========================================
+           DIRIYAH SAND THEME — warm, light, desert
+           =========================================== */
+        .slide-diriyah {
+            background: linear-gradient(180deg, #f5e6cc 0%, #eddcbf 50%, #e8d2ad 100%) !important;
+        }
+        .slide-diriyah h2 { color: #3d2b1a !important; }
+        .slide-diriyah p { color: #5c4530 !important; }
+        .slide-diriyah p[style*="font-weight: 700"],
+        .slide-diriyah p[style*="font-weight: 600"] { color: #3d2b1a !important; }
+        .slide-diriyah .sketch-element path,
+        .slide-diriyah .sketch-element circle { stroke: #a08060 !important; }
+        .slide-diriyah .slide-logo { filter: none !important; opacity: 0.5 !important; }
+        /* Video labels on case study slides */
+        .vid-label {
+            position: absolute; bottom: 0; left: 0; right: 0;
+            padding: 6px 10px;
+            background: linear-gradient(0deg, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.2) 60%, transparent 100%);
+            font-family: var(--font-mono); font-size: clamp(0.45rem, 0.7vw, 0.55rem);
+            letter-spacing: 0.1em; text-transform: uppercase;
+            color: rgba(255,255,255,0.85); border-radius: 0 0 12px 12px;
+            pointer-events: none;
+        }
+
+        /* Desert scene at bottom */
+        .desert-scene {
+            position: absolute; bottom: 0; left: 0; right: 0; height: clamp(100px, 18vh, 180px);
+            pointer-events: none; z-index: 0; overflow: hidden;
+        }
+        .desert-scene svg {
+            position: absolute; bottom: 0; width: 100%; height: 100%;
+        }
+        .desert-scene .dunes-back path { fill: #d4b896; }
+        .desert-scene .dunes-front path { fill: #c9a87c; }
+        .desert-scene .dunes-back { animation: dune-drift 20s ease-in-out infinite alternate; }
+        .desert-scene .dunes-front { animation: dune-drift 14s ease-in-out 1s infinite alternate-reverse; }
+        @keyframes dune-drift {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-3%); }
+        }
+        /* Sand particles drifting across */
+        .sand-particles {
+            position: absolute; inset: 0; pointer-events: none; z-index: 1; overflow: hidden;
+        }
+        .sand-particle {
+            position: absolute; width: 2px; height: 2px; border-radius: 50%;
+            background: #b8976a; opacity: 0;
+            animation: sand-drift var(--sand-dur, 8s) linear infinite;
+        }
+        @keyframes sand-drift {
+            0% { transform: translate(0, 0); opacity: 0; }
+            10% { opacity: var(--sand-op, 0.3); }
+            90% { opacity: var(--sand-op, 0.3); }
+            100% { transform: translate(var(--sand-x, 30vw), var(--sand-y, -10vh)); opacity: 0; }
+        }
+
+        /* ===========================================
+           SOUNDSTORM MUSIC THEME
+           =========================================== */
+        .slide-soundstorm {
+            background: linear-gradient(135deg, #0f0520 0%, #1a0a30 50%, #0a0a0a 100%) !important;
+        }
+        .slide-soundstorm h2 { color: #e8e4df !important; }
+        .slide-soundstorm .sketch-element path,
+        .slide-soundstorm .sketch-element circle,
+        .slide-soundstorm .sketch-element ellipse { stroke: #7c3aed !important; }
+
+        .music-bars {
+            position: absolute; bottom: 0; left: 0; right: 0; height: 80px;
+            display: flex; align-items: flex-end; justify-content: center; gap: 6px;
+            pointer-events: none; z-index: 0; opacity: 0.12;
+        }
+        .music-bar {
+            width: 4px; background: #a855f7; border-radius: 2px 2px 0 0;
+            animation: bar-pulse var(--bar-dur, 1s) ease-in-out infinite alternate;
+        }
+        @keyframes bar-pulse {
+            0% { height: var(--bar-min, 10px); }
+            100% { height: var(--bar-max, 50px); }
+        }
+
+        .floating-notes {
+            position: absolute; inset: 0; pointer-events: none; z-index: 0; overflow: hidden;
+        }
+        .floating-note {
+            position: absolute; font-size: clamp(14px, 2vw, 22px); opacity: 0;
+            animation: note-float 6s ease-in-out infinite;
+        }
+        @keyframes note-float {
+            0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+            15% { opacity: 0.15; }
+            85% { opacity: 0.15; }
+            100% { transform: translateY(-40vh) rotate(20deg); opacity: 0; }
+        }
+
+        /* ===========================================
+           BROWSER MOCKUP (Web Dev slide)
+           =========================================== */
+        .web-browser-mock {
+            width: clamp(280px, 35vw, 420px);
+            border: 2px solid #333;
+            border-radius: 12px;
+            box-shadow: 4px 4px 0 #333;
+            overflow: hidden;
+            position: relative;
+            background: #1a1a1a;
+        }
+        .browser-bar {
+            display: flex; align-items: center; gap: 8px;
+            padding: 8px 12px;
+            background: #222;
+            border-bottom: 1px solid #333;
+        }
+        .browser-dots { display: flex; gap: 5px; }
+        .browser-dots span {
+            width: 8px; height: 8px; border-radius: 50%;
+            background: #444;
+        }
+        .browser-dots span:first-child { background: #ff5f57; }
+        .browser-dots span:nth-child(2) { background: #febc2e; }
+        .browser-dots span:nth-child(3) { background: #28c840; }
+        .browser-url {
+            font-family: var(--font-mono); font-size: 0.55rem;
+            color: #888; letter-spacing: 0.02em;
+            background: #1a1a1a; padding: 2px 10px; border-radius: 4px;
+            flex: 1;
+        }
+
+        /* Floating app UI elements */
+        @keyframes app-float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-12px); }
+        }
+
+        /* Rocket drifts slowly from bottom-left to top-left */
+        .rocket-fly {
+            transition: none;
+        }
+        #slide-different.visible .rocket-fly {
+            animation: rocket-drift 8s ease-in-out 0.5s forwards;
+        }
+        @keyframes rocket-drift {
+            0% { transform: translate(0, 0); opacity: 1; }
+            85% { opacity: 1; }
+            100% { transform: translate(0, -85vh); opacity: 0; }
+        }
+
         .service-bracket .service-icon {
             font-size: clamp(1.5rem, 3vw, 2.5rem);
             margin-bottom: 0.25rem;
@@ -569,13 +758,16 @@
         }
         .showcase-card:hover .card-image::after { opacity: 1; }
 
-        .showcase-card .card-image img {
+        .showcase-card .card-image img,
+        .showcase-card .card-image video {
             width: 100%;
             height: 100%;
             object-fit: cover;
             transition: transform 0.6s var(--ease-out-expo);
+            pointer-events: none;
         }
-        .showcase-card:hover .card-image img { transform: scale(1.06); }
+        .showcase-card:hover .card-image img,
+        .showcase-card:hover .card-image video { transform: scale(1.06); }
 
         .showcase-card .card-label {
             padding: clamp(0.35rem, 0.7vw, 0.5rem) clamp(0.5rem, 1vw, 0.75rem);
@@ -872,9 +1064,9 @@
         }
 
         .athlete-card {
-            background: rgba(255,255,255,0.08);
-            border: 1px solid rgba(255,255,255,0.12);
-            border-radius: 16px;
+            background: linear-gradient(160deg, #1a3a5c 0%, #0d2240 40%, #0a1a30 100%);
+            border: 1px solid rgba(100, 180, 255, 0.2);
+            border-radius: 10px;
             padding: clamp(1rem, 2vw, 1.5rem);
             text-align: center;
             backdrop-filter: blur(12px);
@@ -911,35 +1103,53 @@
         .visible .athlete-card.reveal:nth-child(3) { transition-delay: 0.45s; }
 
         .athlete-card .athlete-photo {
-            width: clamp(70px, 9vw, 110px);
-            height: clamp(70px, 9vw, 110px);
-            border-radius: 50%;
-            background: rgba(255,255,255,0.12);
-            border: 2px solid rgba(255,255,255,0.15);
-            margin: 0 auto clamp(0.5rem, 1vw, 0.75rem);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: clamp(1.5rem, 3vw, 2.5rem);
+            width: 85%;
+            aspect-ratio: 1;
+            border-radius: 6px;
+            background-color: rgba(100, 180, 255, 0.05);
+            background-size: cover;
+            background-position: center top;
+            border: 1px solid rgba(100, 180, 255, 0.15);
+            margin: 0 auto clamp(0.35rem, 0.7vw, 0.5rem);
             transition: border-color 0.4s ease, transform 0.4s ease;
         }
         .athlete-card:hover .athlete-photo {
-            border-color: rgba(255,255,255,0.4);
-            transform: scale(1.06);
+            border-color: rgba(100, 180, 255, 0.4);
+            transform: scale(1.03);
+        }
+        /* FIFA-style card top strip with rating + flag */
+        .card-top-strip {
+            display: flex; justify-content: space-between; align-items: center;
+            width: 85%; margin: 0 auto; padding: 0 0 0.2rem;
+        }
+        .card-rating {
+            font-family: var(--font-display); font-weight: 900;
+            font-size: clamp(1.2rem, 2.2vw, 1.6rem);
+            color: #7bc4ff; line-height: 1;
+        }
+        .card-flag { font-size: clamp(0.9rem, 1.5vw, 1.2rem); }
+        .card-position {
+            font-family: var(--font-mono); font-size: clamp(0.45rem, 0.65vw, 0.55rem);
+            letter-spacing: 0.15em; color: rgba(123, 196, 255, 0.5);
         }
 
         .athlete-card h3 {
-            font-size: clamp(0.9rem, 1.6vw, 1.15rem);
-            color: #fff;
-            margin-bottom: 0.15rem;
-            letter-spacing: 0.04em;
+            font-size: clamp(0.85rem, 1.5vw, 1.1rem);
+            color: #e0f0ff;
+            margin-bottom: 0.1rem;
+            letter-spacing: 0.06em;
         }
 
         .athlete-card .athlete-role {
             font-family: var(--font-body);
-            font-size: clamp(0.6rem, 0.9vw, 0.75rem);
-            color: rgba(255,255,255,0.5);
-            margin-bottom: 0.5rem;
+            font-size: clamp(0.55rem, 0.8vw, 0.68rem);
+            color: rgba(123, 196, 255, 0.5);
+            margin-bottom: 0.35rem;
+        }
+        /* Divider line */
+        .card-divider {
+            width: 60%; height: 1px; margin: 0.2rem auto;
+            background: linear-gradient(90deg, transparent, rgba(100, 180, 255, 0.2), transparent);
         }
 
         .athlete-card .athlete-stats {
@@ -948,6 +1158,139 @@
             color: rgba(255,255,255,0.7);
             letter-spacing: 0.05em;
         }
+        /* Holographic shine sweep */
+        .card-holo {
+            position: absolute; inset: 0; border-radius: 12px; pointer-events: none;
+            background: linear-gradient(105deg, transparent 30%, rgba(255,255,255,0.08) 45%, rgba(255,255,255,0.15) 50%, rgba(255,255,255,0.08) 55%, transparent 70%);
+            background-size: 250% 100%;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+        .athlete-card:hover .card-holo {
+            opacity: 1;
+            animation: holo-sweep 1.5s ease-in-out infinite;
+        }
+        @keyframes holo-sweep {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+        .athlete-card:hover {
+            border-color: rgba(100, 180, 255, 0.4);
+            box-shadow: 0 16px 40px rgba(0,0,0,0.3), 0 0 25px rgba(100, 180, 255, 0.15);
+        }
+
+        /* CNQR FC badge sparkles */
+        .cnqr-badge-wrap { position: relative; }
+        .sparkle {
+            position: absolute;
+            width: 12px; height: 12px;
+            pointer-events: none;
+            animation: sparkle-pop 1.8s ease-in-out infinite;
+        }
+        .sparkle::before, .sparkle::after {
+            content: '';
+            position: absolute;
+            background: #7bc4ff;
+            border-radius: 2px;
+            box-shadow: 0 0 6px rgba(123, 196, 255, 0.8);
+        }
+        .sparkle::before {
+            width: 12px; height: 2px;
+            top: 50%; left: 0;
+            transform: translateY(-50%);
+        }
+        .sparkle::after {
+            width: 2px; height: 12px;
+            left: 50%; top: 0;
+            transform: translateX(-50%);
+        }
+        @keyframes sparkle-pop {
+            0%, 100% { opacity: 0; transform: scale(0.3) rotate(0deg); }
+            40% { opacity: 1; transform: scale(1.3) rotate(45deg); }
+            60% { opacity: 1; transform: scale(1) rotate(45deg); }
+            100% { opacity: 0; transform: scale(0.3) rotate(90deg); }
+        }
+
+        /* Radial glow pulse behind badge */
+        .cnqr-badge-wrap::before {
+            content: '';
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 140%; height: 140%;
+            background: radial-gradient(circle, rgba(100, 180, 255, 0.15) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: badge-glow 3s ease-in-out infinite;
+            pointer-events: none;
+            z-index: -1;
+        }
+        @keyframes badge-glow {
+            0%, 100% { opacity: 0.4; transform: translate(-50%, -50%) scale(0.9); }
+            50% { opacity: 1; transform: translate(-50%, -50%) scale(1.1); }
+        }
+
+        /* Player card PNG wraps */
+        .player-card-wrap {
+            position: relative;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: transform 0.4s var(--ease-out-expo), box-shadow 0.4s ease;
+            cursor: default;
+        }
+        .player-card-wrap:hover {
+            transform: translateY(-8px) scale(1.03);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.4), 0 0 30px rgba(100, 180, 255, 0.15);
+        }
+        .player-card-img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 12px;
+        }
+        .player-card-wrap .card-holo {
+            position: absolute; inset: 0; border-radius: 12px; pointer-events: none;
+            background: linear-gradient(105deg, transparent 30%, rgba(255,255,255,0.08) 45%, rgba(255,255,255,0.18) 50%, rgba(255,255,255,0.08) 55%, transparent 70%);
+            background-size: 250% 100%;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+        .player-card-wrap:hover .card-holo {
+            opacity: 1;
+            animation: holo-sweep 1.5s ease-in-out infinite;
+        }
+
+        .player-card-col {
+            display: flex; flex-direction: column; align-items: center; gap: 0.4rem;
+        }
+        .card-stats-bar {
+            display: flex; gap: clamp(0.4rem, 0.8vw, 0.6rem);
+            font-family: var(--font-mono);
+            font-size: clamp(0.5rem, 0.7vw, 0.6rem);
+            color: rgba(255,255,255,0.55);
+            letter-spacing: 0.04em;
+        }
+        .card-stats-bar span {
+            display: inline-flex; align-items: center; gap: 3px;
+        }
+
+        /* Stagger card entrances */
+        .visible .player-card-col.reveal:nth-child(1) { transition-delay: 0.2s; }
+        .visible .player-card-col.reveal:nth-child(2) { transition-delay: 0.4s; }
+        .visible .player-card-col.reveal:nth-child(3) { transition-delay: 0.6s; }
+
+        .card-stat-row {
+            display: flex; gap: clamp(0.5rem, 1vw, 0.75rem);
+            justify-content: center; margin-top: 0.5rem;
+        }
+        .card-stat {
+            display: flex; flex-direction: column; align-items: center; gap: 0.1rem;
+        }
+        .stat-label-sm {
+            font-family: var(--font-mono); font-size: 0.45rem;
+            letter-spacing: 0.12em; color: rgba(255,255,255,0.35);
+            text-transform: uppercase;
+        }
+
         .athlete-card .stat-number {
             font-weight: 700;
             color: #fff;
@@ -959,15 +1302,17 @@
            ========================================= */
         .logos-grid {
             display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: clamp(1rem, 2vw, 2rem);
+            grid-template-columns: repeat(4, 1fr);
+            gap: clamp(0.75rem, 1.5vw, 1.25rem);
             align-items: center;
             justify-items: center;
+            max-width: 700px;
+            margin: 0 auto;
         }
 
         .logo-item {
-            width: clamp(60px, 10vw, 120px);
-            height: clamp(40px, 6vw, 70px);
+            width: 100%;
+            aspect-ratio: 3 / 2;
             background: #f5f5f5;
             border-radius: 8px;
             display: flex;
@@ -982,9 +1327,10 @@
         }
 
         .logo-item img {
-            max-width: 80%;
-            max-height: 80%;
+            max-width: 75%;
+            max-height: 70%;
             object-fit: contain;
+            mix-blend-mode: multiply;
         }
 
         /* =========================================
@@ -1078,6 +1424,7 @@
             width: 8px; height: 8px;
             border-radius: 50%;
             border: 1.5px solid rgba(0,0,0,0.25);
+            position: relative;
             background: transparent;
             cursor: pointer;
             padding: 0;
@@ -1088,6 +1435,39 @@
             border-color: #000;
             transform: scale(1.3);
         }
+        .nav-dot::after {
+            content: attr(data-label);
+            position: absolute;
+            right: 18px;
+            top: 50%;
+            font-family: var(--font-mono);
+            font-size: clamp(0.5rem, 0.65vw, 0.6rem);
+            color: var(--text-secondary);
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s ease, transform 0.2s ease;
+            transform: translateY(-50%) translateX(4px);
+        }
+        .nav-dot:hover::after {
+            opacity: 1;
+            transform: translateY(-50%) translateX(0);
+        }
+        .nav-dot.active::after {
+            opacity: 1;
+            transform: translateY(-50%) translateX(0);
+            animation: labelFadeOut 2.5s ease forwards;
+        }
+        @keyframes labelFadeOut {
+            0%, 60% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+        .nav-dot.dark-dot::after { color: rgba(255,255,255,0.5); }
+
+        @media (max-width: 900px) {
+            .nav-dot::after { display: none; }
+        }
+
         .nav-dot.dark-dot {
             border-color: rgba(255,255,255,0.3);
         }
@@ -1131,7 +1511,7 @@
             .case-layout { grid-template-columns: 1fr; }
             .case-images { grid-template-columns: 1fr 1fr; gap: 0.5rem; }
             .athlete-grid { grid-template-columns: repeat(3, 1fr); gap: 0.5rem; }
-            .logos-grid { grid-template-columns: repeat(3, 1fr); gap: 0.75rem; }
+            .logos-grid { grid-template-columns: repeat(4, 1fr); gap: 0.5rem; }
             .contact-layout { grid-template-columns: 1fr; text-align: center; }
             .contact-person { flex-direction: column; }
 
@@ -1149,6 +1529,7 @@
             .service-bracket-grid { grid-template-columns: 1fr; }
             .showcase-grid { grid-template-columns: repeat(2, 1fr); }
             .athlete-grid { grid-template-columns: 1fr 1fr 1fr; }
+            .logos-grid { grid-template-columns: repeat(2, 1fr); }
         }
 
         @media (max-height: 500px) {
@@ -1281,21 +1662,52 @@
 
             <div class="service-bracket-grid">
                 <div class="service-bracket bracket-frame reveal" style="transform: rotate(-0.3deg);">
+                    <!-- Strategy: target + compass star -->
+                    <div class="popup-element pop-tr" style="top: 0; right: 8px; width: clamp(40px, 5vw, 55px);">
+                        <svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="16"/><circle cx="20" cy="20" r="10"/><circle cx="20" cy="20" r="4"/><line x1="20" y1="2" x2="20" y2="10"/><line x1="20" y1="30" x2="20" y2="38"/></svg>
+                    </div>
+                    <div class="popup-element pop-tl" style="top: 0; left: 8px; width: clamp(36px, 4.5vw, 48px);">
+                        <svg viewBox="0 0 36 36"><path d="M18 2 L21 13 L32 11 L24 18 L32 25 L21 23 L18 34 L15 23 L4 25 L12 18 L4 11 L15 13Z"/></svg>
+                    </div>
                     <div class="service-icon">&#9900;</div>
                     <h3>STRATEGY</h3>
                     <p>From brand positioning to <span class="highlight">content ecosystems</span> — we shape the ideas behind the impact.</p>
                 </div>
                 <div class="service-bracket bracket-frame reveal" style="transform: rotate(0.4deg);">
+                    <!-- Digital: phone + sparkle -->
+                    <div class="popup-element pop-tr" style="top: 0; right: 10px; width: clamp(32px, 4vw, 44px);">
+                        <svg viewBox="0 0 32 50"><rect x="4" y="2" width="24" height="46" rx="4"/><line x1="14" y1="42" x2="18" y2="42"/><circle cx="16" cy="18" r="6"/><path d="M10 18 L22 18 M16 12 L16 24"/></svg>
+                    </div>
+                    <div class="popup-element pop-tl" style="top: 0; left: 10px; width: clamp(34px, 4.5vw, 46px);">
+                        <svg viewBox="0 0 34 34"><path d="M17 2 L19 13 L30 11 L22 17 L30 23 L19 21 L17 32 L15 21 L4 23 L12 17 L4 11 L15 13Z"/></svg>
+                    </div>
+                    <div class="popup-element pop-tc" style="top: 0; left: 50%; margin-left: -18px; width: clamp(30px, 3.5vw, 40px);">
+                        <svg viewBox="0 0 30 22"><path d="M4 20 Q8 10 14 6"/><path d="M4 16 Q8 8 12 5"/><path d="M4 12 Q7 7 10 5"/><circle cx="22" cy="6" r="4"/></svg>
+                    </div>
                     <div class="service-icon">&#10024;</div>
                     <h3>DIGITAL</h3>
                     <p>We design <span class="highlight">immersive experiences</span> using AR on TikTok, Snapchat, and the web — blending creativity with interaction.</p>
                 </div>
                 <div class="service-bracket bracket-frame reveal" style="transform: rotate(0.3deg);">
+                    <!-- Creative: pencil + palette -->
+                    <div class="popup-element pop-tr" style="top: 0; right: 12px; width: clamp(28px, 3.5vw, 38px);">
+                        <svg viewBox="0 0 20 50"><path d="M10 2 L16 10 L14 42 L10 48 L6 42 L4 10Z"/><line x1="4" y1="10" x2="16" y2="10"/><line x1="6" y1="38" x2="14" y2="38"/></svg>
+                    </div>
+                    <div class="popup-element pop-tl" style="top: 0; left: 8px; width: clamp(42px, 5vw, 56px);">
+                        <svg viewBox="0 0 42 36"><ellipse cx="20" cy="20" rx="18" ry="14"/><circle cx="12" cy="18" r="2.5"/><circle cx="20" cy="13" r="2.5"/><circle cx="28" cy="18" r="2.5"/><circle cx="20" cy="24" r="2.5"/><circle cx="10" cy="26" r="3" fill="var(--sketch-stroke)"/></svg>
+                    </div>
                     <div class="service-icon">&#128161;</div>
                     <h3>CREATIVE</h3>
                     <p>We craft campaigns, visuals, and <span class="highlight">stories that connect</span> — with purpose, punch, and personality.</p>
                 </div>
                 <div class="service-bracket bracket-frame reveal" style="transform: rotate(-0.4deg);">
+                    <!-- Production: clapperboard + camera -->
+                    <div class="popup-element pop-tr" style="top: 0; right: 8px; width: clamp(42px, 5vw, 56px);">
+                        <svg viewBox="0 0 42 38"><rect x="2" y="14" width="38" height="22" rx="2"/><path d="M2 14 L42 14 L42 4 L2 4Z"/><path d="M10 4 L18 14 M24 4 L32 14"/></svg>
+                    </div>
+                    <div class="popup-element pop-tl" style="top: 0; left: 8px; width: clamp(40px, 5vw, 52px);">
+                        <svg viewBox="0 0 40 30"><rect x="2" y="5" width="26" height="20" rx="3"/><path d="M28 10 L38 4 L38 26 L28 20"/><circle cx="15" cy="15" r="5"/></svg>
+                    </div>
                     <div class="service-icon">&#127909;</div>
                     <h3>PRODUCTION</h3>
                     <p>From FOOH and CGI videos to <span class="highlight">interactive AR mirror</span> (our product FRXME), we bring ideas to life in motion and mixed reality.</p>
@@ -1315,8 +1727,8 @@
             <path d="M 45 5 L 45 50 M 45 60 L 45 65" style="--path-len:55" />
             <path d="M 65 15 L 65 42 M 65 52 L 65 57" style="--path-len:37" />
         </svg>
-        <!-- Rocket doodle bottom-left -->
-        <svg class="sketch-element" style="bottom: 5%; left: 4%; width: clamp(50px, 6vw, 85px); height: clamp(70px, 9vw, 120px);" viewBox="0 0 60 90">
+        <!-- Rocket doodle bottom-left — flies upward when visible -->
+        <svg class="sketch-element rocket-fly" style="bottom: 5%; left: 4%; width: clamp(50px, 6vw, 85px); height: clamp(70px, 9vw, 120px);" viewBox="0 0 60 90">
             <path d="M 30 10 C 15 25, 12 50, 18 70 L 30 62 L 42 70 C 48 50, 45 25, 30 10 Z" style="--path-len:180" />
             <path d="M 18 70 L 12 82 L 22 75" style="--path-len:30" />
             <path d="M 42 70 L 48 82 L 38 75" style="--path-len:30" />
@@ -1401,6 +1813,7 @@
                 </div>
 
                 <div id="frxme-canvas-container" class="reveal-scale"></div>
+                <a href="https://product.frxme.co" target="_blank" rel="noopener" class="reveal" style="display: inline-block; margin-top: clamp(0.5rem, 1vw, 0.75rem); font-family: var(--font-mono); font-size: clamp(0.6rem, 0.8vw, 0.7rem); letter-spacing: 0.1em; text-transform: uppercase; color: var(--frxme-text); border: 1px solid rgba(6, 182, 212, 0.3); padding: 0.4rem 1.2rem; border-radius: 6px; text-decoration: none; transition: all 0.3s ease; text-align: center; backdrop-filter: blur(4px); background: rgba(6, 182, 212, 0.05);">Explore FRXME &rarr;</a>
             </div>
         </div>
     </section>
@@ -1441,30 +1854,26 @@
 
             <div class="showcase-grid">
                 <div class="showcase-card reveal">
-                    <div class="card-image img-placeholder" style="aspect-ratio: 9/16;">
-                        <!-- Replace with: <img src="ar-soundstorm.jpg" alt="SoundStorm 2024"> -->
-                        AR GAME
+                    <div class="card-image" style="aspect-ratio: 9/16;">
+                        <video src="MDLBEAST_SOUNDSTORM.MP4" autoplay muted loop playsinline webkit-playsinline disablePictureInPicture disableRemotePlayback></video>
                     </div>
                     <div class="card-label">SoundStorm 2024 | MDL Beast</div>
                 </div>
                 <div class="showcase-card reveal">
-                    <div class="card-image img-placeholder" style="aspect-ratio: 9/16;">
-                        <!-- Replace with: <img src="ar-etisalat.jpg" alt="e& Egypt"> -->
-                        WORLD AR
+                    <div class="card-image" style="aspect-ratio: 9/16;">
+                        <video src="ETISALAT.mp4" autoplay muted loop playsinline webkit-playsinline disablePictureInPicture disableRemotePlayback></video>
                     </div>
                     <div class="card-label">Summer Treasure Hunt | e& Egypt</div>
                 </div>
                 <div class="showcase-card reveal">
-                    <div class="card-image img-placeholder" style="aspect-ratio: 9/16;">
-                        <!-- Replace with: <img src="ar-asos.jpg" alt="ASOS x AJIO"> -->
-                        TRY-ON
+                    <div class="card-image" style="aspect-ratio: 9/16;">
+                        <video src="QIDDIYA_PLAYLIFE.MP4" autoplay muted loop playsinline webkit-playsinline disablePictureInPicture disableRemotePlayback></video>
                     </div>
-                    <div class="card-label">ASOS x AJIO | ASOS India</div>
+                    <div class="card-label">Qiddiya | Play Life</div>
                 </div>
                 <div class="showcase-card reveal">
-                    <div class="card-image img-placeholder" style="aspect-ratio: 9/16;">
-                        <!-- Replace with: <img src="ar-starbucks.jpg" alt="Starbucks KSA"> -->
-                        FACE AR
+                    <div class="card-image" style="aspect-ratio: 9/16;">
+                        <video src="Starbucks.MP4" autoplay muted loop playsinline webkit-playsinline disablePictureInPicture disableRemotePlayback></video>
                     </div>
                     <div class="card-label">Dallah's Treasure | Starbucks KSA</div>
                 </div>
@@ -1476,7 +1885,22 @@
     <!-- =============================================
          SLIDE 8 — DIRIYAH OUTERNET (page 1)
          ============================================= -->
-    <section class="slide" id="slide-diriyah-1">
+    <section class="slide slide-diriyah" id="slide-diriyah-1">
+        <!-- Desert scene with dunes + camels -->
+        <div class="desert-scene">
+            <svg class="dunes-back" viewBox="0 0 1200 180" preserveAspectRatio="none"><path d="M0 120 C100 80 200 100 350 70 C500 40 600 90 750 60 C900 30 1050 80 1200 55 L1200 180 L0 180Z"/></svg>
+            <svg class="dunes-front" viewBox="0 0 1200 180" preserveAspectRatio="none"><path d="M0 140 C150 100 300 130 450 95 C600 60 750 110 900 80 C1050 50 1150 100 1200 75 L1200 180 L0 180Z"/></svg>
+            <div class="sand-particles">
+                <span class="sand-particle" style="left: 5%; top: 30%; --sand-dur: 6s; --sand-x: 25vw; --sand-y: -8vh; --sand-op: 0.25;"></span>
+                <span class="sand-particle" style="left: 20%; top: 50%; --sand-dur: 8s; --sand-x: 30vw; --sand-y: -12vh; --sand-op: 0.2; animation-delay: 1s;"></span>
+                <span class="sand-particle" style="left: 40%; top: 40%; --sand-dur: 7s; --sand-x: 20vw; --sand-y: -6vh; --sand-op: 0.3; animation-delay: 2s; width: 3px; height: 3px;"></span>
+                <span class="sand-particle" style="left: 60%; top: 55%; --sand-dur: 9s; --sand-x: 28vw; --sand-y: -10vh; --sand-op: 0.15; animation-delay: 0.5s;"></span>
+                <span class="sand-particle" style="left: 75%; top: 35%; --sand-dur: 6.5s; --sand-x: 18vw; --sand-y: -7vh; --sand-op: 0.2; animation-delay: 3s; width: 3px; height: 3px;"></span>
+                <span class="sand-particle" style="left: 10%; top: 65%; --sand-dur: 10s; --sand-x: 35vw; --sand-y: -15vh; --sand-op: 0.18; animation-delay: 4s;"></span>
+                <span class="sand-particle" style="left: 50%; top: 25%; --sand-dur: 7.5s; --sand-x: 22vw; --sand-y: -9vh; --sand-op: 0.22; animation-delay: 1.5s;"></span>
+                <span class="sand-particle" style="left: 85%; top: 45%; --sand-dur: 8.5s; --sand-x: 15vw; --sand-y: -5vh; --sand-op: 0.2; animation-delay: 2.5s; width: 2.5px; height: 2.5px;"></span>
+            </div>
+        </div>
         <!-- Small star doodle top-right -->
         <svg class="sketch-element" style="top: 5%; right: 6%; width: clamp(35px, 5vw, 60px); height: clamp(35px, 5vw, 60px);" viewBox="0 0 60 60">
             <path d="M 30 5 L 33 22 L 50 15 L 38 28 L 55 35 L 37 35 L 40 55 L 30 40 L 20 55 L 23 35 L 5 35 L 22 28 L 10 15 L 27 22 Z" style="--path-len:250" />
@@ -1495,13 +1919,13 @@
                     <p class="reveal" style="font-weight: 600; color: var(--text-primary); font-style: italic;">Branded to Diriyah. Designed for play. Built for memories.</p>
                 </div>
                 <div class="case-images">
-                    <div class="photo-card reveal img-placeholder" style="aspect-ratio: 3/4;">
-                        <!-- Replace with event photo -->
-                        FRXME IN ACTION
+                    <div class="photo-card reveal" style="aspect-ratio: 9/16; overflow: hidden; border-radius: 12px; position: relative;">
+                        <video src="FRXME_DIRIYAHGAME.MP4" autoplay muted loop playsinline webkit-playsinline disablePictureInPicture disableRemotePlayback style="width: 100%; height: 100%; object-fit: cover; pointer-events: none;"></video>
+                        <div class="vid-label">Custom AR Game</div>
                     </div>
-                    <div class="photo-card reveal img-placeholder" style="aspect-ratio: 3/4;">
-                        <!-- Replace with event photo -->
-                        OUTERNET
+                    <div class="photo-card reveal" style="aspect-ratio: 9/16; overflow: hidden; border-radius: 12px; position: relative;">
+                        <video src="FRXME_DIRIYAHPHOTO.MP4" autoplay muted loop playsinline webkit-playsinline disablePictureInPicture disableRemotePlayback style="width: 100%; height: 100%; object-fit: cover; pointer-events: none;"></video>
+                        <div class="vid-label">Photo Booth Experience</div>
                     </div>
                 </div>
             </div>
@@ -1512,7 +1936,22 @@
     <!-- =============================================
          SLIDE 9 — DIRIYAH OUTERNET (page 2 — AR card)
          ============================================= -->
-    <section class="slide" id="slide-diriyah-2">
+    <section class="slide slide-diriyah" id="slide-diriyah-2">
+        <!-- Desert scene with dunes + camels -->
+        <div class="desert-scene">
+            <svg class="dunes-back" viewBox="0 0 1200 180" preserveAspectRatio="none"><path d="M0 120 C100 80 200 100 350 70 C500 40 600 90 750 60 C900 30 1050 80 1200 55 L1200 180 L0 180Z"/></svg>
+            <svg class="dunes-front" viewBox="0 0 1200 180" preserveAspectRatio="none"><path d="M0 140 C150 100 300 130 450 95 C600 60 750 110 900 80 C1050 50 1150 100 1200 75 L1200 180 L0 180Z"/></svg>
+            <div class="sand-particles">
+                <span class="sand-particle" style="left: 5%; top: 30%; --sand-dur: 6s; --sand-x: 25vw; --sand-y: -8vh; --sand-op: 0.25;"></span>
+                <span class="sand-particle" style="left: 20%; top: 50%; --sand-dur: 8s; --sand-x: 30vw; --sand-y: -12vh; --sand-op: 0.2; animation-delay: 1s;"></span>
+                <span class="sand-particle" style="left: 40%; top: 40%; --sand-dur: 7s; --sand-x: 20vw; --sand-y: -6vh; --sand-op: 0.3; animation-delay: 2s; width: 3px; height: 3px;"></span>
+                <span class="sand-particle" style="left: 60%; top: 55%; --sand-dur: 9s; --sand-x: 28vw; --sand-y: -10vh; --sand-op: 0.15; animation-delay: 0.5s;"></span>
+                <span class="sand-particle" style="left: 75%; top: 35%; --sand-dur: 6.5s; --sand-x: 18vw; --sand-y: -7vh; --sand-op: 0.2; animation-delay: 3s; width: 3px; height: 3px;"></span>
+                <span class="sand-particle" style="left: 10%; top: 65%; --sand-dur: 10s; --sand-x: 35vw; --sand-y: -15vh; --sand-op: 0.18; animation-delay: 4s;"></span>
+                <span class="sand-particle" style="left: 50%; top: 25%; --sand-dur: 7.5s; --sand-x: 22vw; --sand-y: -9vh; --sand-op: 0.22; animation-delay: 1.5s;"></span>
+                <span class="sand-particle" style="left: 85%; top: 45%; --sand-dur: 8.5s; --sand-x: 15vw; --sand-y: -5vh; --sand-op: 0.2; animation-delay: 2.5s; width: 2.5px; height: 2.5px;"></span>
+            </div>
+        </div>
         <!-- Wavy line top -->
         <svg class="sketch-element" style="top: 4%; left: 3%; width: clamp(100px, 14vw, 180px); height: clamp(20px, 3vw, 35px);" viewBox="0 0 180 30">
             <path d="M 5 15 C 20 5, 35 25, 50 15 C 65 5, 80 25, 95 15 C 110 5, 125 25, 140 15 C 155 5, 170 20, 175 15" style="--path-len:190" />
@@ -1527,12 +1966,12 @@
                     </div>
                     <p class="reveal" style="font-weight: 700; color: var(--text-primary);">Coupled with our stunning MR Screens, we created something unforgettable.</p>
                     <p class="reveal">Each guest received a beautifully designed, AR-activated keepsake card. By scanning the QR code, they unlocked an interactive AR experience, bringing Diriyah to life in their hands.</p>
-                    <p class="reveal">Aim your camera at the map, and a 3D Diriyah rises from the card — a pocket-sized portal into the world of Diriyah.</p>
+                    <p class="reveal">Aim your camera at the map, and a 3D Diriyah rises from the card. A pocket-sized portal into the world of Diriyah.</p>
                 </div>
                 <div style="display: flex; align-items: center; justify-content: center;">
-                    <div class="photo-card reveal img-placeholder" style="aspect-ratio: 3/4; width: 80%; max-width: 300px;">
-                        <!-- Replace with AR keepsake card image -->
-                        AR KEEPSAKE
+                    <div class="photo-card reveal" style="aspect-ratio: 9/16; width: 80%; max-width: 260px; overflow: hidden; border-radius: 12px; position: relative;">
+                        <video src="Piece_of_Diriyah_WebAR_DEMO.mov" autoplay muted loop playsinline webkit-playsinline disablePictureInPicture disableRemotePlayback style="width: 100%; height: 100%; object-fit: cover; pointer-events: none;"></video>
+                        <div class="vid-label">Web AR Experience</div>
                     </div>
                 </div>
             </div>
@@ -1543,74 +1982,115 @@
     <!-- =============================================
          SLIDE 10 — SOUNDSTORM 2025 (page 1)
          ============================================= -->
-    <section class="slide" id="slide-soundstorm-1">
+    <section class="slide slide-soundstorm" id="slide-soundstorm-1">
+        <!-- Floating music notes -->
+        <div class="floating-notes">
+            <span class="floating-note" style="left: 8%; top: 20%; animation-delay: 0s;">&#9835;</span>
+            <span class="floating-note" style="left: 85%; top: 40%; animation-delay: 1.5s;">&#9834;</span>
+            <span class="floating-note" style="left: 45%; top: 60%; animation-delay: 3s;">&#9833;</span>
+            <span class="floating-note" style="left: 70%; top: 15%; animation-delay: 4.5s;">&#9835;</span>
+        </div>
+        <!-- Music bars at bottom -->
+        <div class="music-bars">
+            <div class="music-bar" style="--bar-min: 8px; --bar-max: 40px; --bar-dur: 0.8s;"></div>
+            <div class="music-bar" style="--bar-min: 12px; --bar-max: 55px; --bar-dur: 1.1s; animation-delay: 0.1s;"></div>
+            <div class="music-bar" style="--bar-min: 6px; --bar-max: 35px; --bar-dur: 0.9s; animation-delay: 0.2s;"></div>
+            <div class="music-bar" style="--bar-min: 15px; --bar-max: 60px; --bar-dur: 1.3s; animation-delay: 0.3s;"></div>
+            <div class="music-bar" style="--bar-min: 10px; --bar-max: 45px; --bar-dur: 0.7s; animation-delay: 0.15s;"></div>
+            <div class="music-bar" style="--bar-min: 8px; --bar-max: 50px; --bar-dur: 1s; animation-delay: 0.25s;"></div>
+            <div class="music-bar" style="--bar-min: 14px; --bar-max: 38px; --bar-dur: 1.2s; animation-delay: 0.05s;"></div>
+            <div class="music-bar" style="--bar-min: 6px; --bar-max: 55px; --bar-dur: 0.85s; animation-delay: 0.35s;"></div>
+            <div class="music-bar" style="--bar-min: 10px; --bar-max: 42px; --bar-dur: 1.15s; animation-delay: 0.4s;"></div>
+            <div class="music-bar" style="--bar-min: 12px; --bar-max: 48px; --bar-dur: 0.95s; animation-delay: 0.2s;"></div>
+        </div>
         <!-- Music note doodle bottom-left -->
-        <svg class="sketch-element" style="bottom: 6%; left: 4%; width: clamp(40px, 5vw, 65px); height: clamp(50px, 6vw, 80px);" viewBox="0 0 50 65">
+        <svg class="sketch-element" style="bottom: 12%; left: 4%; width: clamp(40px, 5vw, 65px); height: clamp(50px, 6vw, 80px);" viewBox="0 0 50 65">
             <path d="M 15 55 L 15 15 L 40 10 L 40 48" style="--path-len:110" />
             <ellipse cx="12" cy="55" rx="8" ry="5" style="--path-len:42" />
             <ellipse cx="37" cy="48" rx="8" ry="5" style="--path-len:42" />
         </svg>
 
-        <div class="slide-content">
+        <div class="slide-content" style="z-index: 1;">
             <div class="case-layout">
                 <div class="case-text">
                     <div>
                         <h2 class="reveal" style="font-size: clamp(1.2rem, 2.5vw, 1.8rem);">AR CASE STUDY.</h2>
-                        <h2 class="reveal">SOUNDSTORM 2025</h2>
+                        <h2 class="reveal" style="color: #c4b5fd !important;">SOUNDSTORM 2025</h2>
                     </div>
-                    <p class="reveal" style="font-weight: 700; color: var(--text-primary);">A festival of this scale demands experiences built for impact.</p>
-                    <p class="reveal">Soundstorm 2025 called for intuitive, high-speed solutions that could match the energy, movement, and scale of the event. We delivered.</p>
-                    <p class="reveal">Using our custom FRXME XR screens, we created an interactive venue map experience designed to help VIB guests navigate the festival with confidence.</p>
-                    <p class="reveal" style="font-weight: 600; color: var(--text-primary); font-style: italic;">Purpose-built for the pace of Soundstorm. Designed for clarity. Built for seamless movement.</p>
+                    <p class="reveal" style="font-weight: 700; color: #e8e4df;">A festival of this scale demands experiences built for impact.</p>
+                    <p class="reveal" style="color: #a1a1aa;">Soundstorm 2025 called for intuitive, high-speed solutions that could match the energy, movement, and scale of the event. We delivered.</p>
+                    <p class="reveal" style="color: #a1a1aa;">Using our custom FRXME interactive displays, we created an interactive venue map experience designed to help VIB guests navigate the festival with confidence.</p>
+                    <p class="reveal" style="font-weight: 600; color: #c4b5fd; font-style: italic;">Purpose-built for the pace of Soundstorm. Designed for clarity. Built for seamless movement.</p>
                 </div>
                 <div class="case-images">
-                    <div class="photo-card reveal img-placeholder" style="aspect-ratio: 3/4;">
-                        <!-- Replace with venue map photo -->
-                        VENUE MAP
+                    <div class="photo-card reveal" style="aspect-ratio: 9/16; overflow: hidden; border-radius: 12px; position: relative;">
+                        <video src="MDLBEASTSS25_MAP_compressed.mp4" autoplay muted loop playsinline webkit-playsinline disablePictureInPicture disableRemotePlayback style="width: 100%; height: 100%; object-fit: cover; pointer-events: none;"></video>
+                        <div class="vid-label">Interactive Venue Map</div>
                     </div>
-                    <div class="photo-card reveal img-placeholder" style="aspect-ratio: 3/4;">
-                        <!-- Replace with FRXME at Soundstorm -->
-                        FRXME LIVE
+                    <div class="photo-card reveal" style="aspect-ratio: 9/16; overflow: hidden; border-radius: 12px; position: relative;">
+                        <video src="MDLBEASTSS25_MAP2_compressed.mp4" autoplay muted loop playsinline webkit-playsinline disablePictureInPicture disableRemotePlayback style="width: 100%; height: 100%; object-fit: cover; pointer-events: none;"></video>
+                        <div class="vid-label">VIB Wayfinding</div>
                     </div>
                 </div>
             </div>
         </div>
-        <img src="shxft-wordmark-black.png" alt="" class="slide-logo">
+        <img src="shxft-wordmark-black.png" alt="" class="slide-logo" style="filter: brightness(0) invert(1); opacity: 0.4;">
     </section>
 
     <!-- =============================================
          SLIDE 11 — SOUNDSTORM 2025 (page 2 — photo booth)
          ============================================= -->
-    <section class="slide" id="slide-soundstorm-2">
-        <!-- Camera doodle top-right -->
-        <svg class="sketch-element" style="top: 5%; right: 5%; width: clamp(50px, 7vw, 90px); height: clamp(40px, 5vw, 70px);" viewBox="0 0 90 65">
-            <path d="M 10 20 L 25 10 L 40 20 L 80 20 L 80 55 L 10 55 Z" style="--path-len:220" />
-            <circle cx="48" cy="38" r="12" style="--path-len:76" />
-        </svg>
+    <section class="slide slide-soundstorm" id="slide-soundstorm-2">
+        <!-- Floating music notes -->
+        <div class="floating-notes">
+            <span class="floating-note" style="left: 12%; top: 30%; animation-delay: 1s;">&#9834;</span>
+            <span class="floating-note" style="left: 90%; top: 50%; animation-delay: 2.5s;">&#9835;</span>
+            <span class="floating-note" style="left: 55%; top: 70%; animation-delay: 4s;">&#9833;</span>
+        </div>
+        <div class="music-bars">
+            <div class="music-bar" style="--bar-min: 10px; --bar-max: 45px; --bar-dur: 1s;"></div>
+            <div class="music-bar" style="--bar-min: 8px; --bar-max: 50px; --bar-dur: 0.85s; animation-delay: 0.15s;"></div>
+            <div class="music-bar" style="--bar-min: 14px; --bar-max: 38px; --bar-dur: 1.2s; animation-delay: 0.25s;"></div>
+            <div class="music-bar" style="--bar-min: 6px; --bar-max: 55px; --bar-dur: 0.9s; animation-delay: 0.35s;"></div>
+            <div class="music-bar" style="--bar-min: 12px; --bar-max: 42px; --bar-dur: 1.1s; animation-delay: 0.1s;"></div>
+            <div class="music-bar" style="--bar-min: 8px; --bar-max: 48px; --bar-dur: 0.95s; animation-delay: 0.3s;"></div>
+            <div class="music-bar" style="--bar-min: 10px; --bar-max: 52px; --bar-dur: 1.05s; animation-delay: 0.2s;"></div>
+            <div class="music-bar" style="--bar-min: 14px; --bar-max: 40px; --bar-dur: 0.8s; animation-delay: 0.4s;"></div>
+        </div>
 
-        <div class="slide-content">
+        <div class="slide-content" style="z-index: 1;">
             <div class="case-layout">
                 <div class="case-text">
                     <div>
                         <h2 class="reveal" style="font-size: clamp(1.2rem, 2.5vw, 1.8rem);">AR CASE STUDY.</h2>
-                        <h2 class="reveal">SOUNDSTORM 2025</h2>
+                        <h2 class="reveal" style="color: #c4b5fd !important;">SOUNDSTORM 2025</h2>
                     </div>
-                    <p class="reveal" style="font-weight: 700; color: var(--text-primary);">Alongside our interactive venue maps, we created a photo booth experience designed to deliver unforgettable festival moments.</p>
-                    <p class="reveal">Guests captured high-energy moments during Soundstorm 2025 and received a QR code to instantly save or share their photos, turning a festival memory into a social-first moment.</p>
+                    <p class="reveal" style="font-weight: 700; color: #e8e4df;">Alongside our interactive venue maps, we created a photo booth experience designed to deliver unforgettable festival moments.</p>
+                    <p class="reveal" style="color: #a1a1aa;">Guests captured high-energy moments during Soundstorm 2025 and received a QR code to instantly save or share their photos, turning a festival memory into a social-first moment.</p>
+                    <div class="reveal" style="display: flex; gap: clamp(1.5rem, 4vw, 3rem); margin-top: 0.75rem;">
+                        <div style="text-align: center;">
+                            <div style="font-family: var(--font-display); font-size: clamp(1.5rem, 3.5vw, 2.5rem); font-weight: 900; color: #a855f7;">55K+</div>
+                            <div style="font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; color: #8b7aaa;">Live Interactions</div>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="font-family: var(--font-display); font-size: clamp(1.5rem, 3.5vw, 2.5rem); font-weight: 900; color: #ec4899;">15.7K</div>
+                            <div style="font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; color: #8b7aaa;">UGC Created</div>
+                        </div>
+                    </div>
                 </div>
                 <div class="case-images">
-                    <div class="photo-card reveal img-placeholder" style="aspect-ratio: 3/4;">
-                        <!-- Replace with photo booth shot -->
-                        PHOTO BOOTH
+                    <div class="photo-card reveal" style="aspect-ratio: 9/16; overflow: hidden; border-radius: 12px; position: relative;">
+                        <video src="MDLBEAST_PB_compressed.mp4" autoplay muted loop playsinline webkit-playsinline disablePictureInPicture disableRemotePlayback style="width: 100%; height: 100%; object-fit: cover; pointer-events: none;"></video>
+                        <div class="vid-label">Photo Booth</div>
                     </div>
-                    <div class="photo-card reveal img-placeholder" style="aspect-ratio: 3/4;">
-                        <!-- Replace with guests at FRXME -->
-                        GUESTS
+                    <div class="photo-card reveal" style="aspect-ratio: 9/16; overflow: hidden; border-radius: 12px; position: relative;">
+                        <video src="MDLBEAST_PB2_compressed.mp4" autoplay muted loop playsinline webkit-playsinline disablePictureInPicture disableRemotePlayback style="width: 100%; height: 100%; object-fit: cover; pointer-events: none;"></video>
+                        <div class="vid-label">Social Sharing</div>
                     </div>
                 </div>
             </div>
         </div>
-        <img src="shxft-wordmark-black.png" alt="" class="slide-logo">
+        <img src="shxft-wordmark-black.png" alt="" class="slide-logo" style="filter: brightness(0) invert(1); opacity: 0.4;">
     </section>
 
     <!-- =============================================
@@ -1632,30 +2112,26 @@
 
             <div class="showcase-grid">
                 <div class="showcase-card reveal">
-                    <div class="card-image img-placeholder" style="aspect-ratio: 9/16;">
-                        <!-- Replace with CGI render -->
-                        FOOH
+                    <div class="card-image" style="aspect-ratio: 9/16;">
+                        <video src="Starbucks_KSA.mp4" autoplay muted loop playsinline webkit-playsinline disablePictureInPicture disableRemotePlayback></video>
                     </div>
                     <div class="card-label">Strawberry Matcha Launch | KSA</div>
                 </div>
                 <div class="showcase-card reveal">
-                    <div class="card-image img-placeholder" style="aspect-ratio: 9/16;">
-                        <!-- Replace with CGI render -->
-                        FOOH
+                    <div class="card-image" style="aspect-ratio: 9/16;">
+                        <video src="Starbucks_UAE.mp4" autoplay muted loop playsinline webkit-playsinline disablePictureInPicture disableRemotePlayback></video>
                     </div>
                     <div class="card-label">Eid Campaign | UAE</div>
                 </div>
                 <div class="showcase-card reveal">
-                    <div class="card-image img-placeholder" style="aspect-ratio: 9/16;">
-                        <!-- Replace with CGI render -->
-                        FOOH
+                    <div class="card-image" style="aspect-ratio: 9/16;">
+                        <video src="Starbucks_kuwait.mp4" autoplay muted loop playsinline webkit-playsinline disablePictureInPicture disableRemotePlayback></video>
                     </div>
                     <div class="card-label">Ramadan Campaign | Kuwait</div>
                 </div>
                 <div class="showcase-card reveal">
-                    <div class="card-image img-placeholder" style="aspect-ratio: 9/16;">
-                        <!-- Replace with CGI render -->
-                        FOOH
+                    <div class="card-image" style="aspect-ratio: 9/16;">
+                        <video src="Starbucks_KSA2.mp4" autoplay muted loop playsinline webkit-playsinline disablePictureInPicture disableRemotePlayback></video>
                     </div>
                     <div class="card-label">Ramadan Campaign | KSA</div>
                 </div>
@@ -1665,7 +2141,117 @@
     </section>
 
     <!-- =============================================
-         SLIDE 13 — CNQR MEDIA (page 1)
+         SLIDE 13 — WEB DEVELOPMENT
+         ============================================= -->
+    <section class="slide" id="slide-websites">
+        <!-- Floating code snippets as atmosphere -->
+        <div style="position: absolute; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; opacity: 0.04;">
+            <div style="position: absolute; top: 15%; left: 5%; font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-primary); transform: rotate(-3deg); white-space: pre;">&lt;div class="hero"&gt;
+  &lt;h1&gt;Build&lt;/h1&gt;
+&lt;/div&gt;</div>
+            <div style="position: absolute; bottom: 20%; right: 8%; font-family: var(--font-mono); font-size: 0.6rem; color: var(--text-primary); transform: rotate(2deg); white-space: pre;">const motion = {
+  scale: 1.05,
+  transition: 0.3s
+}</div>
+            <div style="position: absolute; top: 55%; left: 70%; font-family: var(--font-mono); font-size: 0.55rem; color: var(--text-primary); transform: rotate(-1deg);">npm run deploy &#10003;</div>
+        </div>
+
+        <!-- Code bracket doodle top-right -->
+        <svg class="sketch-element" style="top: 5%; right: 5%; width: clamp(50px, 7vw, 90px); height: clamp(40px, 5vw, 65px);" viewBox="0 0 80 50">
+            <path d="M 25 5 L 10 25 L 25 45" style="--path-len:50" />
+            <path d="M 55 5 L 70 25 L 55 45" style="--path-len:50" />
+            <path d="M 45 2 L 35 48" style="--path-len:50" />
+        </svg>
+        <!-- Cursor click doodle bottom-left -->
+        <svg class="sketch-element" style="bottom: 8%; left: 5%; width: clamp(40px, 5vw, 65px); height: clamp(50px, 6vw, 80px);" viewBox="0 0 40 55">
+            <path d="M 10 5 L 10 35 L 18 28 L 28 42" style="--path-len:60" />
+            <path d="M 10 5 L 22 30" style="--path-len:30" />
+        </svg>
+
+        <div class="slide-content" style="z-index: 1;">
+            <div style="text-align: center; margin-bottom: clamp(0.5rem, 1vw, 0.75rem);">
+                <h2 class="reveal">WEB DEVELOPMENT.</h2>
+                <p class="reveal" style="font-family: var(--font-display); font-weight: 600; font-size: clamp(0.9rem, 1.5vw, 1.15rem) !important; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-secondary);">Premium digital experiences</p>
+            </div>
+
+            <div class="case-layout" style="align-items: center;">
+                <div class="case-text">
+                    <p class="reveal" style="font-weight: 700; color: var(--text-primary);">We design and build premium websites for athletes, brands, and products.</p>
+                    <p class="reveal">From interactive 3D product showcases to cinematic athlete portfolios, every site is built to perform, convert, and stand out.</p>
+                    <div class="reveal" style="margin-top: clamp(0.5rem, 1vw, 0.75rem); padding: clamp(0.75rem, 1.5vw, 1rem); border: 2px solid #333; box-shadow: 3px 3px 0 #333; border-radius: 8px;">
+                        <p style="font-weight: 700; color: var(--text-primary); margin-bottom: 0.25rem; font-size: clamp(0.8rem, 1.1vw, 0.95rem) !important;">Featured: Gini Wijnaldum</p>
+                        <p style="font-size: clamp(0.7rem, 0.9vw, 0.8rem) !important;">Personal website for the Netherlands captain and Premier League, La Liga, and Serie A winner. Cinematic dark theme, scroll-driven animations, interactive career globe.</p>
+                        <a href="https://gw.cnqrmedia.com" target="_blank" rel="noopener" class="reveal" style="display: inline-block; margin-top: 0.5rem; font-family: var(--font-display); font-weight: 700; font-size: clamp(0.7rem, 0.9vw, 0.8rem); text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-primary); border: 2px solid var(--text-primary); padding: 0.3rem 1rem; border-radius: 4px; text-decoration: none; transition: all 0.3s ease;">View Live &rarr;</a>
+                    </div>
+                </div>
+                <div class="reveal" style="display: flex; align-items: center; justify-content: center;">
+                    <div class="web-browser-mock">
+                        <div class="browser-bar">
+                            <div class="browser-dots"><span></span><span></span><span></span></div>
+                            <div class="browser-url">gw.cnqrmedia.com</div>
+                        </div>
+                        <div style="overflow: hidden; border-radius: 0 0 10px 10px; aspect-ratio: 16/10; background: #111;">
+                            <video src="GW_WEBSITE.mov" autoplay muted loop playsinline webkit-playsinline disablePictureInPicture disableRemotePlayback style="width: 100%; height: 100%; object-fit: cover; pointer-events: none;"></video>
+                        </div>
+                        <div style="position: absolute; inset: 0; border-radius: 12px;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <img src="shxft-wordmark-black.png" alt="" class="slide-logo">
+    </section>
+
+    <!-- =============================================
+         SLIDE 14 — APP DEVELOPMENT
+         ============================================= -->
+    <section class="slide" id="slide-apps">
+        <!-- Floating app UI elements as atmosphere -->
+        <div style="position: absolute; inset: 0; pointer-events: none; z-index: 0; overflow: hidden;">
+            <!-- Floating phone outlines -->
+            <svg style="position: absolute; top: 8%; left: 6%; width: clamp(30px, 4vw, 50px); opacity: 0.06; animation: app-float 8s ease-in-out infinite;" viewBox="0 0 40 70" fill="none" stroke="#333" stroke-width="2"><rect x="5" y="3" width="30" height="64" rx="6"/><line x1="17" y1="60" x2="23" y2="60"/></svg>
+            <svg style="position: absolute; bottom: 12%; right: 8%; width: clamp(35px, 5vw, 55px); opacity: 0.06; animation: app-float 10s ease-in-out 2s infinite;" viewBox="0 0 40 70" fill="none" stroke="#333" stroke-width="2"><rect x="5" y="3" width="30" height="64" rx="6"/><line x1="17" y1="60" x2="23" y2="60"/></svg>
+            <!-- Floating toggle/switch -->
+            <svg style="position: absolute; top: 40%; left: 3%; width: clamp(40px, 5vw, 60px); opacity: 0.05; animation: app-float 12s ease-in-out 1s infinite;" viewBox="0 0 50 24" fill="none" stroke="#333" stroke-width="2"><rect x="2" y="2" width="46" height="20" rx="10"/><circle cx="36" cy="12" r="6"/></svg>
+            <!-- Floating notification bell -->
+            <svg style="position: absolute; top: 15%; right: 12%; width: clamp(25px, 3vw, 40px); opacity: 0.05; animation: app-float 9s ease-in-out 3s infinite;" viewBox="0 0 30 35" fill="none" stroke="#333" stroke-width="2"><path d="M15 3 C8 3 4 8 4 16 L4 22 L26 22 L26 16 C26 8 22 3 15 3Z"/><path d="M11 22 C11 25 13 28 15 28 C17 28 19 25 19 22"/><circle cx="15" cy="2" r="1.5"/></svg>
+        </div>
+
+        <!-- Gear doodle bottom-right -->
+        <svg class="sketch-element" style="bottom: 6%; right: 5%; width: clamp(50px, 6vw, 80px); height: clamp(50px, 6vw, 80px);" viewBox="0 0 60 60">
+            <circle cx="30" cy="30" r="10" style="--path-len:63" />
+            <path d="M30 5 L30 12 M30 48 L30 55 M5 30 L12 30 M48 30 L55 30 M12 12 L17 17 M43 43 L48 48 M48 12 L43 17 M17 43 L12 48" style="--path-len:80" />
+        </svg>
+        <!-- Download doodle top-right -->
+        <svg class="sketch-element" style="top: 5%; right: 6%; width: clamp(40px, 5vw, 65px); height: clamp(45px, 6vw, 75px);" viewBox="0 0 50 55">
+            <path d="M 25 5 L 25 35" style="--path-len:30" />
+            <path d="M 15 28 L 25 38 L 35 28" style="--path-len:25" />
+            <path d="M 8 45 L 42 45" style="--path-len:34" />
+        </svg>
+
+        <div class="slide-content" style="align-items: center; text-align: center; z-index: 1;">
+            <h2 class="reveal">APP DEVELOPMENT.</h2>
+            <p class="reveal" style="font-family: var(--font-display); font-weight: 600; font-size: clamp(0.9rem, 1.5vw, 1.15rem) !important; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-secondary);">Native iOS, Android & Web</p>
+
+            <p class="reveal" style="max-width: 550px; margin: 0 auto;">We build full-stack applications from concept to launch. Consumer products, internal tools, and everything in between.</p>
+
+            <div class="reveal" style="display: flex; gap: clamp(0.5rem, 1vw, 0.75rem); justify-content: center; margin-top: clamp(0.25rem, 0.5vw, 0.5rem);">
+                <span style="font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.25rem 0.6rem; border: 1px solid #555; border-radius: 20px; color: var(--text-secondary);">SwiftUI</span>
+                <span style="font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.25rem 0.6rem; border: 1px solid #555; border-radius: 20px; color: var(--text-secondary);">React Native</span>
+                <span style="font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.25rem 0.6rem; border: 1px solid #555; border-radius: 20px; color: var(--text-secondary);">Next.js</span>
+            </div>
+
+            <div class="reveal" style="margin-top: clamp(1rem, 2vw, 1.5rem); padding: clamp(1.5rem, 3vw, 2rem); border: 2px solid #333; box-shadow: 4px 4px 0 #333; border-radius: 12px; max-width: 400px;">
+                <div style="font-family: var(--font-mono); font-size: 0.5rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.75rem;">Coming Soon</div>
+                <img src="RIVLS_LOGO.png" alt="RIVLS" style="width: clamp(60px, 10vw, 100px); margin-bottom: 0.75rem;">
+                <p style="font-size: clamp(0.72rem, 1vw, 0.85rem) !important; color: var(--text-secondary); margin-bottom: 0.75rem;">Social sports score tracking. Crews, leaderboards, and shareable stat cards. Starting with padel in Dubai.</p>
+                <a href="https://rivls.app" target="_blank" rel="noopener" style="display: inline-block; font-family: var(--font-display); font-weight: 700; font-size: clamp(0.65rem, 0.85vw, 0.75rem); text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-primary); border: 2px solid var(--text-primary); padding: 0.3rem 1.2rem; border-radius: 4px; text-decoration: none; transition: all 0.3s ease;">Join the Waitlist &rarr;</a>
+            </div>
+        </div>
+        <img src="shxft-wordmark-black.png" alt="" class="slide-logo">
+    </section>
+
+    <!-- =============================================
+         SLIDE 15 — CNQR MEDIA (page 1)
          ============================================= -->
     <section class="slide slide-cnqr" id="slide-cnqr-1">
         <!-- Dynamic background -->
@@ -1687,23 +2273,34 @@
             <path d="M 30 5 L 36 18 L 48 18 L 52 30 L 45 42 L 48 55" style="--path-len:75" />
         </svg>
 
+        <!-- Animated pitch lines -->
+        <svg class="cnqr-pitch-lines" viewBox="0 0 100 100" preserveAspectRatio="none" style="position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; opacity: 0.04;">
+            <circle cx="50" cy="50" r="15" fill="none" stroke="#fff" stroke-width="0.3"/>
+            <line x1="50" y1="0" x2="50" y2="100" stroke="#fff" stroke-width="0.2"/>
+            <rect x="15" y="30" width="70" height="40" rx="0" fill="none" stroke="#fff" stroke-width="0.2"/>
+        </svg>
+
         <div class="slide-content" style="z-index: 2;">
-            <h2 class="reveal" style="text-align: center; font-size: clamp(2rem, 5.5vw, 3.8rem);">CNQR MEDIA</h2>
+            <div class="reveal" style="text-align: center;">
+                <img src="CNQR MEDIA.png" alt="CNQR Media" style="height: clamp(30px, 4vw, 50px); filter: brightness(0) invert(1); opacity: 0.9; margin-bottom: clamp(0.5rem, 1vw, 0.75rem);">
+            </div>
+            <h2 class="reveal" style="text-align: center; font-size: clamp(1.8rem, 4.5vw, 3.2rem);">THE ENGINE<br>BEHIND <span class="highlight">SHXFT.</span></h2>
             <div class="animated-rule reveal" style="max-width: 120px; margin: 0 auto;"></div>
 
             <div class="reveal" style="max-width: 800px;">
-                <p style="font-weight: 700; color: #fff; margin-bottom: 0.75rem; font-size: clamp(1rem, 1.8vw, 1.3rem) !important;">Backed by CNQR Media</p>
-                <p>SHXFT operates as the internal immersive studio of CNQR Media — a leading agency representing top-tier athletes and <span class="highlight">building culture-shifting brand stories.</span></p>
+                <p style="font-weight: 700; color: #fff; margin-bottom: 0.5rem; font-size: clamp(0.95rem, 1.5vw, 1.15rem) !important;">Sports agency meets creative studio.</p>
+                <p>CNQR Media represents top-tier athletes and builds <span class="highlight">culture-shifting brand stories.</span> SHXFT is its creative weapon.</p>
             </div>
             <div class="reveal">
-                <p>We work closely with <span class="highlight">global footballers</span> on their image, content, and commercial strategy, managing everything from social media to brand partnerships.</p>
+                <p>We work closely with <span class="highlight">global footballers</span> on their image, content, and commercial strategy. Social media to brand partnerships, on-pitch to off-pitch.</p>
             </div>
-            <div class="reveal">
-                <p>This gives SHXFT a <span class="highlight">unique edge:</span> blending elite-level creative execution with real-world storytelling that resonates, converts, and scales.</p>
+            <div class="reveal" style="display: flex; gap: clamp(0.75rem, 2vw, 1.5rem); flex-wrap: wrap; justify-content: center; margin-top: 0.5rem;">
+                <span style="font-family: var(--font-display); font-weight: 800; font-size: clamp(0.7rem, 1vw, 0.85rem); color: #fff; padding: 0.3rem 0.8rem; border: 1px solid rgba(255,255,255,0.2); border-radius: 6px;">AL AHLI</span>
+                <span style="font-family: var(--font-display); font-weight: 800; font-size: clamp(0.7rem, 1vw, 0.85rem); color: #fff; padding: 0.3rem 0.8rem; border: 1px solid rgba(255,255,255,0.2); border-radius: 6px;">AL HILAL</span>
+                <span style="font-family: var(--font-display); font-weight: 800; font-size: clamp(0.7rem, 1vw, 0.85rem); color: #fff; padding: 0.3rem 0.8rem; border: 1px solid rgba(255,255,255,0.2); border-radius: 6px;">AL ITTIHAD</span>
+                <span style="font-family: var(--font-display); font-weight: 800; font-size: clamp(0.7rem, 1vw, 0.85rem); color: #fff; padding: 0.3rem 0.8rem; border: 1px solid rgba(255,255,255,0.2); border-radius: 6px;">AL NASSR</span>
             </div>
-            <div class="reveal">
-                <p>We work with athletes from some of Europe's top clubs and including all PIF clubs in Saudi Arabia: <strong style="color: #fff;">Al Ahli, Al Hilal, Al Ittihad & Al Nassr.</strong></p>
-            </div>
+            <p class="reveal" style="text-align: center; font-family: var(--font-mono); font-size: clamp(0.55rem, 0.8vw, 0.65rem) !important; color: rgba(255,255,255,0.4); letter-spacing: 0.1em; margin-top: 0.5rem;">+ EUROPE'S TOP CLUBS</p>
         </div>
     </section>
 
@@ -1732,48 +2329,58 @@
         </svg>
 
         <div class="slide-content" style="z-index: 2;">
-            <h2 class="reveal" style="text-align: center; margin-bottom: clamp(0.5rem, 1vw, 0.75rem);">OUR ATHLETES</h2>
+            <!-- CNQR FC badge reveal with sparkles -->
+            <div class="reveal-scale cnqr-badge-wrap" style="text-align: center; margin-bottom: clamp(0.25rem, 0.5vw, 0.5rem); position: relative; display: inline-block;">
+                <img src="player cards/CNQR_FC.png" alt="CNQR FC" style="height: clamp(55px, 9vw, 90px);">
+                <span class="sparkle" style="top: -5px; left: 10%; animation-delay: 0s;"></span>
+                <span class="sparkle" style="top: 20%; right: -8px; animation-delay: 0.4s;"></span>
+                <span class="sparkle" style="bottom: 5px; left: 25%; animation-delay: 0.8s;"></span>
+                <span class="sparkle" style="top: 10%; left: -6px; animation-delay: 1.2s;"></span>
+                <span class="sparkle" style="bottom: 15%; right: 15%; animation-delay: 0.6s;"></span>
+                <span class="sparkle" style="top: 50%; right: -4px; animation-delay: 1s;"></span>
+            </div>
+            <h2 class="reveal" style="text-align: center; margin-bottom: clamp(0.15rem, 0.3vw, 0.25rem);">OUR ATHLETES</h2>
             <p class="reveal mono-label" style="text-align: center; color: rgba(255,255,255,0.5); margin-bottom: clamp(0.5rem, 1vw, 0.75rem);">[ Select Roster ]</p>
 
-            <div class="athlete-grid">
-                <div class="athlete-card reveal">
-                    <div class="athlete-photo img-placeholder" style="border-radius: 50%; background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.3);">
-                        <!-- Replace with player photo -->
-                        &#9917;
+            <div class="athlete-grid" style="gap: clamp(1rem, 2vw, 1.5rem);">
+                <div class="player-card-col reveal">
+                    <div class="player-card-wrap">
+                        <img src="player cards/CARD_AP.png" alt="Pereira" class="player-card-img">
+                        <div class="card-holo"></div>
                     </div>
-                    <h3>PEREIRA</h3>
-                    <div class="athlete-role">Al Hilal · Defender</div>
-                    <div class="athlete-stats">
-                        <span class="stat-number">4.7M+</span> IG &ensp; <span class="stat-number">1M+</span> X
-                    </div>
-                </div>
-                <div class="athlete-card reveal">
-                    <div class="athlete-photo img-placeholder" style="border-radius: 50%; background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.3);">
-                        <!-- Replace with player photo -->
-                        &#9917;
-                    </div>
-                    <h3>AUBAMEYANG</h3>
-                    <div class="athlete-role">Al Qadsiah · Forward</div>
-                    <div class="athlete-stats">
-                        <span class="stat-number">13.6M+</span> IG &ensp; <span class="stat-number">2.2M+</span> X
+                    <div class="card-stats-bar">
+                        <span><svg width="11" height="11" viewBox="0 0 24 24" fill="rgba(123,196,255,0.7)"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg> 4.7M</span>
+                        <span><svg width="11" height="11" viewBox="0 0 24 24" fill="rgba(123,196,255,0.7)"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg> 1M</span>
+                        <span>350+ apps</span>
                     </div>
                 </div>
-                <div class="athlete-card reveal">
-                    <div class="athlete-photo img-placeholder" style="border-radius: 50%; background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.3);">
-                        <!-- Replace with player photo -->
-                        &#9917;
+                <div class="player-card-col reveal">
+                    <div class="player-card-wrap">
+                        <img src="player cards/CARD_PEA.png" alt="Aubameyang" class="player-card-img">
+                        <div class="card-holo"></div>
                     </div>
-                    <h3>RAKITIC</h3>
-                    <div class="athlete-role">Retired · Midfielder</div>
-                    <div class="athlete-stats">
-                        <span class="stat-number">17.3M+</span> IG &ensp; <span class="stat-number">2.2M+</span> X
+                    <div class="card-stats-bar">
+                        <span><svg width="11" height="11" viewBox="0 0 24 24" fill="rgba(123,196,255,0.7)"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg> 13.6M</span>
+                        <span><svg width="11" height="11" viewBox="0 0 24 24" fill="rgba(123,196,255,0.7)"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg> 2.2M</span>
+                        <span>400+ apps</span>
+                    </div>
+                </div>
+                <div class="player-card-col reveal">
+                    <div class="player-card-wrap">
+                        <img src="player cards/CARD_IR.png" alt="Rakitic" class="player-card-img">
+                        <div class="card-holo"></div>
+                    </div>
+                    <div class="card-stats-bar">
+                        <span><svg width="11" height="11" viewBox="0 0 24 24" fill="rgba(123,196,255,0.7)"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg> 17.3M</span>
+                        <span><svg width="11" height="11" viewBox="0 0 24 24" fill="rgba(123,196,255,0.7)"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg> 2.2M</span>
+                        <span>700+ apps</span>
                     </div>
                 </div>
             </div>
 
             <p class="reveal" style="text-align: center; font-size: clamp(0.7rem, 1vw, 0.85rem) !important; color: rgba(255,255,255,0.5); margin-top: 0.75rem;">
-                These are just three of the players we work with & help work on their online/offline strategies.<br>
-                <em>Full/more expansive list is available on request.</em>
+                These are just three of the players we work with.<br>
+                <em>Full roster available on request.</em>
             </p>
         </div>
     </section>
@@ -1793,22 +2400,22 @@
             <h2 class="reveal" style="text-align: center; margin-bottom: clamp(0.75rem, 1.5vw, 1.25rem);">PAST PARTNERSHIPS,<br>FUTURE POSSIBILITIES.</h2>
 
             <div class="logos-grid reveal">
-                <div class="logo-item">Diriyah</div>
-                <div class="logo-item">Starbucks</div>
-                <div class="logo-item">Emirates</div>
-                <div class="logo-item">e&</div>
-                <div class="logo-item">Myntra</div>
-                <div class="logo-item">Spotify</div>
-                <div class="logo-item">Unilever</div>
-                <div class="logo-item">AlUla FC</div>
-                <div class="logo-item">Orange</div>
-                <div class="logo-item">RCU</div>
-                <div class="logo-item">Huda Beauty</div>
-                <div class="logo-item">ASOS</div>
-                <div class="logo-item">Samsung</div>
-                <div class="logo-item">MDL Beast</div>
-                <div class="logo-item">Prime Video</div>
-                <div class="logo-item">Qiddiya</div>
+                <div class="logo-item"><img src="logos/Diriyah Logo.jpg" alt="Diriyah" style="max-height: 100%; max-width: 100%; object-fit: contain;"></div>
+                <div class="logo-item"><img src="logos/Starbucks Logo.png" alt="Starbucks" style="max-height: 100%; max-width: 100%; object-fit: contain;"></div>
+                <div class="logo-item"><img src="logos/Emirates logo.png" alt="Emirates" style="max-height: 100%; max-width: 100%; object-fit: contain;"></div>
+                <div class="logo-item"><img src="logos/e_logo.png" alt="e&" style="max-height: 100%; max-width: 100%; object-fit: contain;"></div>
+                <div class="logo-item"><img src="logos/Myntra_logo.png" alt="Myntra" style="max-height: 100%; max-width: 100%; object-fit: contain;"></div>
+                <div class="logo-item"><img src="logos/Spotify logo.png" alt="Spotify" style="max-height: 100%; max-width: 100%; object-fit: contain;"></div>
+                <div class="logo-item"><img src="logos/Unilever Logo.png" alt="Unilever" style="max-height: 100%; max-width: 100%; object-fit: contain;"></div>
+                <div class="logo-item"><img src="logos/Al Ula FC.svg" alt="AlUla FC" style="max-height: 100%; max-width: 100%; object-fit: contain;"></div>
+                <div class="logo-item"><img src="logos/Orange Logo.png" alt="Orange" style="max-height: 100%; max-width: 100%; object-fit: contain;"></div>
+                <div class="logo-item"><img src="logos/RCU Logo.jpg" alt="RCU" style="max-height: 100%; max-width: 100%; object-fit: contain;"></div>
+                <div class="logo-item"><img src="logos/HUDA Beauty Logo.png" alt="Huda Beauty" style="max-height: 100%; max-width: 100%; object-fit: contain;"></div>
+                <div class="logo-item"><img src="logos/ASOS Logo.png" alt="ASOS" style="max-height: 100%; max-width: 100%; object-fit: contain;"></div>
+                <div class="logo-item"><img src="logos/SAMSUNG Logo.avif" alt="Samsung" style="max-height: 100%; max-width: 100%; object-fit: contain;"></div>
+                <div class="logo-item"><img src="logos/MDL BEAST lodo.jpg" alt="MDL Beast" style="max-height: 100%; max-width: 100%; object-fit: contain;"></div>
+                <div class="logo-item"><img src="logos/Prime Video Logo.png" alt="Prime Video" style="max-height: 100%; max-width: 100%; object-fit: contain;"></div>
+                <div class="logo-item"><img src="logos/Qiddiya Logo.png" alt="Qiddiya" style="max-height: 100%; max-width: 100%; object-fit: contain;"></div>
             </div>
         </div>
         <img src="shxft-wordmark-black.png" alt="" class="slide-logo">
@@ -1828,23 +2435,16 @@
             <path d="M 20 2 L 20 38 M 2 20 L 38 20 M 8 8 L 32 32 M 32 8 L 8 32" style="--path-len:160" />
         </svg>
 
-        <div class="slide-content">
-            <div class="contact-layout">
-                <div class="contact-person reveal">
-                    <div class="contact-photo img-placeholder" style="border-radius: 50; font-size: 2rem; color: #ccc;">
-                        <!-- Replace with: <img src="hasan.jpg" alt="Hasan Shah"> -->
-                        &#128100;
-                    </div>
-                    <div class="contact-details">
-                        <h3>Hasan Shah</h3>
-                        <div class="role">CEO</div>
-                        <div class="contact-line">hasan@shxft.studio</div>
-                    </div>
-                </div>
-                <div class="reveal" style="display: flex; align-items: center; justify-content: center;">
-                    <img src="shxft-wordmark-black.png" alt="SHXFT" style="width: clamp(150px, 25vw, 300px);">
-                </div>
+        <div class="slide-content" style="align-items: center; text-align: center;">
+            <div class="reveal-scale" style="margin-bottom: clamp(0.5rem, 1vw, 1rem);">
+                <img src="shxft-wordmark-black.png" alt="SHXFT" style="width: clamp(180px, 30vw, 350px);">
             </div>
+            <h2 class="reveal" style="font-size: clamp(2rem, 5.5vw, 4rem); line-height: 1.1;">LET'S<br><span class="highlight">COLLABORATE.</span></h2>
+            <p class="reveal" style="font-family: var(--font-mono); font-size: clamp(0.8rem, 1.2vw, 1rem) !important; letter-spacing: 0.08em; color: var(--text-secondary); margin-top: clamp(0.5rem, 1vw, 1rem);">hello@shxft.studio</p>
+            <a href="https://wa.me/971521640595" target="_blank" rel="noopener" class="reveal" style="margin-top: -0.25rem; display: inline-flex; align-items: center; gap: 5px; padding: 0.35rem 0.85rem; background: #25D366; border-radius: 20px; color: #ffffff; text-decoration: none; font-family: var(--font-body); font-size: 0.7rem; font-weight: 500; letter-spacing: 0.01em; transition: all 0.3s ease; box-shadow: 0 1px 4px rgba(37,211,102,0.25);">
+                <svg viewBox="0 0 24 24" fill="currentColor" width="14" height="14"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                WhatsApp us
+            </a>
         </div>
 
         <p style="position: absolute; bottom: clamp(8px, 1.5vh, 16px); left: 50%; transform: translateX(-50%); font-family: var(--font-mono); font-size: clamp(0.4rem, 0.6vw, 0.5rem); color: var(--text-muted); letter-spacing: 0.05em; text-align: center; max-width: 90vw; white-space: nowrap;">
@@ -1877,24 +2477,47 @@
         const navDotsContainer = document.getElementById('nav-dots');
         const progressBar = document.getElementById('progress-bar');
 
+        const slideLabels = [
+            'Intro', 'Who We Are', 'What We Do', 'Different',
+            'FRXME', 'Our Work', 'Social AR',
+            'Diriyah', 'Diriyah AR', 'Soundstorm', 'Soundstorm',
+            'CGI', 'Websites', 'Apps',
+            'CNQR', 'Athletes', 'Partners', 'Contact'
+        ];
+
         slides.forEach((slide, i) => {
             const dot = document.createElement('button');
             dot.className = 'nav-dot';
             dot.setAttribute('aria-label', `Go to slide ${i + 1}`);
-            if (slide.classList.contains('slide-frxme')) dot.classList.add('dark-dot', 'brand-dot');
-            else if (slide.classList.contains('slide-divider') || slide.classList.contains('slide-cnqr')) dot.classList.add('dark-dot');
+            dot.setAttribute('data-label', slideLabels[i] || '');
             dot.addEventListener('click', () => slide.scrollIntoView({ behavior: 'smooth' }));
             navDotsContainer.appendChild(dot);
         });
 
         const navDots = navDotsContainer.querySelectorAll('.nav-dot');
 
+        function isDarkSlide(slide) {
+            return slide.classList.contains('slide-frxme') ||
+                   slide.classList.contains('slide-divider') ||
+                   slide.classList.contains('slide-cnqr') ||
+                   slide.classList.contains('slide-soundstorm');
+        }
+        function isBrandSlide(slide) {
+            return slide.classList.contains('slide-frxme');
+        }
+
         const slideObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('visible');
                     const idx = Array.from(slides).indexOf(entry.target);
-                    navDots.forEach((d, i) => d.classList.toggle('active', i === idx));
+                    const dark = isDarkSlide(entry.target);
+                    const brand = isBrandSlide(entry.target);
+                    navDots.forEach((d, i) => {
+                        d.classList.toggle('active', i === idx);
+                        d.classList.toggle('dark-dot', dark);
+                        d.classList.toggle('brand-dot', brand);
+                    });
                     progressBar.style.width = ((idx + 1) / slides.length) * 100 + '%';
                 }
             });
@@ -2164,6 +2787,13 @@
             }, { threshold: 0.1 });
             frxmeObserver.observe(document.getElementById('slide-frxme'));
         }
+    </script>
+
+    <!-- Content protection -->
+    <script>
+        document.addEventListener('contextmenu', e => e.preventDefault());
+        document.addEventListener('dragstart', e => e.preventDefault());
+        document.addEventListener('selectstart', e => e.preventDefault());
     </script>
 
 </body>
