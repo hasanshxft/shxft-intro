@@ -1578,9 +1578,62 @@
                 scroll-behavior: auto !important;
             }
         }
-    </style>
+    
+/* ===========================================
+   DESKTOP BANNER — dismissible mobile nudge
+   =========================================== */
+.desktop-banner {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    padding: 0.7rem 1rem;
+    background: #0a0a0a;
+    color: #fafafa;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    align-items: center;
+    justify-content: center;
+    gap: 0.7rem;
+    z-index: 10000;
+}
+.desktop-banner-icon {
+    color: #ffffff;
+    font-size: 0.85rem;
+    line-height: 1;
+}
+.desktop-banner-copy {
+    flex: 1;
+    text-align: center;
+    max-width: 420px;
+}
+.desktop-banner-dismiss {
+    background: transparent;
+    border: none;
+    color: rgba(255,255,255,0.6);
+    font-size: 0.9rem;
+    cursor: pointer;
+    padding: 0 0.4rem;
+    line-height: 1;
+    transition: color 0.2s ease;
+}
+.desktop-banner-dismiss:hover { color: #fff; }
+@media (max-width: 820px) {
+    body.has-desktop-banner { padding-top: 42px; }
+    .desktop-banner { display: flex; }
+}
+.desktop-banner.dismissed { display: none !important; }
+
+</style>
 </head>
 <body>
+<div class="desktop-banner" id="desktopBanner" role="note">
+    <span class="desktop-banner-icon">&#9830;</span>
+    <span class="desktop-banner-copy">For the full experience, open on desktop.</span>
+    <button class="desktop-banner-dismiss" id="desktopBannerDismiss" aria-label="Dismiss">&times;</button>
+</div>
+
 
     <div class="progress-bar" id="progress-bar"></div>
     <nav class="nav-dots" id="nav-dots"></nav>
@@ -2836,5 +2889,23 @@
     </script>
 
     <script src="https://os.cnqrmedia.com/deck-tracker.js" defer></script>
+<script>
+// Desktop banner — dismissible, session-scoped
+(() => {
+    const banner = document.getElementById('desktopBanner');
+    const dismiss = document.getElementById('desktopBannerDismiss');
+    if (!banner || !dismiss) return;
+    if (sessionStorage.getItem('deskBannerDismissed') === '1') {
+        banner.classList.add('dismissed');
+    } else {
+        document.body.classList.add('has-desktop-banner');
+    }
+    dismiss.addEventListener('click', () => {
+        banner.classList.add('dismissed');
+        document.body.classList.remove('has-desktop-banner');
+        sessionStorage.setItem('deskBannerDismissed', '1');
+    });
+})();
+</script>
 </body>
 </html>
